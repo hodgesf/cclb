@@ -1,0 +1,4 @@
+train.txt: 3000990 triples, 983861 entities
+train_targets.txt: 6269 triples, 10273 entities
+valid.txt: 783 triples, 1392 entities
+test.txt: 784 triples, 1373 entities

@@ -1,0 +1,23 @@
+# venv
+nbfnet-venv/
+
+# raw and derived data (regenerable from scripts/)
+data/
+splits/
+train_targets.txt
+
+# model checkpoints + experiment outputs
+*.pth
+experiments/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,44 @@
+# NBFNet requirements — pinned to versions that work on NVIDIA Blackwell
+# (compute capability sm_120) with Python 3.10.
+#
+# Usage:
+#   python3.10 -m venv venv
+#   ./venv/bin/pip install -r requirements.txt
+#
+# THIS DOES NOT INSTALL EVERYTHING. You still need:
+#   1. A CUDA toolkit on PATH with `nvcc` (>=12.8 for Blackwell). The pip
+#      `nvidia-*` wheels include runtime libraries but not the compiler.
+#      Set CUDA_HOME and add $CUDA_HOME/bin to PATH before launching.
+#   2. CUDA library headers (cuSPARSE / cuBLAS / cuSolver / cuda_runtime
+#      / cuda_nvrtc) accessible to the JIT compiler. After this install,
+#      they live in venv/lib/python3.10/site-packages/nvidia/*/include/ —
+#      point CPATH at those paths at launch time.
+#   3. For torch >= 2.7, two source patches to the installed torchdrug:
+#        - torchdrug/utils/torch.py: switch cpp_extension.load() call to
+#          keyword arguments (positional drift broke after torch 2.7
+#          inserted extra_sycl_cflags into the signature).
+#        - torchdrug/layers/functional/extension/{spmm,rspmm}.h: change
+#          `<ATen/SparseTensorUtils.h>` to `<ATen/native/SparseTensorUtils.h>`
+#          (header moved in newer ATen).
+#   4. Python must be 3.10. The pip-published torchdrug 0.2.1 pins
+#      python<3.11; installing on 3.11+ needs torchdrug from source.
+
+--extra-index-url https://download.pytorch.org/whl/cu128
+--find-links https://data.pyg.org/whl/torch-2.9.0+cu128.html
+
+# Hard pin: rdkit-pypi (transitive via torchdrug) is built against numpy
+# 1.x and crashes at import with numpy 2 ("_ARRAY_API not found").
+numpy<2
+
+torch==2.9.0
+torch-scatter==2.1.2
+torch-sparse==0.6.18
+torch-cluster==1.6.3
+
+torchdrug==0.2.1
+
+ogb>=1.3.0
+easydict
+pyyaml
+jinja2
+ninja
