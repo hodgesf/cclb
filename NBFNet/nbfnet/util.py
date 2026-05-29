@@ -110,6 +110,7 @@ def build_solver(cfg, dataset):
         test_set = torch_data.random_split(test_set, [cfg.fast_test, len(test_set) - cfg.fast_test], generator=g)[0]
     if hasattr(dataset, "num_relation"):
         cfg.task.model.num_relation = dataset.num_relation
+        cfg.task.model.num_entities = dataset.num_entity
 
     task = core.Configurable.load_config_dict(cfg.task)
     cfg.optimizer.params = task.parameters()

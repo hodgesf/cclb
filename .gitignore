@@ -4,6 +4,7 @@ nbfnet-venv/
 # raw and derived data (regenerable from scripts/)
 data/
 splits/
+splits_human/
 train_targets.txt
 
 # model checkpoints + experiment outputs

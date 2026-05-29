@@ -1,10 +1,9 @@
 output_dir: ~/experiments/
-checkpoint: /home/hodgesf/experiments/KnowledgeGraphCompletion/RDKG/NBFNet/2026-05-26-08-28-44/model_epoch_1.pth
 fast_test: 1000
 
 dataset:
   class: RDKG
-  path: /home/hodgesf/Desktop/code/cclb/splits
+  path: /home/hodgesf/Desktop/code/cclb/splits_human
 
 task:
   class: KnowledgeGraphCompletion
@@ -30,9 +29,9 @@ optimizer:
 
 engine:
   gpus: {{ gpus }}
-  batch_size: 4
+  batch_size: 8
 
 train:
-  num_epoch: 0
+  num_epoch: 4
 
 metric: mrr
