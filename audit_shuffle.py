@@ -148,6 +148,9 @@ def main():
     assert hasattr(model_, "get_audit"), "checkpoint did not load a MaskedNBFNet"
     assert model_.audit, "model.audit must be True so we can read selected_edge_ids"
 
+    # model's device -- query tensors must match.
+    device = next(model_.parameters()).device
+
     # sample queries from the held-out test set
     test_set = solver.test_set
     sample_idx = random.sample(range(len(test_set)), min(args.num_queries, len(test_set)))
@@ -156,10 +159,10 @@ def main():
     shuf_rrs = []
     for i, idx in enumerate(sample_idx):
         h, t, r = test_set[idx].tolist()
-        h_t = torch.tensor(h)
-        t_t = torch.tensor(t)
-        r_t = torch.tensor(r)
-        candidates = torch.arange(fact_graph.num_node)  # rank against full entity set
+        h_t = torch.tensor(h, device=device)
+        t_t = torch.tensor(t, device=device)
+        r_t = torch.tensor(r, device=device)
+        candidates = torch.arange(fact_graph.num_node, device=device)  # rank against full entity set
 
         # 1) original: score on the real fact_graph
         with torch.no_grad():
