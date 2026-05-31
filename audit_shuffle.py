@@ -64,36 +64,60 @@ def score_query(model, fact_graph, h, t_candidates, r):
     return score.view(-1)
 
 
-def shuffle_within_subgraph(graph, selected_edge_ids, seed):
-    """Permute entity IDs *within* the selected subgraph's node set.
+def shuffle_within_subgraph(fact_graph, selected_edge_ids_in_aug, h_id, t_id, seed):
+    """Permute entity IDs WITHIN the originally-selected subgraph.
 
-    Build a node-relabeling map sigma : V_sub -> V_sub that's a random
-    permutation; apply to edge_list[selected_edge_ids][:, :2] (the u, v columns).
-    Edges OUTSIDE the selected subgraph and nodes NOT in V_sub are unchanged.
+    Args:
+        fact_graph: the UN-AUGMENTED graph the model was given (it re-augments
+            internally inside forward).
+        selected_edge_ids_in_aug: indices into the AUGMENTED edge list (this is
+            what audit['selected_edge_ids'] holds, since the model's selector
+            runs on the augmented graph).
+        h_id, t_id: query head + true tail. NOT shuffled, otherwise we'd be
+            testing a different question.
+        seed: int.
+
+    Returns:
+        A new UN-AUGMENTED Graph with entity IDs permuted within the subgraph.
+        The model's forward will re-augment it internally.
     """
     g = torch.Generator().manual_seed(seed)
-    # node set spanned by the selected edges
-    sub_edges = graph.edge_list[selected_edge_ids]
-    sub_nodes = torch.unique(sub_edges[:, :2].flatten())
 
-    # random permutation of sub_nodes -> sub_nodes
-    perm = sub_nodes[torch.randperm(sub_nodes.numel(), generator=g)]
-    relabel = {old.item(): new.item() for old, new in zip(sub_nodes, perm)}
+    # Identify the node set of the originally-selected subgraph by re-augmenting
+    # and indexing with the augmented-edge IDs the audit gave us.
+    selected_edge_ids_in_aug = selected_edge_ids_in_aug.to(fact_graph.edge_list.device)
+    aug = fact_graph.undirected(add_inverse=True)
+    sub_edges_aug = aug.edge_list[selected_edge_ids_in_aug]
+    sub_nodes = torch.unique(sub_edges_aug[:, :2].flatten())
 
-    new_edge_list = graph.edge_list.clone()
-    # only relabel the u, v of selected edges; relation stays put
-    for idx in selected_edge_ids.tolist():
-        new_edge_list[idx, 0] = relabel[new_edge_list[idx, 0].item()]
-        new_edge_list[idx, 1] = relabel[new_edge_list[idx, 1].item()]
+    # Don't shuffle the query endpoints -- shuffling h would change the query.
+    fixed_nodes = torch.tensor([int(h_id), int(t_id)], dtype=torch.long,
+                               device=sub_nodes.device)
+    shufflable = sub_nodes[~torch.isin(sub_nodes, fixed_nodes)]
+    if shufflable.numel() < 2:
+        # Nothing meaningful to shuffle (subgraph too small or only contains h/t).
+        return fact_graph
 
-    # build a new Graph with the relabeled edge_list
-    return type(graph)(
+    perm = shufflable[torch.randperm(shufflable.numel(), generator=g).to(shufflable.device)]
+
+    # Full-graph permutation map: identity outside `shufflable`, random within.
+    node_map = torch.arange(fact_graph.num_node, dtype=torch.long,
+                            device=fact_graph.edge_list.device)
+    node_map[shufflable] = perm
+
+    # Apply to the un-augmented edge list (vectorized; correct under simultaneous
+    # swaps because we don't do them iteratively).
+    new_edge_list = fact_graph.edge_list.clone()
+    new_edge_list[:, 0] = node_map[new_edge_list[:, 0]]
+    new_edge_list[:, 1] = node_map[new_edge_list[:, 1]]
+
+    return type(fact_graph)(
         new_edge_list,
-        edge_weight=graph.edge_weight,
-        num_node=graph.num_node,
-        num_relation=graph.num_relation,
-        meta_dict=graph.meta_dict,
-        **graph.data_dict,
+        edge_weight=fact_graph.edge_weight,
+        num_node=fact_graph.num_node,
+        num_relation=fact_graph.num_relation,
+        meta_dict=fact_graph.meta_dict,
+        **fact_graph.data_dict,
     )
 
 
@@ -145,7 +169,7 @@ def main():
         selected = audit["selected_edge_ids"]
 
         # 2) shuffle identities within that subgraph and re-score
-        shuffled_graph = shuffle_within_subgraph(fact_graph, selected, seed=args.seed + i)
+        shuffled_graph = shuffle_within_subgraph(fact_graph, selected, h, t, seed=args.seed + i)
         with torch.no_grad():
             scores_shuf = score_query(model_, shuffled_graph, h_t, candidates, r_t)
 
