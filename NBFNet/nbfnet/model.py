@@ -410,10 +410,18 @@ class MaskedNBFNet(NeuralBellmanFordNetwork):
         """
         keep = mask.bool()
         sub_graph = graph.edge_mask(keep)
-        with sub_graph.edge():
-            sub_graph.edge_weight = sub_graph.edge_weight * mask[keep]
-
-        return sub_graph
+        # torchdrug Graph doesn't allow attribute reassignment after construction,
+        # so we rebuild via the constructor with the STE-multiplied edge_weight.
+        # Same pattern as as_relational_graph() in the parent.
+        new_edge_weight = sub_graph.edge_weight * mask[keep]
+        return type(sub_graph)(
+            sub_graph.edge_list,
+            edge_weight=new_edge_weight,
+            num_node=sub_graph.num_node,
+            num_relation=sub_graph.num_relation,
+            meta_dict=sub_graph.meta_dict,
+            **sub_graph.data_dict,
+        )
 
 
     def set_k(self, progress):
