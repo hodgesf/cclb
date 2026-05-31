@@ -52,3 +52,5 @@ for h in heads:
     reached = (hop != float("inf")).sum().item()
     print(f"  h={h:>7}  |sub|={sub.numel():>9} ({sub.numel()/E:5.1%})"
         f"  reached={reached:>7} ({reached/N:5.1%})  [{(time.time()-t1)*1000:.0f}ms]")
+    
+

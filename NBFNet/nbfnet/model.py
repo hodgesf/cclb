@@ -287,7 +287,7 @@ class MaskedNBFNet(NeuralBellmanFordNetwork):
         relations = num_relation * 2
         self.selector = EdgeSelector(num_entities, relations, selector_dim)
         self.num_hops = len(hidden_dims) # L 
-        self.k_edges = k_edges 
+        self.k_edges = k_edges if k_edges is not None else k_start 
         self.k_start, self.k_end = k_start, k_end  # anneal endpoints (large -> small)
         self.tau = tau # Gumbel temperature
         self.audit = audit 
@@ -508,8 +508,12 @@ class EdgeSelector(nn.Module):
     def __init__(self, num_entities, num_relations, dim,
                    num_mlp_layer=2):
         super().__init__()
-        self.entity = nn.Embedding(num_entities, dim) 
+        self.entity = nn.Embedding(num_entities, dim)
         self.relation = nn.Embedding(num_relations, dim) # num_relations = 2*|R|
+        # cold-start defense: small-variance init -> near-uniform initial logits,
+        # so the first Gumbel-top-K picks roughly random edges (good for exploration).
+        nn.init.normal_(self.entity.weight, std=0.01)
+        nn.init.normal_(self.relation.weight, std=0.01)
         feat_dim = 5*dim # [h, r_q, u, r_e, v]
         self.mlp = layers.MLP(feat_dim, [feat_dim] * (num_mlp_layer-1) + [1])
 
