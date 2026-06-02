@@ -51,17 +51,17 @@ def main():
     graph = build_toy_graph()
     print(f"toy graph: |V|={graph.num_node}  |E|={graph.num_edge}  |R|={graph.num_relation}")
 
-    # Tiny config; k near full so almost everything is selected (smoke test, not training).
+    # Tiny config; lambda_l1=0 so the smoke test doesn't fight per-edge sigmoid.
+    # With small-variance init, logits ~ 0 -> sigmoid ~ 0.5 -> threshold straddles
+    # the boundary, so ~half of the edges get selected initially. We just want
+    # gradient flow to work end-to-end.
     model = MaskedNBFNet(
         input_dim=8,
         hidden_dims=[8, 8, 8],
         num_relation=3,
         num_entities=12,
         selector_dim=8,
-        k_edges=40,            # ~2/3 of |E|_augmented; loose
-        k_start=40,
-        k_end=20,
-        tau=1.0,
+        lambda_l1=0.0,
         audit=True,
     )
     model.train()
@@ -121,8 +121,9 @@ def main():
     for i, entry in enumerate(audit):
         assert "query" in entry and "selected_edge_ids" in entry and "k_used" in entry
         assert "logit_mean" in entry and "logit_std" in entry
-        assert entry["selected_edge_ids"].numel() == 40, \
-            f"query {i}: selected {entry['selected_edge_ids'].numel()} edges, expected 40"
+        # variable subset size now; just verify the count matches k_used and is in range
+        assert entry["selected_edge_ids"].numel() == entry["k_used"], \
+            f"query {i}: |selected_edge_ids| != k_used"
         print(f"  query {i}: query={entry['query']}  selected={entry['selected_edge_ids'].numel()} edges  "
               f"k_used={entry['k_used']}  logit_mean={entry['logit_mean']:.3f}  logit_std={entry['logit_std']:.3f}")
 

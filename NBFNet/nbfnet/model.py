@@ -11,7 +11,6 @@ from torchdrug.layers import functional
 from torchdrug.core import Registry as R
 
 from . import layer
-import math
 
 
 @R.register("model.NBFNet")
@@ -265,33 +264,28 @@ class NeuralBellmanFordNetwork(nn.Module, core.Configurable):
 @R.register("model.MaskedNBFNet")
 class MaskedNBFNet(NeuralBellmanFordNetwork):
     def __init__(
-            self, 
-            input_dim, 
-            hidden_dims, 
+            self,
+            input_dim,
+            hidden_dims,
             num_relation=None,
             num_entities=None,
-            selector_dim=32, 
-            k_edges=None, 
-            k_start=None, 
-            k_end=None,
-            tau=1.0, 
-            audit=False, 
+            selector_dim=32,
+            lambda_l1=1.0e-4,
+            audit=False,
             **kwargs):
-        
+
         super().__init__(
-            input_dim=input_dim, 
+            input_dim=input_dim,
             hidden_dims=hidden_dims,
-            num_relation=num_relation, 
+            num_relation=num_relation,
             **kwargs
         )
         relations = num_relation * 2
         self.selector = EdgeSelector(num_entities, relations, selector_dim)
-        self.num_hops = len(hidden_dims) # L 
-        self.k_edges = k_edges if k_edges is not None else k_start 
-        self.k_start, self.k_end = k_start, k_end  # anneal endpoints (large -> small)
-        self.tau = tau # Gumbel temperature
-        self.audit = audit 
-        assert not self.symmetric 
+        self.num_hops = len(hidden_dims) # L
+        self.lambda_l1 = lambda_l1  # sparsity weight on mask.sum(); controls budget implicitly
+        self.audit = audit
+        assert not self.symmetric
 
 
     def extract_subgraph(self, graph, h):
@@ -348,43 +342,33 @@ class MaskedNBFNet(NeuralBellmanFordNetwork):
 
         Returns:
             logits (Tensor, |E|): one real logit per edge.
-                Higher = selector wants this edge in the mask. Consumed by
-                select_mask (Gumbel-top-K) downstream.
+                sigmoid(logit) > 0.5 -> edge included. Consumed by select_mask.
         """
         u, v, r_e = graph.edge_list.t()
         logits = self.selector.score(h, r_query, u, r_e, v)
         return logits
 
-    def select_mask(self, logits, k):
-        """Decisions 6a + 2a: ONE hard {0,1} mask of size k, used for ALL layers.
+    def select_mask(self, logits):
+        """Per-edge Bernoulli-style mask with threshold @ 0.5 and STE.
 
-        Train:  perturb logits with Gumbel(0,1) noise, hard top-k, straight-through grad.
-        Eval:   deterministic top-k (no noise).
+        Each edge decides independently whether to be included based on whether
+        sigmoid(logit) crosses 0.5. Number of selected edges is variable per query;
+        sparsity is controlled implicitly by the L1 penalty on mask.sum() in forward.
+
+        Train:  hard {0,1} via threshold; gradient flows through sigmoid via STE.
+        Eval:   hard {0,1} via threshold; no STE wrapping needed.
 
         Args:
-            logits (Tensor, E): one logit per edge (output of score_edges).
-            k (int): number of edges to keep.
+            logits (Tensor, [E]): one logit per edge.
 
         Returns:
-            mask (Tensor, [E]) in {0,1}: hard mask in forward; gradient flows
-                through sigmoid(scores) via STE during training.
+            mask (Tensor, [E]) in {0,1}: hard mask in forward; STE-differentiable
+                during training (gradient = sigmoid'(logits) for every edge).
         """
-        k = min(k, logits.numel())
-        eps = 1e-10
+        soft = torch.sigmoid(logits)
+        mask_hard = (soft > 0.5).float()
 
         if self.training:
-            u = torch.rand_like(logits)
-            gumbel = -torch.log(-torch.log(u + eps) + eps)
-            scores = (logits + gumbel) / self.tau
-        else:
-            scores = logits
-
-        topk_idx = scores.topk(k).indices
-        mask_hard = torch.zeros_like(logits)
-        mask_hard.scatter_(0, topk_idx, 1.0)
-
-        if self.training:
-            soft = torch.sigmoid(scores)
             mask = (mask_hard - soft).detach() + soft
         else:
             mask = mask_hard
@@ -392,56 +376,33 @@ class MaskedNBFNet(NeuralBellmanFordNetwork):
         return mask
 
     def apply_mask(self, graph, mask):
-        """build a graph containing ONLY the selected edges
-        so the fused rspmm kernel processes K edges instead of |E|. The selector
-        gradient is preserved by multiplying the surviving edge_weights by mask[keep],
-        which is 1.0 in forward but carries STE gradient in backward.
+        """Multiply edge_weight by the STE mask. KEEP ALL EDGES.
 
-        Args:
-            graph (torchdrug.data.Graph): the (inverse-augmented) graph.
-            mask (Tensor, |E|) in {0,1}: output of select_mask.
-                Forward values are hard {0,1}. backward carries straight-through grad.
+        Forward: unselected edges have edge_weight * 0 = 0, so they contribute
+        nothing to BF messages -- predictor's effective input is the K selected
+        edges (faithful hard mask). Same identity as drop-and-rebuild in the
+        forward direction.
 
-        Returns:
-            sub_graph (torchdrug.data.Graph): same num_node and num_relation as `graph`,
-                but only the K selected edges. edge_weight is multiplied by the STE
-                mask value at each surviving edge -> selector gradient reaches the
-                selector's parameters when this graph is consumed by bellmanford.
+        Backward: every edge's mask value sits in the autograd graph because
+        it multiplies edge_weight. STE routes gradient from mask back to
+        sigmoid(scores) for EVERY edge, not just the K selected. Unselected
+        edges' selector logits therefore receive a counterfactual gradient --
+        "if you had picked me, here is how I would have changed the loss" --
+        which is the signal drop-and-rebuild discarded.
+
+        Same code path in train and eval; the only difference is whether the
+        incoming mask is STE-wrapped (train) or plain 0/1 (eval).
         """
-        keep = mask.bool()
-        sub_graph = graph.edge_mask(keep)
-        # torchdrug Graph doesn't allow attribute reassignment after construction,
-        # so we rebuild via the constructor with the STE-multiplied edge_weight.
-        # Same pattern as as_relational_graph() in the parent.
-        new_edge_weight = sub_graph.edge_weight * mask[keep]
-        return type(sub_graph)(
-            sub_graph.edge_list,
+        new_edge_weight = graph.edge_weight * mask
+        return type(graph)(
+            graph.edge_list,
             edge_weight=new_edge_weight,
-            num_node=sub_graph.num_node,
-            num_relation=sub_graph.num_relation,
-            meta_dict=sub_graph.meta_dict,
-            **sub_graph.data_dict,
+            num_node=graph.num_node,
+            num_relation=graph.num_relation,
+            meta_dict=graph.meta_dict,
+            **graph.data_dict,
         )
 
-
-    def set_k(self, progress):
-        """Called by the training loop. Geometric decay self.k_edges from
-        self.k_start -> self.k_end over a warmup window. 
-        start with k ~= |E| so almost every edge is selected
-        (and gets gradient signal), tighten as the predictor stabilizes.
-
-        Args:
-            progress (float): how far through the warmup window.
-                0.0  -> self.k_edges = self.k_start    (start of training)
-                1.0  -> self.k_edges = self.k_end      (end of warmup)
-                Values outside [0, 1] are clamped (stays at k_end after warmup).
-        """
-        assert self.k_start is not None and self.k_end is not None, \
-            "k_start and k_end must be set to use set_k (configure them in __init__)."
-
-        p = max(0.0, min(1.0, float(progress)))
-        log_k = (1.0 - p) * math.log(self.k_start) + p * math.log(self.k_end)
-        self.k_edges = max(1, int(round(math.exp(log_k))))
 
     def forward(self, graph, h_index, t_index, r_index=None, all_loss=None, metric=None):
         """Per-query masked BF: select edges, build a per-query masked graph, run the
@@ -478,18 +439,22 @@ class MaskedNBFNet(NeuralBellmanFordNetwork):
             r_b = r_index[b, 0]
             t_b = t_index[b]
             logits = self.score_edges(graph, h_b, r_b)
-            mask   = self.select_mask(logits, self.k_edges)
+            mask   = self.select_mask(logits)
             g_b    = self.apply_mask(graph, mask)
             out = self.bellmanford(g_b, h_b.unsqueeze(0), r_b.unsqueeze(0))
             feat = out["node_feature"].squeeze(1)
             feat_at_t = feat[t_b]
             score_b   = self.mlp(feat_at_t).squeeze(-1)
             scores.append(score_b)
+            # L1 sparsity penalty: without this, selector trivially picks all edges
+            # since unconstrained sigmoids saturate high under BCE pressure.
+            if all_loss is not None and self.training:
+                all_loss += self.lambda_l1 * mask.sum()
             if self.audit:
                 self._audit_buffer.append({
                     "query":             (h_b.item(), r_b.item()),
                     "selected_edge_ids": mask.detach().nonzero().squeeze(-1).cpu(),
-                    "k_used":            int(self.k_edges),
+                    "k_used":            int(mask.detach().sum().item()),
                     "logit_mean":        logits.detach().mean().item(),
                     "logit_std":         logits.detach().std().item(),
                 })
@@ -504,7 +469,7 @@ class MaskedNBFNet(NeuralBellmanFordNetwork):
               Each entry contains:
                 - "query":              (h_id, r_id); the query this entry is for
                 - "selected_edge_ids":  LongTensor on CPU; indices where mask==1
-                - "k_used":             int; current self.k_edges (annealed value)
+                - "k_used":             int; |selected| this query (variable per query)
                 - "logit_mean":         float; mean of selector logits over all edges
                 - "logit_std":          float; stdev of selector logits over all edges
           Empty list if self.audit is False or forward() hasn't been called yet.
@@ -518,8 +483,9 @@ class EdgeSelector(nn.Module):
         super().__init__()
         self.entity = nn.Embedding(num_entities, dim)
         self.relation = nn.Embedding(num_relations, dim) # num_relations = 2*|R|
-        # cold-start defense: small-variance init -> near-uniform initial logits,
-        # so the first Gumbel-top-K picks roughly random edges (good for exploration).
+        # cold-start defense: small-variance init -> near-uniform initial logits
+        # near zero -> sigmoid(0) = 0.5 -> threshold straddles the boundary so
+        # small score perturbations flip edges in/out (high gradient sensitivity).
         nn.init.normal_(self.entity.weight, std=0.01)
         nn.init.normal_(self.relation.weight, std=0.01)
         feat_dim = 5*dim # [h, r_q, u, r_e, v]
@@ -557,68 +523,3 @@ class EdgeSelector(nn.Module):
 
         return self.mlp(feat).squeeze(-1)
 
-    def forward(self, h, r_query, edge_uvr, k, tau, hard=True, hop_dist=None):
-        """End-to-end selector pass: score every edge -> Gumbel-top-K -> mask.
-
-        Args:
-            h (LongTensor, scalar):        query head id.
-            r_query (LongTensor, scalar):  query relation id.
-            edge_uvr (LongTensor, [E, 3]): per-edge [u, v, r_e] (gathered from
-                graph.edge_list by the caller).
-            k (int):                       number of edges to keep.
-            tau (float):                   Gumbel temperature
-            hard (bool):                   True -> training mode (Gumbel noise + STE).
-                False -> eval mode (deterministic top-k, no noise).
-            hop_dist (Tensor [N], optional): per-node hop distances. 
-
-        Returns:
-            mask (Tensor, [E]) in {0,1}: hard mask, gradient via STE when hard=True.
-            selected_idx (LongTensor, [k]): the k chosen edge indices (for audit).
-        """
-        u, v, r_e = edge_uvr[:, 0], edge_uvr[:, 1], edge_uvr[:, 2]
-
-        logits = self.score(h, r_query, u, r_e, v)
-
-        mask, selected_idx = self.gumbel_top_k(logits, k, tau, hard=hard)
-        return mask, selected_idx
-
-
-    @staticmethod
-    def gumbel_top_k(logits, k, tau, hard=True):
-        """Differentiable hard top-k (decision 6a).
-
-        hard=True  (train): perturb logits with Gumbel(0,1) noise, hard top-k,
-                            STE so backward flows via sigmoid(scores).
-        hard=False (eval):  deterministic top-k, no noise, no STE.
-
-        Args:
-            logits (Tensor, [E]): one logit per edge.
-            k (int):              number of edges to keep.
-            tau (float):          temperature; sharpens the soft path used by STE.
-            hard (bool):          training-mode flag (above).
-
-        Returns:
-            mask (Tensor, [E]) in {0,1}: hard mask (STE-differentiable when hard=True).
-            selected_idx (LongTensor, [k]): the k chosen edge indices.
-        """
-        k = min(k, logits.numel())
-        eps = 1e-10
-
-        if hard:
-            u = torch.rand_like(logits)
-            gumbel = -torch.log(-torch.log(u + eps) + eps)
-            scores = (logits + gumbel) / tau
-        else:
-            scores = logits                                  # no noise / temp at eval
-
-        selected_idx = scores.topk(k).indices
-        mask_hard = torch.zeros_like(logits)
-        mask_hard.scatter_(0, selected_idx, 1.0)
-
-        if hard:
-            soft = torch.sigmoid(scores)
-            mask = (mask_hard - soft).detach() + soft
-        else:
-            mask = mask_hard
-
-        return mask, selected_idx

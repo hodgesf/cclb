@@ -21,13 +21,6 @@ def train_and_validate(cfg, solver):
     best_epoch = -1
 
     for i in range(0, cfg.train.num_epoch, step):
-        # K annealing: only fires for MaskedNBFNet (baseline NBFNet has no set_k).
-        # solver.model is the TASK; the actual NBFNet/MaskedNBFNet lives at task.model.
-        # progress = 0.0 at first epoch, 1.0 at last -> k_start -> k_end geometric decay.
-        inner = getattr(solver.model, "model", solver.model)
-        if hasattr(inner, "set_k"):
-            progress = i / max(1, cfg.train.num_epoch - 1)
-            inner.set_k(progress)
         kwargs = cfg.train.copy()
         kwargs["num_epoch"] = min(step, cfg.train.num_epoch - i)
         solver.model.split = "train"
