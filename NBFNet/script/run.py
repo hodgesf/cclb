@@ -13,6 +13,9 @@ from nbfnet import dataset, layer, model, task, util
 
 
 def train_and_validate(cfg, solver):
+    if cfg.get("checkpoint"):
+        solver.load(cfg.checkpoint)
+    
     if cfg.train.num_epoch == 0:
         return
 

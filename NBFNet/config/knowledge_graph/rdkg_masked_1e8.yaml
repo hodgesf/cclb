@@ -1,18 +1,16 @@
 output_dir: ~/experiments/
 fast_test: 1000
 
-checkpoint: /nfs/stak/users/hodgesf/experiments/KnowledgeGraphCompletion/RDKG/MaskedNBFNet/2026-06-03-15-24-42/model_epoch_4.pth
-
 dataset:
   class: RDKG
-  path: /nfs/stak/users/hodgesf/data/splits_human 
+  path: /nfs/stak/users/hodgesf/data/splits_human
 
 task:
   class: KnowledgeGraphCompletion
   model:
     class: MaskedNBFNet
     selector_dim: 32
-    lambda_l1: 1.0e-7
+    lambda_l1: 1.0e-8        # changed from 1e-7
     audit: yes
     input_dim: 32
     hidden_dims: [32,32,32,32,32,32]
@@ -34,11 +32,11 @@ optimizer:
 
 engine:
   gpus: {{ gpus }}
-  batch_size: 4
-  log_interval: 25
+  batch_size: 4            # bs=2 instead of 4 to fit on H100 80GB with margin
+  log_interval: 10         # short run, more frequent logging
 
 train:
-  num_epoch: 8
-  batch_per_epoch: 250 
-  
+  num_epoch: 4
+  batch_per_epoch: 500     # 200 batches = ~1 hour quick probe
+
 metric: mrr

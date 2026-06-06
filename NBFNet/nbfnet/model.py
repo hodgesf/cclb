@@ -458,7 +458,19 @@ class MaskedNBFNet(NeuralBellmanFordNetwork):
                     "logit_mean":        logits.detach().mean().item(),
                     "logit_std":         logits.detach().std().item(),
                 })
-        return torch.stack(scores, dim=0).view(shape)
+        if metric is not None and self.audit and len(self._audit_buffer) > 0:
+            ks = [e["k_used"] for e in self._audit_buffer]
+            n_edges = max(1, int(graph.num_edge))
+            device = h_index.device
+            metric["k_used_mean"] = torch.tensor(sum(ks) / len(ks), device=device)
+            metric["k_used_min"] = torch.tensor(float(min(ks)), device=device)
+            metric["k_used_max"] = torch.tensor(float(max(ks)), device=device)
+            metric["mask_density"] = torch.tensor((sum(ks) / len(ks)) / n_edges, device=device)
+            metric["logit_mean_avg"] = torch.tensor(sum(e["logit_mean"] for e in self._audit_buffer) / len(self._audit_buffer),
+                  device=device,
+              )
+        return torch.stack(scores, dim=0).view(shape)    
+
 
 
     def get_audit(self):
