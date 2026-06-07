@@ -30,13 +30,18 @@ optimizer:
   class: Adam
   lr: 5.0e-4
 
+scheduler:
+  class: CosineAnnealingLR
+  T_max: 10
+  eta_min: 1.0e-6
+
 engine:
   gpus: {{ gpus }}
-  batch_size: 4            # bs=2 instead of 4 to fit on H100 80GB with margin
-  log_interval: 10         # short run, more frequent logging
+  batch_size: 4
+  log_interval: 10
 
 train:
-  num_epoch: 4
-  batch_per_epoch: 500     # 200 batches = ~1 hour quick probe
+  num_epoch: 10
+  batch_per_epoch: 500
 
 metric: mrr

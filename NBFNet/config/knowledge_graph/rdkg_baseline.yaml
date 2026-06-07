@@ -24,17 +24,22 @@ task:
   sample_weight: no
   full_batch_eval: yes
 
-optimizer: 
+optimizer:
   class: Adam
   lr: 5.0e-4
 
-engine: 
+scheduler:
+  class: CosineAnnealingLR
+  T_max: 10
+  eta_min: 1.0e-6
+
+engine:
   gpus: {{ gpus }}
   batch_size: 4
-  log_interval: 25 
+  log_interval: 25
 
-train: 
-  num_epoch: 4
+train:
+  num_epoch: 10
   batch_per_epoch: 500
 
 metric: mrr 

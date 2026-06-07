@@ -118,7 +118,15 @@ def build_solver(cfg, dataset):
     task = core.Configurable.load_config_dict(cfg.task)
     cfg.optimizer.params = task.parameters()
     optimizer = core.Configurable.load_config_dict(cfg.optimizer)
-    solver = core.Engine(task, train_set, valid_set, test_set, optimizer, **cfg.engine)
+
+    scheduler = None
+    if "scheduler" in cfg:
+        scheduler_cfg = dict(cfg.scheduler)
+        scheduler_cls = getattr(torch.optim.lr_scheduler, scheduler_cfg.pop("class"))
+        scheduler = scheduler_cls(optimizer, **scheduler_cfg)
+
+    solver = core.Engine(task, train_set, valid_set, test_set, optimizer,
+                         scheduler=scheduler, **cfg.engine)
 
     if "checkpoint" in cfg:
         solver.load(cfg.checkpoint)
