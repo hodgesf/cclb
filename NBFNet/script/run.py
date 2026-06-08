@@ -11,6 +11,8 @@ from torchdrug.utils import comm
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from nbfnet import dataset, layer, model, task, util
 
+logger = util.get_root_logger()
+
 
 def train_and_validate(cfg, solver):
     if cfg.get("checkpoint"):
@@ -23,9 +25,18 @@ def train_and_validate(cfg, solver):
     best_result = float("-inf")
     best_epoch = -1
 
+    # B4 hook. Opt-in. If cfg has lambda_l1_schedule (a list), set
+    # model.lambda_l1 to schedule[i] before each chunk. No-op otherwise.
+    schedule = cfg.get("lambda_l1_schedule", None)
+
     for i in range(0, cfg.train.num_epoch, step):
         kwargs = cfg.train.copy()
         kwargs["num_epoch"] = min(step, cfg.train.num_epoch - i)
+        if schedule is not None and i < len(schedule):
+            new_lambda = float(schedule[i])
+            solver.model.model.lambda_l1 = new_lambda
+            if comm.get_rank() == 0:
+                logger.warning("Set lambda_l1=%g for epoch %d" % (new_lambda, i))
         solver.model.split = "train"
         solver.train(**kwargs)
         solver.save("model_epoch_%d.pth" % solver.epoch)
