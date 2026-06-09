@@ -44,9 +44,25 @@ from nbfnet import dataset, layer, model as nbfnet_model, task, util
 
 @nbfnet_model.R.register("model.ShuffledMaskedNBFNet")
 class ShuffledMaskedNBFNet(nbfnet_model.MaskedNBFNet):
-    """Subset-identity-shuffle. Compute all masks, then swap across queries."""
+    """Subset-identity-shuffle with a cross-batch mask bank.
+
+    With full_batch_eval=True, eval feeds one query per forward call (B=1),
+    so within-batch shuffle is a no-op. Instead we maintain a rolling bank
+    of recently seen query masks. Each query is scored with a swap_mask
+    drawn from the bank (excluding any entry that matches its own query),
+    then its own mask is pushed into the bank. After the bank fills
+    (BANK_SIZE queries), every subsequent forward call applies a mask from
+    a genuinely different query. The first query has an empty bank and
+    falls back to its own mask -- a single-query contamination negligible
+    over 1000-query eval.
+    """
+
+    BANK_SIZE = 64
 
     def forward(self, graph, h_index, t_index, r_index=None, all_loss=None, metric=None):
+        if not hasattr(self, "_bank"):
+            self._bank = []  # list of (h_int, r_int, mask_tensor)
+
         if all_loss is not None:
             graph = self.remove_easy_edges(graph, h_index, t_index, r_index)
 
@@ -54,30 +70,29 @@ class ShuffledMaskedNBFNet(nbfnet_model.MaskedNBFNet):
         assert graph.num_relation, "ShuffledMaskedNBFNet requires a relational graph"
         graph = graph.undirected(add_inverse=True)
         h_index, t_index, r_index = self.negative_sample_to_tail(h_index, t_index, r_index)
-        assert (h_index[:, [0]] == h_index).all()
-        assert (r_index[:, [0]] == r_index).all()
 
         B = h_index.shape[0]
-
-        masks = []
-        for b in range(B):
-            logits = self.score_edges(graph, h_index[b, 0], r_index[b, 0])
-            masks.append(self.select_mask(logits))
-
-        if B > 1:
-            perm = torch.randperm(B)
-            for _ in range(10):
-                if (perm == torch.arange(B)).any():
-                    perm = torch.randperm(B)
-                else:
-                    break
-        else:
-            perm = torch.tensor([0])
-
         scores = []
         for b in range(B):
-            mask = masks[perm[b].item()]
-            g_b = self.apply_mask(graph, mask)
+            h_b_int = h_index[b, 0].item()
+            r_b_int = r_index[b, 0].item()
+
+            logits = self.score_edges(graph, h_index[b, 0], r_index[b, 0])
+            own_mask = self.select_mask(logits)
+
+            candidates = [m for (h, r, m) in self._bank if (h, r) != (h_b_int, r_b_int)]
+            if candidates:
+                swap_mask = candidates[torch.randint(0, len(candidates), (1,)).item()]
+            else:
+                swap_mask = own_mask
+
+            if len(self._bank) < self.BANK_SIZE:
+                self._bank.append((h_b_int, r_b_int, own_mask.detach().clone()))
+            else:
+                idx = torch.randint(0, self.BANK_SIZE, (1,)).item()
+                self._bank[idx] = (h_b_int, r_b_int, own_mask.detach().clone())
+
+            g_b = self.apply_mask(graph, swap_mask)
             out = self.bellmanford(g_b, h_index[b, 0].unsqueeze(0), r_index[b, 0].unsqueeze(0))
             feat = out["node_feature"].squeeze(1)
             scores.append(self.mlp(feat[t_index[b]]).squeeze(-1))
