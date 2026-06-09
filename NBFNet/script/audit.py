@@ -211,6 +211,10 @@ def main():
         logger.warning("=" * 70)
 
     dataset_obj = core.Configurable.load_config_dict(cfg.dataset)
+    # util.build_solver only injects num_entities when class == "MaskedNBFNet".
+    # Our audit subclasses (ShuffledMaskedNBFNet etc.) skip that path, so the
+    # EdgeSelector's nn.Embedding fails on num_entities=None. Inject manually.
+    cfg.task.model["num_entities"] = dataset_obj.num_entity
     solver = util.build_solver(cfg, dataset_obj)
     solver.load(args.checkpoint)
 
