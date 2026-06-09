@@ -182,11 +182,58 @@ class PermutedMaskedNBFNet(nbfnet_model.MaskedNBFNet):
         return torch.stack(scores, dim=0).view(shape)
 
 
+@nbfnet_model.R.register("model.OverlapMaskedNBFNet")
+class OverlapMaskedNBFNet(nbfnet_model.MaskedNBFNet):
+    """Baseline forward + capture sorted selected-edge indices per query.
+
+    After solver.evaluate(), the captured masks are available on the model
+    instance at self._dumped_masks (list of (h_int, r_int, sorted_indices_np)).
+    The main() entry point then computes pairwise Jaccard similarity to
+    quantify how query-specific the learned masks are.
+    """
+
+    MAX_DUMP = 200
+
+    def forward(self, graph, h_index, t_index, r_index=None, all_loss=None, metric=None):
+        if not hasattr(self, "_dumped_masks"):
+            self._dumped_masks = []
+
+        if all_loss is not None:
+            graph = self.remove_easy_edges(graph, h_index, t_index, r_index)
+
+        shape = h_index.shape
+        assert graph.num_relation, "OverlapMaskedNBFNet requires a relational graph"
+        graph = graph.undirected(add_inverse=True)
+        h_index, t_index, r_index = self.negative_sample_to_tail(h_index, t_index, r_index)
+
+        B = h_index.shape[0]
+        scores = []
+        for b in range(B):
+            logits = self.score_edges(graph, h_index[b, 0], r_index[b, 0])
+            mask = self.select_mask(logits)
+
+            if len(self._dumped_masks) < self.MAX_DUMP:
+                idx = mask.nonzero().squeeze(-1).cpu().numpy()
+                self._dumped_masks.append((
+                    h_index[b, 0].item(),
+                    r_index[b, 0].item(),
+                    idx,
+                ))
+
+            g_b = self.apply_mask(graph, mask)
+            out = self.bellmanford(g_b, h_index[b, 0].unsqueeze(0), r_index[b, 0].unsqueeze(0))
+            feat = out["node_feature"].squeeze(1)
+            scores.append(self.mlp(feat[t_index[b]]).squeeze(-1))
+
+        return torch.stack(scores, dim=0).view(shape)
+
+
 AUDIT_TO_CLASS = {
     "baseline": "MaskedNBFNet",
     "shuffle":  "ShuffledMaskedNBFNet",
     "random":   "RandomMaskedNBFNet",
     "permute":  "PermutedMaskedNBFNet",
+    "overlap":  "OverlapMaskedNBFNet",
 }
 
 
@@ -244,6 +291,37 @@ def main():
         logger.warning("AUDIT %s -- FINAL RESULTS" % args.audit.upper())
         logger.warning("VALID: %s" % pprint.pformat(dict(valid_metric)))
         logger.warning("TEST:  %s" % pprint.pformat(dict(test_metric)))
+        logger.warning("=" * 70)
+
+    if args.audit == "overlap" and comm.get_rank() == 0:
+        import numpy as np
+        dumped = solver.model.model._dumped_masks
+        n = len(dumped)
+        logger.warning("OVERLAP ANALYSIS: %d masks captured" % n)
+        if n >= 2:
+            sizes = np.array([d[2].size for d in dumped])
+            logger.warning("Mask size: min=%d, mean=%.1f, max=%d, std=%.1f" %
+                           (sizes.min(), sizes.mean(), sizes.max(), sizes.std()))
+            jaccards = []
+            for i in range(n):
+                for j in range(i + 1, n):
+                    ai, aj = dumped[i][2], dumped[j][2]
+                    inter = np.intersect1d(ai, aj, assume_unique=True).size
+                    union = ai.size + aj.size - inter
+                    if union > 0:
+                        jaccards.append(inter / union)
+            j = np.array(jaccards)
+            logger.warning("Pairwise Jaccard over %d pairs:" % j.size)
+            logger.warning("  mean   = %.4f" % j.mean())
+            logger.warning("  median = %.4f" % np.median(j))
+            logger.warning("  min    = %.4f" % j.min())
+            logger.warning("  max    = %.4f" % j.max())
+            logger.warning("  q25    = %.4f" % np.quantile(j, 0.25))
+            logger.warning("  q75    = %.4f" % np.quantile(j, 0.75))
+            out_path = os.path.join(os.path.dirname(args.checkpoint), "mask_overlap.npz")
+            np.savez(out_path, jaccards=j, sizes=sizes,
+                     queries=np.array([(h, r) for h, r, _ in dumped]))
+            logger.warning("Saved raw Jaccard array to %s" % out_path)
         logger.warning("=" * 70)
 
 
