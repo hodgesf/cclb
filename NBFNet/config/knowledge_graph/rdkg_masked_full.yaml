@@ -1,0 +1,52 @@
+# Full-eval config. Identical to rdkg_masked_eta1e4.yaml except fast_test is
+# removed so valid/test evaluation runs over the entire held-out split (33,862
+# valid + 33,880 test queries scored against all 855,997 entities).
+# Use only for the headline full-eval pass on a trained checkpoint via
+# audit.py --audit baseline. Wall time ~70 min on H200.
+
+output_dir: ~/experiments/
+
+dataset:
+  class: RDKG
+  path: /nfs/stak/users/hodgesf/data/splits_human
+
+task:
+  class: KnowledgeGraphCompletion
+  model:
+    class: MaskedNBFNet
+    selector_dim: 32
+    lambda_l1: 1.0e-8
+    audit: yes
+    input_dim: 32
+    hidden_dims: [32,32,32,32,32,32]
+    message_func: distmult
+    aggregate_func: sum
+    short_cut: yes
+    layer_norm: yes
+    dependent: no
+  criterion: bce
+  num_negative: 32
+  strict_negative: yes
+  adversarial_temperature: 1
+  sample_weight: no
+  full_batch_eval: yes
+
+optimizer:
+  class: Adam
+  lr: 5.0e-4
+
+scheduler:
+  class: CosineAnnealingLR
+  T_max: 10
+  eta_min: 1.0e-4
+
+engine:
+  gpus: {{ gpus }}
+  batch_size: 4
+  log_interval: 10
+
+train:
+  num_epoch: 10
+  batch_per_epoch: 500
+
+metric: mrr
