@@ -1,0 +1,3859 @@
+20:21:30   Config file: NBFNet/config/knowledge_graph/rdkg_masked_1e8.yaml
+20:21:30   {'dataset': {'class': 'RDKG',
+             'path': '/nfs/stak/users/hodgesf/data/splits_human'},
+ 'engine': {'batch_size': 4, 'gpus': [0], 'log_interval': 10},
+ 'fast_test': 1000,
+ 'metric': 'mrr',
+ 'optimizer': {'class': 'Adam', 'lr': 0.0005},
+ 'output_dir': '~/experiments/',
+ 'scheduler': {'T_max': 10, 'class': 'CosineAnnealingLR', 'eta_min': 1e-06},
+ 'task': {'adversarial_temperature': 1,
+          'class': 'KnowledgeGraphCompletion',
+          'criterion': 'bce',
+          'full_batch_eval': True,
+          'model': {'aggregate_func': 'sum',
+                    'audit': True,
+                    'class': 'MaskedNBFNet',
+                    'dependent': False,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'lambda_l1': 1e-08,
+                    'layer_norm': True,
+                    'message_func': 'distmult',
+                    'selector_dim': 32,
+                    'short_cut': True},
+          'num_negative': 32,
+          'sample_weight': False,
+          'strict_negative': True},
+ 'train': {'batch_per_epoch': 500, 'num_epoch': 10}}
+20:21:41   RDKG(
+  #entity: 855997
+  #relation: 25
+  #triplet: 2723762
+)
+20:21:41   #train: 275217, #valid: 33862, #test: 33880
+20:21:41   Quick test mode on. Only evaluate on 1000 samples for valid / test.
+20:21:41   Preprocess training set
+20:21:42   {'batch_size': 4,
+ 'class': 'core.Engine',
+ 'gpus': [0],
+ 'gradient_interval': 1,
+ 'log_interval': 10,
+ 'logger': 'logging',
+ 'num_worker': 0,
+ 'optimizer': {'amsgrad': False,
+               'betas': (0.9, 0.999),
+               'capturable': False,
+               'class': 'optim.Adam',
+               'differentiable': False,
+               'eps': 1e-08,
+               'foreach': None,
+               'fused': None,
+               'lr': 0.0005,
+               'maximize': False,
+               'weight_decay': 0},
+ 'scheduler': <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x14b263a09ae0>,
+ 'task': {'adversarial_temperature': 1,
+          'class': 'tasks.KnowledgeGraphCompletion',
+          'criterion': 'bce',
+          'fact_ratio': None,
+          'filtered_ranking': True,
+          'full_batch_eval': True,
+          'margin': 6,
+          'metric': ('mr', 'mrr', 'hits@1', 'hits@3', 'hits@10'),
+          'model': {'activation': 'relu',
+                    'aggregate_func': 'sum',
+                    'class': 'model.MaskedNBFNet',
+                    'concat_hidden': False,
+                    'dependent': False,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'layer_norm': True,
+                    'message_func': 'distmult',
+                    'num_beam': 10,
+                    'num_mlp_layer': 2,
+                    'num_relation': tensor(25),
+                    'path_topk': 10,
+                    'remove_one_hop': False,
+                    'short_cut': True,
+                    'symmetric': False},
+          'num_negative': 32,
+          'sample_weight': False,
+          'strict_negative': True},
+ 'test_set': {'class': 'dataset.Subset',
+              'dataset': {'class': 'dataset.Subset',
+                          'dataset': {'class': 'datasets.RDKG',
+                                      'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                                      'verbose': 1},
+                          'indices': range(2689882, 2723762)},
+              'indices': [2161, 19356, 20768, ..., 1911, 5265, 10364]},
+ 'train_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'datasets.RDKG',
+                           'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                           'verbose': 1},
+               'indices': [1522608, 1329446, 1384467, ..., 2474824, 2474825,
+                           2474826]},
+ 'valid_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'dataset.Subset',
+                           'dataset': {'class': 'datasets.RDKG',
+                                       'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                                       'verbose': 1},
+                           'indices': range(2656020, 2689882)},
+               'indices': [15505, 8898, 12623, ..., 21654, 29890, 24828]}}
+20:21:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:21:42   Epoch 0 begin
+20:22:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:22:00   binary cross entropy: 0.721343
+20:22:00   k_used_max: 5.44357e+06
+20:22:00   k_used_mean: 5.44357e+06
+20:22:00   k_used_min: 5.44357e+06
+20:22:00   logit_mean_avg: 0.0505042
+20:22:00   mask_density: 1
+20:25:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:25:00   binary cross entropy: 0.482939
+20:25:00   k_used_max: 4.39717e+06
+20:25:00   k_used_mean: 3.90288e+06
+20:25:00   k_used_min: 3.11527e+06
+20:25:00   logit_mean_avg: 0.00192029
+20:25:00   mask_density: 0.716971
+20:27:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:27:59   binary cross entropy: 0.298126
+20:27:59   k_used_max: 2.24965e+06
+20:27:59   k_used_mean: 1.89055e+06
+20:27:59   k_used_min: 1.40533e+06
+20:27:59   logit_mean_avg: -0.00207585
+20:27:59   mask_density: 0.3473
+20:30:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:30:59   binary cross entropy: 0.227013
+20:30:59   k_used_max: 2.52986e+06
+20:30:59   k_used_mean: 2.33648e+06
+20:30:59   k_used_min: 2.14439e+06
+20:30:59   logit_mean_avg: -0.00121782
+20:30:59   mask_density: 0.429218
+20:33:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:33:58   binary cross entropy: 0.317246
+20:33:58   k_used_max: 3.10617e+06
+20:33:58   k_used_mean: 2.67549e+06
+20:33:58   k_used_min: 2.40655e+06
+20:33:58   logit_mean_avg: 0.000274459
+20:33:58   mask_density: 0.491496
+20:36:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:36:57   binary cross entropy: 0.236675
+20:36:57   k_used_max: 779311
+20:36:57   k_used_mean: 472192
+20:36:57   k_used_min: 200342
+20:36:57   logit_mean_avg: -0.0140876
+20:36:57   mask_density: 0.0867431
+20:39:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:39:57   binary cross entropy: 0.54784
+20:39:57   k_used_max: 1.68177e+06
+20:39:57   k_used_mean: 1.4026e+06
+20:39:57   k_used_min: 884304
+20:39:57   logit_mean_avg: -0.00626764
+20:39:57   mask_density: 0.257662
+20:42:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:42:56   binary cross entropy: 0.470212
+20:42:56   k_used_max: 974078
+20:42:56   k_used_mean: 829003
+20:42:56   k_used_min: 679225
+20:42:56   logit_mean_avg: -0.0130521
+20:42:56   mask_density: 0.152291
+20:45:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:45:55   binary cross entropy: 0.314534
+20:45:55   k_used_max: 736506
+20:45:55   k_used_mean: 673777
+20:45:55   k_used_min: 574155
+20:45:55   logit_mean_avg: -0.0198951
+20:45:55   mask_density: 0.123775
+20:48:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:48:55   binary cross entropy: 0.207036
+20:48:55   k_used_max: 409085
+20:48:55   k_used_mean: 341607
+20:48:55   k_used_min: 277097
+20:48:55   logit_mean_avg: -0.0355611
+20:48:55   mask_density: 0.0627543
+20:51:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:51:54   binary cross entropy: 0.72751
+20:51:54   k_used_max: 177019
+20:51:54   k_used_mean: 75361.8
+20:51:54   k_used_min: 31
+20:51:54   logit_mean_avg: -0.0755545
+20:51:54   mask_density: 0.0138442
+20:54:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:54:53   binary cross entropy: 0.412794
+20:54:53   k_used_max: 663348
+20:54:53   k_used_mean: 543350
+20:54:53   k_used_min: 365622
+20:54:53   logit_mean_avg: -0.0777375
+20:54:53   mask_density: 0.099815
+20:57:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:57:53   binary cross entropy: 0.327219
+20:57:53   k_used_max: 678380
+20:57:53   k_used_mean: 676292
+20:57:53   k_used_min: 671398
+20:57:53   logit_mean_avg: -0.0679042
+20:57:53   mask_density: 0.124237
+21:00:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:00:52   binary cross entropy: 0.476679
+21:00:52   k_used_max: 680867
+21:00:52   k_used_mean: 679408
+21:00:52   k_used_min: 678587
+21:00:52   logit_mean_avg: -0.0622435
+21:00:52   mask_density: 0.124809
+21:03:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:03:51   binary cross entropy: 0.450752
+21:03:51   k_used_max: 679887
+21:03:51   k_used_mean: 678992
+21:03:51   k_used_min: 678191
+21:03:51   logit_mean_avg: -0.0662838
+21:03:51   mask_density: 0.124733
+21:06:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:06:50   binary cross entropy: 0.288596
+21:06:50   k_used_max: 679702
+21:06:50   k_used_mean: 672002
+21:06:50   k_used_min: 659821
+21:06:50   logit_mean_avg: -0.0789597
+21:06:50   mask_density: 0.123449
+21:09:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:09:50   binary cross entropy: 0.515437
+21:09:50   k_used_max: 680540
+21:09:50   k_used_mean: 612896
+21:09:50   k_used_min: 425963
+21:09:50   logit_mean_avg: -0.0920001
+21:09:50   mask_density: 0.112591
+21:12:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:12:49   binary cross entropy: 0.432853
+21:12:49   k_used_max: 680279
+21:12:49   k_used_mean: 676159
+21:12:49   k_used_min: 674143
+21:12:49   logit_mean_avg: -0.0860303
+21:12:49   mask_density: 0.124213
+21:15:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:15:48   binary cross entropy: 0.391313
+21:15:48   k_used_max: 728490
+21:15:48   k_used_mean: 683718
+21:15:48   k_used_min: 657959
+21:15:48   logit_mean_avg: -0.0893773
+21:15:48   mask_density: 0.125601
+21:18:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:18:47   binary cross entropy: 0.349738
+21:18:47   k_used_max: 674638
+21:18:47   k_used_mean: 672356
+21:18:47   k_used_min: 668792
+21:18:47   logit_mean_avg: -0.0996863
+21:18:47   mask_density: 0.123514
+21:21:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:21:47   binary cross entropy: 0.151482
+21:21:47   k_used_max: 679175
+21:21:47   k_used_mean: 671544
+21:21:47   k_used_min: 663603
+21:21:47   logit_mean_avg: -0.102712
+21:21:47   mask_density: 0.123365
+21:24:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:24:46   binary cross entropy: 0.316863
+21:24:46   k_used_max: 680085
+21:24:46   k_used_mean: 640749
+21:24:46   k_used_min: 530393
+21:24:46   logit_mean_avg: -0.111447
+21:24:46   mask_density: 0.117708
+21:27:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:27:45   binary cross entropy: 0.209222
+21:27:45   k_used_max: 681105
+21:27:45   k_used_mean: 668388
+21:27:45   k_used_min: 646916
+21:27:45   logit_mean_avg: -0.121409
+21:27:45   mask_density: 0.122785
+21:30:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:30:45   binary cross entropy: 0.463115
+21:30:45   k_used_max: 659754
+21:30:45   k_used_mean: 588166
+21:30:45   k_used_min: 475080
+21:30:45   logit_mean_avg: -0.154764
+21:30:45   mask_density: 0.108048
+21:33:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:33:44   binary cross entropy: 0.124506
+21:33:44   k_used_max: 592531
+21:33:44   k_used_mean: 470516
+21:33:44   k_used_min: 344351
+21:33:44   logit_mean_avg: -0.187697
+21:33:44   mask_density: 0.0864354
+21:36:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:36:44   binary cross entropy: 0.239251
+21:36:44   k_used_max: 610530
+21:36:44   k_used_mean: 533564
+21:36:44   k_used_min: 483541
+21:36:44   logit_mean_avg: -0.200725
+21:36:44   mask_density: 0.0980173
+21:39:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:39:43   binary cross entropy: 0.114129
+21:39:43   k_used_max: 647419
+21:39:43   k_used_mean: 612211
+21:39:43   k_used_min: 542258
+21:39:43   logit_mean_avg: -0.201816
+21:39:43   mask_density: 0.112465
+21:42:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:42:42   binary cross entropy: 0.0918382
+21:42:42   k_used_max: 636636
+21:42:42   k_used_mean: 594403
+21:42:42   k_used_min: 568047
+21:42:42   logit_mean_avg: -0.219513
+21:42:42   mask_density: 0.109194
+21:45:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:45:42   binary cross entropy: 0.62738
+21:45:42   k_used_max: 650919
+21:45:42   k_used_mean: 616399
+21:45:42   k_used_min: 562337
+21:45:42   logit_mean_avg: -0.232974
+21:45:42   mask_density: 0.113235
+21:48:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:48:41   binary cross entropy: 0.436628
+21:48:41   k_used_max: 675541
+21:48:41   k_used_mean: 663826
+21:48:41   k_used_min: 648656
+21:48:41   logit_mean_avg: -0.229179
+21:48:41   mask_density: 0.121947
+21:51:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:51:40   binary cross entropy: 0.711859
+21:51:40   k_used_max: 680328
+21:51:40   k_used_mean: 676086
+21:51:40   k_used_min: 670570
+21:51:40   logit_mean_avg: -0.22431
+21:51:40   mask_density: 0.124199
+21:54:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:54:40   binary cross entropy: 0.105071
+21:54:40   k_used_max: 683317
+21:54:40   k_used_mean: 680384
+21:54:40   k_used_min: 676620
+21:54:40   logit_mean_avg: -0.214474
+21:54:40   mask_density: 0.124989
+21:57:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:57:39   binary cross entropy: 0.0944945
+21:57:39   k_used_max: 687544
+21:57:39   k_used_mean: 682626
+21:57:39   k_used_min: 677155
+21:57:39   logit_mean_avg: -0.216909
+21:57:39   mask_density: 0.125401
+22:00:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:00:38   binary cross entropy: 0.313124
+22:00:38   k_used_max: 686248
+22:00:38   k_used_mean: 672160
+22:00:38   k_used_min: 638191
+22:00:38   logit_mean_avg: -0.238679
+22:00:38   mask_density: 0.123478
+22:03:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:03:37   binary cross entropy: 0.0741242
+22:03:37   k_used_max: 675581
+22:03:37   k_used_mean: 663218
+22:03:37   k_used_min: 636508
+22:03:37   logit_mean_avg: -0.276655
+22:03:37   mask_density: 0.121835
+22:06:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:06:37   binary cross entropy: 0.0579909
+22:06:37   k_used_max: 664556
+22:06:37   k_used_mean: 636921
+22:06:37   k_used_min: 584092
+22:06:37   logit_mean_avg: -0.320485
+22:06:37   mask_density: 0.117004
+22:09:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:09:36   binary cross entropy: 0.486744
+22:09:36   k_used_max: 664615
+22:09:36   k_used_mean: 635709
+22:09:36   k_used_min: 610812
+22:09:36   logit_mean_avg: -0.350379
+22:09:36   mask_density: 0.116782
+22:12:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:12:35   binary cross entropy: 0.0667312
+22:12:35   k_used_max: 624829
+22:12:35   k_used_mean: 614004
+22:12:35   k_used_min: 595788
+22:12:35   logit_mean_avg: -0.392597
+22:12:35   mask_density: 0.112795
+22:15:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:15:34   binary cross entropy: 0.0627398
+22:15:34   k_used_max: 581137
+22:15:34   k_used_mean: 552775
+22:15:34   k_used_min: 502943
+22:15:34   logit_mean_avg: -0.446565
+22:15:34   mask_density: 0.101547
+22:18:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:18:34   binary cross entropy: 0.101124
+22:18:34   k_used_max: 579281
+22:18:34   k_used_mean: 532427
+22:18:34   k_used_min: 420215
+22:18:34   logit_mean_avg: -0.498746
+22:18:34   mask_density: 0.0978086
+22:21:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:21:33   binary cross entropy: 0.0770476
+22:21:33   k_used_max: 593771
+22:21:33   k_used_mean: 547257
+22:21:33   k_used_min: 502499
+22:21:33   logit_mean_avg: -0.565484
+22:21:33   mask_density: 0.100533
+22:24:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:24:32   binary cross entropy: 0.104148
+22:24:32   k_used_max: 495096
+22:24:32   k_used_mean: 443302
+22:24:32   k_used_min: 403198
+22:24:32   logit_mean_avg: -0.660379
+22:24:32   mask_density: 0.0814361
+22:27:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:27:32   binary cross entropy: 0.322409
+22:27:32   k_used_max: 606879
+22:27:32   k_used_mean: 515189
+22:27:32   k_used_min: 431441
+22:27:32   logit_mean_avg: -0.704845
+22:27:32   mask_density: 0.0946418
+22:30:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:30:31   binary cross entropy: 0.0527841
+22:30:31   k_used_max: 563889
+22:30:31   k_used_mean: 505876
+22:30:31   k_used_min: 471111
+22:30:31   logit_mean_avg: -0.787822
+22:30:31   mask_density: 0.0929311
+22:33:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:33:30   binary cross entropy: 0.675457
+22:33:30   k_used_max: 596687
+22:33:30   k_used_mean: 512774
+22:33:30   k_used_min: 466220
+22:33:30   logit_mean_avg: -0.877335
+22:33:30   mask_density: 0.0941982
+22:36:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:36:30   binary cross entropy: 0.50112
+22:36:30   k_used_max: 571842
+22:36:30   k_used_mean: 430977
+22:36:30   k_used_min: 167571
+22:36:30   logit_mean_avg: -1.00581
+22:36:30   mask_density: 0.0791719
+22:39:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:39:29   binary cross entropy: 0.194493
+22:39:29   k_used_max: 634149
+22:39:29   k_used_mean: 542719
+22:39:29   k_used_min: 441863
+22:39:29   logit_mean_avg: -1.06331
+22:39:29   mask_density: 0.0996993
+22:42:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:42:28   binary cross entropy: 0.322291
+22:42:28   k_used_max: 616398
+22:42:28   k_used_mean: 556631
+22:42:28   k_used_min: 455530
+22:42:28   logit_mean_avg: -1.13498
+22:42:28   mask_density: 0.102255
+22:45:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:45:28   binary cross entropy: 0.409277
+22:45:28   k_used_max: 586114
+22:45:28   k_used_mean: 529980
+22:45:28   k_used_min: 481713
+22:45:28   logit_mean_avg: -1.2477
+22:45:28   mask_density: 0.097359
+22:48:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:48:27   binary cross entropy: 0.392987
+22:48:27   k_used_max: 559960
+22:48:27   k_used_mean: 510233
+22:48:27   k_used_min: 417751
+22:48:27   logit_mean_avg: -1.35316
+22:48:27   mask_density: 0.0937313
+22:51:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:51:08   Epoch 0 end
+22:51:08   duration: 2.49 hours
+22:51:08   speed: 0.06 batch / sec
+22:51:08   ETA: 0.00 secs
+22:51:08   max GPU memory: 96518.6 MiB
+22:51:08   ------------------------------
+22:51:08   average binary cross entropy: 0.319874
+22:51:08   average k_used_max: 898707
+22:51:08   average k_used_mean: 798627
+22:51:08   average k_used_min: 693265
+22:51:08   average logit_mean_avg: -0.319206
+22:51:08   average mask_density: 0.14671
+22:51:08   Save checkpoint to model_epoch_1.pth
+22:51:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:51:13   Evaluate on valid
+22:54:23   ------------------------------
+22:54:23   hits@1: 0.12
+22:54:23   hits@10: 0.2195
+22:54:23   hits@3: 0.1635
+22:54:23   mr: 26394.7
+22:54:23   mrr: 0.155655
+22:54:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:54:23   Epoch 1 begin
+22:54:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:54:41   binary cross entropy: 0.169637
+22:54:41   k_used_max: 517818
+22:54:41   k_used_mean: 473658
+22:54:41   k_used_min: 352385
+22:54:41   logit_mean_avg: -1.47388
+22:54:41   mask_density: 0.0870126
+22:57:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:57:40   binary cross entropy: 0.113795
+22:57:40   k_used_max: 611798
+22:57:40   k_used_mean: 600670
+22:57:40   k_used_min: 575666
+22:57:40   logit_mean_avg: -1.42067
+22:57:40   mask_density: 0.110345
+23:00:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:00:40   binary cross entropy: 0.106547
+23:00:40   k_used_max: 651915
+23:00:40   k_used_mean: 636726
+23:00:40   k_used_min: 621150
+23:00:40   logit_mean_avg: -1.41108
+23:00:40   mask_density: 0.116969
+23:03:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:03:39   binary cross entropy: 0.161072
+23:03:39   k_used_max: 654238
+23:03:39   k_used_mean: 641920
+23:03:39   k_used_min: 615753
+23:03:39   logit_mean_avg: -1.44736
+23:03:39   mask_density: 0.117923
+23:06:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:06:38   binary cross entropy: 0.158714
+23:06:38   k_used_max: 650720
+23:06:38   k_used_mean: 643304
+23:06:38   k_used_min: 635500
+23:06:38   logit_mean_avg: -1.50769
+23:06:38   mask_density: 0.118177
+23:09:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:09:37   binary cross entropy: 0.0935438
+23:09:37   k_used_max: 646560
+23:09:37   k_used_mean: 634334
+23:09:37   k_used_min: 623103
+23:09:37   logit_mean_avg: -1.57484
+23:09:37   mask_density: 0.116529
+23:12:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:12:37   binary cross entropy: 0.205168
+23:12:37   k_used_max: 636355
+23:12:37   k_used_mean: 623654
+23:12:37   k_used_min: 615103
+23:12:37   logit_mean_avg: -1.64943
+23:12:37   mask_density: 0.114567
+23:15:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:15:36   binary cross entropy: 0.133971
+23:15:36   k_used_max: 602602
+23:15:36   k_used_mean: 589698
+23:15:36   k_used_min: 563577
+23:15:36   logit_mean_avg: -1.77803
+23:15:36   mask_density: 0.10833
+23:18:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:18:35   binary cross entropy: 0.0882117
+23:18:35   k_used_max: 604461
+23:18:35   k_used_mean: 575124
+23:18:35   k_used_min: 531967
+23:18:35   logit_mean_avg: -1.85803
+23:18:35   mask_density: 0.105652
+23:21:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:21:34   binary cross entropy: 0.643146
+23:21:34   k_used_max: 608607
+23:21:34   k_used_mean: 589427
+23:21:34   k_used_min: 554217
+23:21:34   logit_mean_avg: -1.88603
+23:21:34   mask_density: 0.10828
+23:24:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:24:34   binary cross entropy: 0.275581
+23:24:34   k_used_max: 632620
+23:24:34   k_used_mean: 631454
+23:24:34   k_used_min: 628876
+23:24:34   logit_mean_avg: -1.78632
+23:24:34   mask_density: 0.116
+23:27:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:27:33   binary cross entropy: 0.122133
+23:27:33   k_used_max: 646646
+23:27:33   k_used_mean: 632966
+23:27:33   k_used_min: 608714
+23:27:33   logit_mean_avg: -1.79542
+23:27:33   mask_density: 0.116278
+23:30:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:30:32   binary cross entropy: 0.096686
+23:30:32   k_used_max: 654204
+23:30:32   k_used_mean: 645224
+23:30:32   k_used_min: 625547
+23:30:32   logit_mean_avg: -1.78177
+23:30:32   mask_density: 0.11853
+23:33:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:33:31   binary cross entropy: 0.374296
+23:33:31   k_used_max: 652036
+23:33:31   k_used_mean: 645778
+23:33:31   k_used_min: 639530
+23:33:31   logit_mean_avg: -1.81626
+23:33:31   mask_density: 0.118632
+23:36:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:36:31   binary cross entropy: 0.178588
+23:36:31   k_used_max: 640742
+23:36:31   k_used_mean: 630462
+23:36:31   k_used_min: 606909
+23:36:31   logit_mean_avg: -1.89647
+23:36:31   mask_density: 0.115818
+23:39:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:39:30   binary cross entropy: 0.221565
+23:39:30   k_used_max: 632640
+23:39:30   k_used_mean: 626644
+23:39:30   k_used_min: 621221
+23:39:30   logit_mean_avg: -1.97283
+23:39:30   mask_density: 0.115116
+23:42:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:42:29   binary cross entropy: 0.0887241
+23:42:29   k_used_max: 641356
+23:42:29   k_used_mean: 626853
+23:42:29   k_used_min: 609060
+23:42:29   logit_mean_avg: -2.01098
+23:42:29   mask_density: 0.115155
+23:45:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:45:29   binary cross entropy: 0.567738
+23:45:29   k_used_max: 649479
+23:45:29   k_used_mean: 639338
+23:45:29   k_used_min: 629655
+23:45:29   logit_mean_avg: -2.01858
+23:45:29   mask_density: 0.117449
+23:48:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:48:28   binary cross entropy: 0.367796
+23:48:28   k_used_max: 657551
+23:48:28   k_used_mean: 653111
+23:48:28   k_used_min: 649134
+23:48:28   logit_mean_avg: -2.03091
+23:48:28   mask_density: 0.119979
+23:51:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:51:27   binary cross entropy: 0.715353
+23:51:27   k_used_max: 666343
+23:51:27   k_used_mean: 661172
+23:51:27   k_used_min: 658265
+23:51:27   logit_mean_avg: -2.02127
+23:51:27   mask_density: 0.121459
+23:54:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:54:26   binary cross entropy: 0.441177
+23:54:26   k_used_max: 666999
+23:54:26   k_used_mean: 657872
+23:54:26   k_used_min: 648193
+23:54:26   logit_mean_avg: -2.06986
+23:54:26   mask_density: 0.120853
+23:57:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+23:57:26   binary cross entropy: 0.184951
+23:57:26   k_used_max: 654037
+23:57:26   k_used_mean: 649560
+23:57:26   k_used_min: 640536
+23:57:26   logit_mean_avg: -2.16678
+23:57:26   mask_density: 0.119326
+00:00:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:00:25   binary cross entropy: 0.138503
+00:00:25   k_used_max: 653778
+00:00:25   k_used_mean: 651688
+00:00:25   k_used_min: 647762
+00:00:25   logit_mean_avg: -2.19608
+00:00:25   mask_density: 0.119717
+00:03:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:03:25   binary cross entropy: 0.122754
+00:03:25   k_used_max: 647137
+00:03:25   k_used_mean: 644738
+00:03:25   k_used_min: 641451
+00:03:25   logit_mean_avg: -2.27255
+00:03:25   mask_density: 0.118441
+00:06:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:06:24   binary cross entropy: 0.0677353
+00:06:24   k_used_max: 628980
+00:06:24   k_used_mean: 626913
+00:06:24   k_used_min: 623973
+00:06:24   logit_mean_avg: -2.39842
+00:06:24   mask_density: 0.115166
+00:09:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:09:23   binary cross entropy: 0.391888
+00:09:23   k_used_max: 621878
+00:09:23   k_used_mean: 617099
+00:09:23   k_used_min: 607997
+00:09:23   logit_mean_avg: -2.46684
+00:09:23   mask_density: 0.113363
+00:12:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:12:23   binary cross entropy: 0.132601
+00:12:23   k_used_max: 619554
+00:12:23   k_used_mean: 614361
+00:12:23   k_used_min: 606882
+00:12:23   logit_mean_avg: -2.52567
+00:12:23   mask_density: 0.11286
+00:15:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:15:22   binary cross entropy: 0.228
+00:15:22   k_used_max: 625740
+00:15:22   k_used_mean: 620264
+00:15:22   k_used_min: 613026
+00:15:22   logit_mean_avg: -2.61006
+00:15:22   mask_density: 0.113944
+00:18:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:18:21   binary cross entropy: 0.311896
+00:18:21   k_used_max: 634590
+00:18:21   k_used_mean: 627659
+00:18:21   k_used_min: 619461
+00:18:21   logit_mean_avg: -2.71441
+00:18:21   mask_density: 0.115303
+00:21:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:21:20   binary cross entropy: 0.0795357
+00:21:20   k_used_max: 632542
+00:21:20   k_used_mean: 624282
+00:21:20   k_used_min: 618249
+00:21:20   logit_mean_avg: -2.80502
+00:21:20   mask_density: 0.114683
+00:24:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:24:19   binary cross entropy: 0.0838162
+00:24:19   k_used_max: 631126
+00:24:19   k_used_mean: 624656
+00:24:19   k_used_min: 611752
+00:24:19   logit_mean_avg: -2.86551
+00:24:19   mask_density: 0.114751
+00:27:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:27:19   binary cross entropy: 0.139371
+00:27:19   k_used_max: 632021
+00:27:19   k_used_mean: 629204
+00:27:19   k_used_min: 623856
+00:27:19   logit_mean_avg: -2.89115
+00:27:19   mask_density: 0.115587
+00:30:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:30:18   binary cross entropy: 0.681517
+00:30:18   k_used_max: 627948
+00:30:18   k_used_mean: 621304
+00:30:18   k_used_min: 615523
+00:30:18   logit_mean_avg: -2.97319
+00:30:18   mask_density: 0.114135
+00:33:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:33:17   binary cross entropy: 0.203203
+00:33:17   k_used_max: 615345
+00:33:17   k_used_mean: 610801
+00:33:17   k_used_min: 602931
+00:33:17   logit_mean_avg: -3.01227
+00:33:17   mask_density: 0.112206
+00:36:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:36:16   binary cross entropy: 0.429833
+00:36:16   k_used_max: 587773
+00:36:16   k_used_mean: 581824
+00:36:16   k_used_min: 576468
+00:36:16   logit_mean_avg: -3.10646
+00:36:16   mask_density: 0.106883
+00:39:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:39:16   binary cross entropy: 0.0590007
+00:39:16   k_used_max: 568620
+00:39:16   k_used_mean: 557559
+00:39:16   k_used_min: 540951
+00:39:16   logit_mean_avg: -3.20755
+00:39:16   mask_density: 0.102426
+00:42:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:42:15   binary cross entropy: 0.157901
+00:42:15   k_used_max: 604590
+00:42:15   k_used_mean: 597900
+00:42:15   k_used_min: 589114
+00:42:15   logit_mean_avg: -3.15598
+00:42:15   mask_density: 0.109836
+00:45:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:45:14   binary cross entropy: 0.0404343
+00:45:14   k_used_max: 649754
+00:45:14   k_used_mean: 646145
+00:45:14   k_used_min: 641817
+00:45:14   logit_mean_avg: -3.07377
+00:45:14   mask_density: 0.118699
+00:48:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:48:14   binary cross entropy: 0.0954016
+00:48:14   k_used_max: 660534
+00:48:14   k_used_mean: 656978
+00:48:14   k_used_min: 651689
+00:48:14   logit_mean_avg: -3.07549
+00:48:14   mask_density: 0.120689
+00:51:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:51:13   binary cross entropy: 0.0563628
+00:51:13   k_used_max: 654985
+00:51:13   k_used_mean: 653444
+00:51:13   k_used_min: 651214
+00:51:13   logit_mean_avg: -3.14335
+00:51:13   mask_density: 0.12004
+00:54:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:54:12   binary cross entropy: 0.667429
+00:54:12   k_used_max: 659200
+00:54:12   k_used_mean: 655503
+00:54:12   k_used_min: 652272
+00:54:12   logit_mean_avg: -3.17999
+00:54:12   mask_density: 0.120418
+00:57:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:57:12   binary cross entropy: 0.0431472
+00:57:12   k_used_max: 651256
+00:57:12   k_used_mean: 649103
+00:57:12   k_used_min: 647928
+00:57:12   logit_mean_avg: -3.27341
+00:57:12   mask_density: 0.119242
+01:00:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:00:11   binary cross entropy: 0.505125
+01:00:11   k_used_max: 654995
+01:00:11   k_used_mean: 642315
+01:00:11   k_used_min: 632393
+01:00:11   logit_mean_avg: -3.34399
+01:00:11   mask_density: 0.117995
+01:03:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:03:10   binary cross entropy: 0.0719053
+01:03:10   k_used_max: 648147
+01:03:10   k_used_mean: 642170
+01:03:10   k_used_min: 636695
+01:03:10   logit_mean_avg: -3.31298
+01:03:10   mask_density: 0.117969
+01:06:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:06:10   binary cross entropy: 0.262103
+01:06:10   k_used_max: 652493
+01:06:10   k_used_mean: 650980
+01:06:10   k_used_min: 649539
+01:06:10   logit_mean_avg: -3.35592
+01:06:10   mask_density: 0.119587
+01:09:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:09:09   binary cross entropy: 0.1989
+01:09:09   k_used_max: 662286
+01:09:09   k_used_mean: 657202
+01:09:09   k_used_min: 651623
+01:09:09   logit_mean_avg: -3.36136
+01:09:09   mask_density: 0.12073
+01:12:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:12:09   binary cross entropy: 0.39894
+01:12:09   k_used_max: 662319
+01:12:09   k_used_mean: 659036
+01:12:09   k_used_min: 656941
+01:12:09   logit_mean_avg: -3.36549
+01:12:09   mask_density: 0.121067
+01:15:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:15:08   binary cross entropy: 0.388281
+01:15:08   k_used_max: 659125
+01:15:08   k_used_mean: 656710
+01:15:08   k_used_min: 654278
+01:15:08   logit_mean_avg: -3.42715
+01:15:08   mask_density: 0.12064
+01:18:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:18:07   binary cross entropy: 0.277632
+01:18:07   k_used_max: 656526
+01:18:07   k_used_mean: 652676
+01:18:07   k_used_min: 646786
+01:18:07   logit_mean_avg: -3.50724
+01:18:07   mask_density: 0.119899
+01:21:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:21:06   binary cross entropy: 0.376072
+01:21:06   k_used_max: 650852
+01:21:06   k_used_mean: 648025
+01:21:06   k_used_min: 646070
+01:21:06   logit_mean_avg: -3.61969
+01:21:06   mask_density: 0.119044
+01:23:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:23:47   Epoch 1 end
+01:23:47   duration: 2.54 hours
+01:23:47   speed: 0.05 batch / sec
+01:23:47   ETA: 0.00 secs
+01:23:47   max GPU memory: 96674.9 MiB
+01:23:47   ------------------------------
+01:23:47   average binary cross entropy: 0.24082
+01:23:47   average k_used_max: 638598
+01:23:47   average k_used_mean: 629746
+01:23:47   average k_used_min: 617674
+01:23:47   average logit_mean_avg: -2.49167
+01:23:47   average mask_density: 0.115686
+01:23:47   Save checkpoint to model_epoch_2.pth
+01:23:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:23:52   Evaluate on valid
+01:26:59   ------------------------------
+01:26:59   hits@1: 0.1655
+01:26:59   hits@10: 0.313
+01:26:59   hits@3: 0.2315
+01:26:59   mr: 3453.64
+01:26:59   mrr: 0.217631
+01:26:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:26:59   Epoch 2 begin
+01:27:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:27:17   binary cross entropy: 0.231056
+01:27:17   k_used_max: 655097
+01:27:17   k_used_mean: 647424
+01:27:17   k_used_min: 643154
+01:27:17   logit_mean_avg: -3.68141
+01:27:17   mask_density: 0.118934
+01:30:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:30:17   binary cross entropy: 0.0622956
+01:30:17   k_used_max: 631426
+01:30:17   k_used_mean: 625072
+01:30:17   k_used_min: 618172
+01:30:17   logit_mean_avg: -4.02189
+01:30:17   mask_density: 0.114828
+01:33:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:33:16   binary cross entropy: 0.597089
+01:33:16   k_used_max: 617009
+01:33:16   k_used_mean: 613775
+01:33:16   k_used_min: 610069
+01:33:16   logit_mean_avg: -4.19012
+01:33:16   mask_density: 0.112752
+01:36:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:36:15   binary cross entropy: 0.0739305
+01:36:15   k_used_max: 609537
+01:36:15   k_used_mean: 605898
+01:36:15   k_used_min: 603049
+01:36:15   logit_mean_avg: -4.2821
+01:36:15   mask_density: 0.111306
+01:39:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:39:14   binary cross entropy: 0.280103
+01:39:14   k_used_max: 598795
+01:39:14   k_used_mean: 592729
+01:39:14   k_used_min: 587036
+01:39:14   logit_mean_avg: -4.38501
+01:39:14   mask_density: 0.108886
+01:42:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:42:14   binary cross entropy: 0.705065
+01:42:14   k_used_max: 597408
+01:42:14   k_used_mean: 594297
+01:42:14   k_used_min: 590249
+01:42:14   logit_mean_avg: -4.44709
+01:42:14   mask_density: 0.109174
+01:45:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:45:13   binary cross entropy: 0.367253
+01:45:13   k_used_max: 595607
+01:45:13   k_used_mean: 591290
+01:45:13   k_used_min: 586366
+01:45:13   logit_mean_avg: -4.48678
+01:45:13   mask_density: 0.108622
+01:48:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:48:12   binary cross entropy: 0.267329
+01:48:12   k_used_max: 588939
+01:48:12   k_used_mean: 582972
+01:48:12   k_used_min: 572927
+01:48:12   logit_mean_avg: -4.5517
+01:48:12   mask_density: 0.107094
+01:51:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:51:11   binary cross entropy: 0.458714
+01:51:11   k_used_max: 571659
+01:51:11   k_used_mean: 566889
+01:51:11   k_used_min: 560626
+01:51:11   logit_mean_avg: -4.65518
+01:51:11   mask_density: 0.104139
+01:54:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:54:11   binary cross entropy: 0.186015
+01:54:11   k_used_max: 569634
+01:54:11   k_used_mean: 562755
+01:54:11   k_used_min: 552502
+01:54:11   logit_mean_avg: -4.70187
+01:54:11   mask_density: 0.10338
+01:57:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+01:57:10   binary cross entropy: 0.0913178
+01:57:10   k_used_max: 575801
+01:57:10   k_used_mean: 572064
+01:57:10   k_used_min: 566263
+01:57:10   logit_mean_avg: -4.82534
+01:57:10   mask_density: 0.10509
+02:00:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:00:09   binary cross entropy: 0.0481707
+02:00:09   k_used_max: 582685
+02:00:09   k_used_mean: 574844
+02:00:09   k_used_min: 565354
+02:00:09   logit_mean_avg: -4.89547
+02:00:09   mask_density: 0.105601
+02:03:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:03:08   binary cross entropy: 0.332518
+02:03:08   k_used_max: 597064
+02:03:08   k_used_mean: 594802
+02:03:08   k_used_min: 592636
+02:03:08   logit_mean_avg: -4.90437
+02:03:08   mask_density: 0.109267
+02:06:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:06:07   binary cross entropy: 0.170309
+02:06:07   k_used_max: 618076
+02:06:07   k_used_mean: 609791
+02:06:07   k_used_min: 601820
+02:06:07   logit_mean_avg: -4.88718
+02:06:07   mask_density: 0.11202
+02:09:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:09:07   binary cross entropy: 0.12138
+02:09:07   k_used_max: 613263
+02:09:07   k_used_mean: 607280
+02:09:07   k_used_min: 603948
+02:09:07   logit_mean_avg: -4.94228
+02:09:07   mask_density: 0.111559
+02:12:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:12:06   binary cross entropy: 0.104429
+02:12:06   k_used_max: 605378
+02:12:06   k_used_mean: 603784
+02:12:06   k_used_min: 601824
+02:12:06   logit_mean_avg: -4.98646
+02:12:06   mask_density: 0.110917
+02:15:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:15:05   binary cross entropy: 0.127742
+02:15:05   k_used_max: 619425
+02:15:05   k_used_mean: 607689
+02:15:05   k_used_min: 602166
+02:15:05   logit_mean_avg: -4.98026
+02:15:05   mask_density: 0.111634
+02:18:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:18:04   binary cross entropy: 0.173452
+02:18:04   k_used_max: 618600
+02:18:04   k_used_mean: 610539
+02:18:04   k_used_min: 601948
+02:18:04   logit_mean_avg: -4.86166
+02:18:04   mask_density: 0.112158
+02:21:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:21:04   binary cross entropy: 0.072529
+02:21:04   k_used_max: 618169
+02:21:04   k_used_mean: 610402
+02:21:04   k_used_min: 605395
+02:21:04   logit_mean_avg: -4.85194
+02:21:04   mask_density: 0.112133
+02:24:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:24:03   binary cross entropy: 0.232786
+02:24:03   k_used_max: 616063
+02:24:03   k_used_mean: 610863
+02:24:03   k_used_min: 607127
+02:24:03   logit_mean_avg: -4.85448
+02:24:03   mask_density: 0.112218
+02:27:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:27:02   binary cross entropy: 0.664561
+02:27:02   k_used_max: 619571
+02:27:02   k_used_mean: 611932
+02:27:02   k_used_min: 604682
+02:27:02   logit_mean_avg: -4.89091
+02:27:02   mask_density: 0.112414
+02:30:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:30:02   binary cross entropy: 0.499022
+02:30:02   k_used_max: 621917
+02:30:02   k_used_mean: 613542
+02:30:02   k_used_min: 601705
+02:30:02   logit_mean_avg: -4.89673
+02:30:02   mask_density: 0.11271
+02:33:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:33:01   binary cross entropy: 0.0687229
+02:33:01   k_used_max: 605245
+02:33:01   k_used_mean: 601644
+02:33:01   k_used_min: 595927
+02:33:01   logit_mean_avg: -4.96459
+02:33:01   mask_density: 0.110524
+02:36:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:36:00   binary cross entropy: 0.126616
+02:36:00   k_used_max: 610237
+02:36:00   k_used_mean: 606359
+02:36:00   k_used_min: 598257
+02:36:00   logit_mean_avg: -4.94965
+02:36:00   mask_density: 0.11139
+02:39:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:39:00   binary cross entropy: 0.283476
+02:39:00   k_used_max: 613729
+02:39:00   k_used_mean: 607436
+02:39:00   k_used_min: 604459
+02:39:00   logit_mean_avg: -4.96306
+02:39:00   mask_density: 0.111588
+02:41:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:41:59   binary cross entropy: 0.464482
+02:41:59   k_used_max: 617834
+02:41:59   k_used_mean: 609752
+02:41:59   k_used_min: 602049
+02:41:59   logit_mean_avg: -4.98845
+02:41:59   mask_density: 0.112013
+02:44:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:44:58   binary cross entropy: 0.129937
+02:44:58   k_used_max: 615532
+02:44:58   k_used_mean: 599252
+02:44:58   k_used_min: 587109
+02:44:58   logit_mean_avg: -5.06193
+02:44:58   mask_density: 0.110084
+02:47:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:47:58   binary cross entropy: 0.229992
+02:47:58   k_used_max: 578783
+02:47:58   k_used_mean: 574676
+02:47:58   k_used_min: 570727
+02:47:58   logit_mean_avg: -5.64552
+02:47:58   mask_density: 0.10557
+02:50:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:50:57   binary cross entropy: 0.0947978
+02:50:57   k_used_max: 566153
+02:50:57   k_used_mean: 562489
+02:50:57   k_used_min: 557012
+02:50:57   logit_mean_avg: -5.95272
+02:50:57   mask_density: 0.103331
+02:53:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:53:56   binary cross entropy: 0.431553
+02:53:56   k_used_max: 569257
+02:53:56   k_used_mean: 564224
+02:53:56   k_used_min: 560355
+02:53:56   logit_mean_avg: -6.09618
+02:53:56   mask_density: 0.10365
+02:56:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:56:56   binary cross entropy: 0.215152
+02:56:56   k_used_max: 614561
+02:56:56   k_used_mean: 610520
+02:56:56   k_used_min: 607990
+02:56:56   logit_mean_avg: -6.01953
+02:56:56   mask_density: 0.112154
+02:59:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:59:55   binary cross entropy: 0.301322
+02:59:55   k_used_max: 636082
+02:59:55   k_used_mean: 632060
+02:59:55   k_used_min: 628144
+02:59:55   logit_mean_avg: -5.92266
+02:59:55   mask_density: 0.116112
+03:02:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:02:54   binary cross entropy: 0.0847043
+03:02:54   k_used_max: 638803
+03:02:54   k_used_mean: 635754
+03:02:54   k_used_min: 633825
+03:02:54   logit_mean_avg: -5.95257
+03:02:54   mask_density: 0.11679
+03:05:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:05:54   binary cross entropy: 0.0833352
+03:05:54   k_used_max: 640639
+03:05:54   k_used_mean: 636972
+03:05:54   k_used_min: 633417
+03:05:54   logit_mean_avg: -5.94296
+03:05:54   mask_density: 0.117014
+03:08:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:08:53   binary cross entropy: 0.484523
+03:08:53   k_used_max: 634330
+03:08:53   k_used_mean: 634134
+03:08:53   k_used_min: 633816
+03:08:53   logit_mean_avg: -6.01078
+03:08:53   mask_density: 0.116492
+03:11:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:11:52   binary cross entropy: 0.0677279
+03:11:52   k_used_max: 626206
+03:11:52   k_used_mean: 624501
+03:11:52   k_used_min: 622401
+03:11:52   logit_mean_avg: -6.19413
+03:11:52   mask_density: 0.114723
+03:14:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:14:51   binary cross entropy: 0.225946
+03:14:51   k_used_max: 624309
+03:14:51   k_used_mean: 616047
+03:14:51   k_used_min: 604548
+03:14:51   logit_mean_avg: -6.30504
+03:14:51   mask_density: 0.11317
+03:17:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:17:51   binary cross entropy: 0.450101
+03:17:51   k_used_max: 634149
+03:17:51   k_used_mean: 619042
+03:17:51   k_used_min: 607482
+03:17:51   logit_mean_avg: -6.3019
+03:17:51   mask_density: 0.11372
+03:20:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:20:50   binary cross entropy: 0.449777
+03:20:50   k_used_max: 628547
+03:20:50   k_used_mean: 622263
+03:20:50   k_used_min: 616534
+03:20:50   logit_mean_avg: -6.28345
+03:20:50   mask_density: 0.114312
+03:23:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:23:49   binary cross entropy: 0.0852365
+03:23:49   k_used_max: 623414
+03:23:49   k_used_mean: 620496
+03:23:49   k_used_min: 618321
+03:23:49   logit_mean_avg: -6.29214
+03:23:49   mask_density: 0.113987
+03:26:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:26:48   binary cross entropy: 0.240733
+03:26:48   k_used_max: 620619
+03:26:48   k_used_mean: 618935
+03:26:48   k_used_min: 614810
+03:26:48   logit_mean_avg: -6.28304
+03:26:48   mask_density: 0.1137
+03:29:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:29:47   binary cross entropy: 0.0604378
+03:29:47   k_used_max: 624531
+03:29:47   k_used_mean: 614658
+03:29:47   k_used_min: 605145
+03:29:47   logit_mean_avg: -6.27002
+03:29:47   mask_density: 0.112915
+03:32:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:32:47   binary cross entropy: 0.0816168
+03:32:47   k_used_max: 626065
+03:32:47   k_used_mean: 620486
+03:32:47   k_used_min: 616230
+03:32:47   logit_mean_avg: -6.20535
+03:32:47   mask_density: 0.113985
+03:35:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:35:46   binary cross entropy: 0.779779
+03:35:46   k_used_max: 618119
+03:35:46   k_used_mean: 613151
+03:35:46   k_used_min: 604349
+03:35:46   logit_mean_avg: -6.23353
+03:35:46   mask_density: 0.112638
+03:38:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:38:46   binary cross entropy: 0.0957547
+03:38:46   k_used_max: 625899
+03:38:46   k_used_mean: 610013
+03:38:46   k_used_min: 599545
+03:38:46   logit_mean_avg: -6.27623
+03:38:46   mask_density: 0.112061
+03:41:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:41:45   binary cross entropy: 0.172281
+03:41:45   k_used_max: 610531
+03:41:45   k_used_mean: 607931
+03:41:45   k_used_min: 602830
+03:41:45   logit_mean_avg: -6.2994
+03:41:45   mask_density: 0.111679
+03:44:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:44:44   binary cross entropy: 0.0519752
+03:44:44   k_used_max: 618612
+03:44:44   k_used_mean: 611786
+03:44:44   k_used_min: 603181
+03:44:44   logit_mean_avg: -6.29719
+03:44:44   mask_density: 0.112387
+03:47:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:47:43   binary cross entropy: 0.389182
+03:47:43   k_used_max: 620790
+03:47:43   k_used_mean: 616636
+03:47:43   k_used_min: 607055
+03:47:43   logit_mean_avg: -6.29058
+03:47:43   mask_density: 0.113278
+03:50:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:50:43   binary cross entropy: 0.0449801
+03:50:43   k_used_max: 614561
+03:50:43   k_used_mean: 605710
+03:50:43   k_used_min: 598311
+03:50:43   logit_mean_avg: -6.34606
+03:50:43   mask_density: 0.111271
+03:53:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:53:42   binary cross entropy: 0.0355799
+03:53:42   k_used_max: 610010
+03:53:42   k_used_mean: 604712
+03:53:42   k_used_min: 599542
+03:53:42   logit_mean_avg: -6.35251
+03:53:42   mask_density: 0.111088
+03:56:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:56:23   Epoch 2 end
+03:56:23   duration: 2.54 hours
+03:56:23   speed: 0.05 batch / sec
+03:56:23   ETA: 0.00 secs
+03:56:23   max GPU memory: 96674.9 MiB
+03:56:23   ------------------------------
+03:56:23   average binary cross entropy: 0.237734
+03:56:23   average k_used_max: 612602
+03:56:23   average k_used_mean: 605963
+03:56:23   average k_used_min: 599487
+03:56:23   average logit_mean_avg: -5.40167
+03:56:23   average mask_density: 0.111317
+03:56:23   Save checkpoint to model_epoch_3.pth
+03:56:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:56:28   Evaluate on valid
+03:59:35   ------------------------------
+03:59:35   hits@1: 0.1455
+03:59:35   hits@10: 0.2595
+03:59:35   hits@3: 0.1935
+03:59:35   mr: 6622.3
+03:59:35   mrr: 0.184378
+03:59:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:59:35   Epoch 3 begin
+03:59:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:59:53   binary cross entropy: 0.0558858
+03:59:53   k_used_max: 610284
+03:59:53   k_used_mean: 606658
+03:59:53   k_used_min: 601048
+03:59:53   logit_mean_avg: -6.34285
+03:59:53   mask_density: 0.111445
+04:02:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:02:52   binary cross entropy: 0.0559352
+04:02:52   k_used_max: 612675
+04:02:52   k_used_mean: 609097
+04:02:52   k_used_min: 603058
+04:02:52   logit_mean_avg: -6.3395
+04:02:52   mask_density: 0.111893
+04:05:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:05:51   binary cross entropy: 0.315588
+04:05:51   k_used_max: 605393
+04:05:51   k_used_mean: 595274
+04:05:51   k_used_min: 585530
+04:05:51   logit_mean_avg: -6.39435
+04:05:51   mask_density: 0.109354
+04:08:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:08:51   binary cross entropy: 0.202615
+04:08:51   k_used_max: 597128
+04:08:51   k_used_mean: 592936
+04:08:51   k_used_min: 587762
+04:08:51   logit_mean_avg: -6.40148
+04:08:51   mask_density: 0.108924
+04:11:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:11:50   binary cross entropy: 0.350132
+04:11:50   k_used_max: 599977
+04:11:50   k_used_mean: 590133
+04:11:50   k_used_min: 581902
+04:11:50   logit_mean_avg: -6.41832
+04:11:50   mask_density: 0.108409
+04:14:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:14:49   binary cross entropy: 0.0638436
+04:14:49   k_used_max: 591315
+04:14:49   k_used_mean: 586928
+04:14:49   k_used_min: 582574
+04:14:49   logit_mean_avg: -6.43146
+04:14:49   mask_density: 0.107821
+04:17:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:17:48   binary cross entropy: 0.44566
+04:17:48   k_used_max: 623478
+04:17:48   k_used_mean: 607938
+04:17:48   k_used_min: 598065
+04:17:48   logit_mean_avg: -6.30925
+04:17:48   mask_density: 0.11168
+04:20:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:20:48   binary cross entropy: 0.0482178
+04:20:48   k_used_max: 630635
+04:20:48   k_used_mean: 619562
+04:20:48   k_used_min: 610171
+04:20:48   logit_mean_avg: -6.26672
+04:20:48   mask_density: 0.113816
+04:23:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:23:47   binary cross entropy: 0.0614206
+04:23:47   k_used_max: 633508
+04:23:47   k_used_mean: 630027
+04:23:47   k_used_min: 626409
+04:23:47   logit_mean_avg: -6.21479
+04:23:47   mask_density: 0.115738
+04:26:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:26:46   binary cross entropy: 0.0485395
+04:26:46   k_used_max: 626051
+04:26:46   k_used_mean: 618716
+04:26:46   k_used_min: 615850
+04:26:46   logit_mean_avg: -6.27374
+04:26:46   mask_density: 0.11366
+04:29:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:29:45   binary cross entropy: 0.102259
+04:29:45   k_used_max: 627482
+04:29:45   k_used_mean: 624378
+04:29:45   k_used_min: 618817
+04:29:45   logit_mean_avg: -6.24007
+04:29:45   mask_density: 0.1147
+04:32:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:32:45   binary cross entropy: 0.275782
+04:32:45   k_used_max: 623189
+04:32:45   k_used_mean: 618488
+04:32:45   k_used_min: 612961
+04:32:45   logit_mean_avg: -6.26475
+04:32:45   mask_density: 0.113618
+04:35:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:35:44   binary cross entropy: 0.0598508
+04:35:44   k_used_max: 627311
+04:35:44   k_used_mean: 617886
+04:35:44   k_used_min: 605803
+04:35:44   logit_mean_avg: -6.26724
+04:35:44   mask_density: 0.113508
+04:38:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:38:43   binary cross entropy: 0.487466
+04:38:43   k_used_max: 620494
+04:38:43   k_used_mean: 611989
+04:38:43   k_used_min: 603820
+04:38:43   logit_mean_avg: -6.28755
+04:38:43   mask_density: 0.112424
+04:41:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:41:43   binary cross entropy: 0.683071
+04:41:43   k_used_max: 623204
+04:41:43   k_used_mean: 612800
+04:41:43   k_used_min: 595154
+04:41:43   logit_mean_avg: -6.30133
+04:41:43   mask_density: 0.112573
+04:44:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:44:42   binary cross entropy: 0.0811215
+04:44:42   k_used_max: 618526
+04:44:42   k_used_mean: 610522
+04:44:42   k_used_min: 594416
+04:44:42   logit_mean_avg: -6.29322
+04:44:42   mask_density: 0.112155
+04:47:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:47:41   binary cross entropy: 0.083361
+04:47:41   k_used_max: 623344
+04:47:41   k_used_mean: 613764
+04:47:41   k_used_min: 600289
+04:47:41   logit_mean_avg: -6.26203
+04:47:41   mask_density: 0.11275
+04:50:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:50:40   binary cross entropy: 0.167889
+04:50:40   k_used_max: 630441
+04:50:40   k_used_mean: 610825
+04:50:40   k_used_min: 596670
+04:50:40   logit_mean_avg: -6.26579
+04:50:40   mask_density: 0.11221
+04:53:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:53:40   binary cross entropy: 0.172974
+04:53:40   k_used_max: 620500
+04:53:40   k_used_mean: 607855
+04:53:40   k_used_min: 591952
+04:53:40   logit_mean_avg: -6.27685
+04:53:40   mask_density: 0.111665
+04:56:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:56:39   binary cross entropy: 0.0499647
+04:56:39   k_used_max: 604210
+04:56:39   k_used_mean: 601827
+04:56:39   k_used_min: 598686
+04:56:39   logit_mean_avg: -6.31893
+04:56:39   mask_density: 0.110558
+04:59:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:59:38   binary cross entropy: 0.178917
+04:59:38   k_used_max: 585773
+04:59:38   k_used_mean: 564024
+04:59:38   k_used_min: 520122
+04:59:38   logit_mean_avg: -6.39534
+04:59:38   mask_density: 0.103613
+05:02:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:02:37   binary cross entropy: 0.18297
+05:02:37   k_used_max: 593714
+05:02:37   k_used_mean: 577848
+05:02:37   k_used_min: 561563
+05:02:37   logit_mean_avg: -6.38164
+05:02:37   mask_density: 0.106153
+05:05:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:05:37   binary cross entropy: 0.0787112
+05:05:37   k_used_max: 600726
+05:05:37   k_used_mean: 583204
+05:05:37   k_used_min: 575306
+05:05:37   logit_mean_avg: -6.38445
+05:05:37   mask_density: 0.107136
+05:08:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:08:36   binary cross entropy: 0.131727
+05:08:36   k_used_max: 592611
+05:08:36   k_used_mean: 576323
+05:08:36   k_used_min: 548239
+05:08:36   logit_mean_avg: -6.41281
+05:08:36   mask_density: 0.105873
+05:11:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:11:35   binary cross entropy: 0.145951
+05:11:35   k_used_max: 613091
+05:11:35   k_used_mean: 592136
+05:11:35   k_used_min: 566841
+05:11:35   logit_mean_avg: -6.42561
+05:11:35   mask_density: 0.108777
+05:14:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:14:35   binary cross entropy: 0.128515
+05:14:35   k_used_max: 602148
+05:14:35   k_used_mean: 583254
+05:14:35   k_used_min: 568578
+05:14:35   logit_mean_avg: -6.47184
+05:14:35   mask_density: 0.107146
+05:17:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:17:34   binary cross entropy: 0.393034
+05:17:34   k_used_max: 606257
+05:17:34   k_used_mean: 586352
+05:17:34   k_used_min: 577326
+05:17:34   logit_mean_avg: -6.48631
+05:17:34   mask_density: 0.107715
+05:20:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:20:33   binary cross entropy: 0.703313
+05:20:33   k_used_max: 597691
+05:20:33   k_used_mean: 579082
+05:20:33   k_used_min: 556649
+05:20:33   logit_mean_avg: -6.53293
+05:20:33   mask_density: 0.106379
+05:23:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:23:32   binary cross entropy: 0.0744989
+05:23:32   k_used_max: 601869
+05:23:32   k_used_mean: 575255
+05:23:32   k_used_min: 541441
+05:23:32   logit_mean_avg: -6.55217
+05:23:32   mask_density: 0.105676
+05:26:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:26:32   binary cross entropy: 0.097036
+05:26:32   k_used_max: 598763
+05:26:32   k_used_mean: 575549
+05:26:32   k_used_min: 535108
+05:26:32   logit_mean_avg: -6.58417
+05:26:32   mask_density: 0.10573
+05:29:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:29:31   binary cross entropy: 0.290606
+05:29:31   k_used_max: 601936
+05:29:31   k_used_mean: 585072
+05:29:31   k_used_min: 562165
+05:29:31   logit_mean_avg: -6.5599
+05:29:31   mask_density: 0.107479
+05:32:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:32:30   binary cross entropy: 0.433254
+05:32:30   k_used_max: 614617
+05:32:30   k_used_mean: 580335
+05:32:30   k_used_min: 553001
+05:32:30   logit_mean_avg: -6.54354
+05:32:30   mask_density: 0.106609
+05:35:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:35:30   binary cross entropy: 0.20699
+05:35:30   k_used_max: 604372
+05:35:30   k_used_mean: 578192
+05:35:30   k_used_min: 532719
+05:35:30   logit_mean_avg: -6.56378
+05:35:30   mask_density: 0.106216
+05:38:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:38:29   binary cross entropy: 0.302128
+05:38:29   k_used_max: 603860
+05:38:29   k_used_mean: 579259
+05:38:29   k_used_min: 535099
+05:38:29   logit_mean_avg: -6.56439
+05:38:29   mask_density: 0.106412
+05:41:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:41:28   binary cross entropy: 0.724855
+05:41:28   k_used_max: 591127
+05:41:28   k_used_mean: 537902
+05:41:28   k_used_min: 460239
+05:41:28   logit_mean_avg: -6.64025
+05:41:28   mask_density: 0.0988143
+05:44:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:44:28   binary cross entropy: 0.168126
+05:44:28   k_used_max: 600939
+05:44:28   k_used_mean: 564122
+05:44:28   k_used_min: 528764
+05:44:28   logit_mean_avg: -6.59756
+05:44:28   mask_density: 0.103631
+05:47:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:47:27   binary cross entropy: 0.0602522
+05:47:27   k_used_max: 608906
+05:47:27   k_used_mean: 547502
+05:47:27   k_used_min: 502640
+05:47:27   logit_mean_avg: -6.634
+05:47:27   mask_density: 0.100578
+05:50:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:50:26   binary cross entropy: 0.391746
+05:50:26   k_used_max: 616255
+05:50:26   k_used_mean: 547743
+05:50:26   k_used_min: 467630
+05:50:26   logit_mean_avg: -6.62681
+05:50:26   mask_density: 0.100622
+05:53:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:53:25   binary cross entropy: 0.104894
+05:53:25   k_used_max: 596166
+05:53:25   k_used_mean: 561480
+05:53:25   k_used_min: 519500
+05:53:25   logit_mean_avg: -6.62681
+05:53:25   mask_density: 0.103146
+05:56:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:56:25   binary cross entropy: 0.452311
+05:56:25   k_used_max: 609610
+05:56:25   k_used_mean: 581170
+05:56:25   k_used_min: 552346
+05:56:25   logit_mean_avg: -6.59331
+05:56:25   mask_density: 0.106763
+05:59:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+05:59:24   binary cross entropy: 0.173598
+05:59:24   k_used_max: 630773
+05:59:24   k_used_mean: 612105
+05:59:24   k_used_min: 573345
+05:59:24   logit_mean_avg: -6.55916
+05:59:24   mask_density: 0.112446
+06:02:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:02:23   binary cross entropy: 0.18626
+06:02:23   k_used_max: 644355
+06:02:23   k_used_mean: 580162
+06:02:23   k_used_min: 507295
+06:02:23   logit_mean_avg: -6.59656
+06:02:23   mask_density: 0.106578
+06:05:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:05:22   binary cross entropy: 0.20751
+06:05:22   k_used_max: 608651
+06:05:22   k_used_mean: 565359
+06:05:22   k_used_min: 513340
+06:05:22   logit_mean_avg: -6.62387
+06:05:22   mask_density: 0.103858
+06:08:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:08:21   binary cross entropy: 0.0500527
+06:08:21   k_used_max: 611196
+06:08:21   k_used_mean: 568414
+06:08:21   k_used_min: 517049
+06:08:21   logit_mean_avg: -6.63888
+06:08:21   mask_density: 0.104419
+06:11:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:11:20   binary cross entropy: 0.268957
+06:11:20   k_used_max: 604857
+06:11:20   k_used_mean: 558546
+06:11:20   k_used_min: 481903
+06:11:20   logit_mean_avg: -6.64934
+06:11:20   mask_density: 0.102607
+06:14:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:14:20   binary cross entropy: 0.491551
+06:14:20   k_used_max: 608139
+06:14:20   k_used_mean: 571475
+06:14:20   k_used_min: 534735
+06:14:20   logit_mean_avg: -6.64418
+06:14:20   mask_density: 0.104982
+06:17:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:17:19   binary cross entropy: 0.150608
+06:17:19   k_used_max: 584358
+06:17:19   k_used_mean: 557130
+06:17:19   k_used_min: 523129
+06:17:19   logit_mean_avg: -6.64711
+06:17:19   mask_density: 0.102347
+06:20:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:20:18   binary cross entropy: 0.188952
+06:20:18   k_used_max: 578926
+06:20:18   k_used_mean: 527449
+06:20:18   k_used_min: 429716
+06:20:18   logit_mean_avg: -6.65341
+06:20:18   mask_density: 0.0968941
+06:23:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:23:17   binary cross entropy: 0.110142
+06:23:17   k_used_max: 566915
+06:23:17   k_used_mean: 485237
+06:23:17   k_used_min: 405248
+06:23:17   logit_mean_avg: -6.68662
+06:23:17   mask_density: 0.0891397
+06:26:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:26:16   binary cross entropy: 0.389078
+06:26:16   k_used_max: 645504
+06:26:16   k_used_mean: 633881
+06:26:16   k_used_min: 620122
+06:26:16   logit_mean_avg: -6.44019
+06:26:16   mask_density: 0.116446
+06:28:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:28:58   Epoch 3 end
+06:28:58   duration: 2.54 hours
+06:28:58   speed: 0.05 batch / sec
+06:28:58   ETA: 0.00 secs
+06:28:58   max GPU memory: 96674.9 MiB
+06:28:58   ------------------------------
+06:28:58   average binary cross entropy: 0.238541
+06:28:58   average k_used_max: 607644
+06:28:58   average k_used_mean: 582078
+06:28:58   average k_used_min: 552257
+06:28:58   average logit_mean_avg: -6.46259
+06:28:58   average mask_density: 0.10693
+06:28:58   Save checkpoint to model_epoch_4.pth
+06:29:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:29:02   Evaluate on valid
+06:32:10   ------------------------------
+06:32:10   hits@1: 0.2395
+06:32:10   hits@10: 0.414
+06:32:10   hits@3: 0.319
+06:32:10   mr: 2624.11
+06:32:10   mrr: 0.300534
+06:32:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:32:10   Epoch 4 begin
+06:32:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:32:28   binary cross entropy: 0.259472
+06:32:28   k_used_max: 662934
+06:32:28   k_used_mean: 649914
+06:32:28   k_used_min: 643825
+06:32:28   logit_mean_avg: -6.32477
+06:32:28   mask_density: 0.119391
+06:35:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:35:27   binary cross entropy: 0.069373
+06:35:27   k_used_max: 654845
+06:35:27   k_used_mean: 649912
+06:35:27   k_used_min: 642072
+06:35:27   logit_mean_avg: -6.32747
+06:35:27   mask_density: 0.119391
+06:38:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:38:26   binary cross entropy: 0.544508
+06:38:26   k_used_max: 657729
+06:38:26   k_used_mean: 649667
+06:38:26   k_used_min: 644808
+06:38:26   logit_mean_avg: -6.34368
+06:38:26   mask_density: 0.119346
+06:41:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:41:25   binary cross entropy: 0.123638
+06:41:25   k_used_max: 652941
+06:41:25   k_used_mean: 647466
+06:41:25   k_used_min: 642477
+06:41:25   logit_mean_avg: -6.38137
+06:41:25   mask_density: 0.118942
+06:44:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:44:24   binary cross entropy: 0.199365
+06:44:24   k_used_max: 650914
+06:44:24   k_used_mean: 642196
+06:44:24   k_used_min: 630378
+06:44:24   logit_mean_avg: -6.424
+06:44:24   mask_density: 0.117974
+06:47:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:47:24   binary cross entropy: 0.150045
+06:47:24   k_used_max: 655825
+06:47:24   k_used_mean: 644662
+06:47:24   k_used_min: 632669
+06:47:24   logit_mean_avg: -6.43161
+06:47:24   mask_density: 0.118426
+06:50:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:50:23   binary cross entropy: 0.0465191
+06:50:23   k_used_max: 652730
+06:50:23   k_used_mean: 631694
+06:50:23   k_used_min: 611998
+06:50:23   logit_mean_avg: -6.50125
+06:50:23   mask_density: 0.116044
+06:53:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:53:22   binary cross entropy: 0.136072
+06:53:22   k_used_max: 646111
+06:53:22   k_used_mean: 628609
+06:53:22   k_used_min: 610184
+06:53:22   logit_mean_avg: -6.54017
+06:53:22   mask_density: 0.115478
+06:56:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:56:22   binary cross entropy: 0.511739
+06:56:22   k_used_max: 645578
+06:56:22   k_used_mean: 626892
+06:56:22   k_used_min: 604079
+06:56:22   logit_mean_avg: -6.53871
+06:56:22   mask_density: 0.115162
+06:59:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+06:59:21   binary cross entropy: 0.486947
+06:59:21   k_used_max: 641348
+06:59:21   k_used_mean: 620432
+06:59:21   k_used_min: 581698
+06:59:21   logit_mean_avg: -6.57673
+06:59:21   mask_density: 0.113975
+07:02:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:02:20   binary cross entropy: 0.823425
+07:02:20   k_used_max: 638464
+07:02:20   k_used_mean: 611475
+07:02:20   k_used_min: 580343
+07:02:20   logit_mean_avg: -6.58907
+07:02:20   mask_density: 0.11233
+07:05:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:05:20   binary cross entropy: 0.787293
+07:05:20   k_used_max: 633750
+07:05:20   k_used_mean: 621475
+07:05:20   k_used_min: 597659
+07:05:20   logit_mean_avg: -6.6003
+07:05:20   mask_density: 0.114167
+07:08:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:08:19   binary cross entropy: 0.0592467
+07:08:19   k_used_max: 611412
+07:08:19   k_used_mean: 587819
+07:08:19   k_used_min: 553759
+07:08:19   logit_mean_avg: -6.67632
+07:08:19   mask_density: 0.107984
+07:11:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:11:18   binary cross entropy: 0.148377
+07:11:18   k_used_max: 628047
+07:11:18   k_used_mean: 595493
+07:11:18   k_used_min: 543354
+07:11:18   logit_mean_avg: -6.70585
+07:11:18   mask_density: 0.109394
+07:14:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:14:17   binary cross entropy: 0.867128
+07:14:17   k_used_max: 685413
+07:14:17   k_used_mean: 628304
+07:14:17   k_used_min: 601602
+07:14:17   logit_mean_avg: -6.33919
+07:14:17   mask_density: 0.115421
+07:17:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:17:17   binary cross entropy: 0.71436
+07:17:17   k_used_max: 635412
+07:17:17   k_used_mean: 578730
+07:17:17   k_used_min: 525300
+07:17:17   logit_mean_avg: -6.7307
+07:17:17   mask_density: 0.106314
+07:20:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:20:16   binary cross entropy: 0.456308
+07:20:16   k_used_max: 621729
+07:20:16   k_used_mean: 579346
+07:20:16   k_used_min: 522692
+07:20:16   logit_mean_avg: -6.74009
+07:20:16   mask_density: 0.106428
+07:23:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:23:15   binary cross entropy: 0.205372
+07:23:15   k_used_max: 598990
+07:23:15   k_used_mean: 545484
+07:23:15   k_used_min: 492396
+07:23:15   logit_mean_avg: -6.83992
+07:23:15   mask_density: 0.100207
+07:26:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:26:14   binary cross entropy: 0.381972
+07:26:14   k_used_max: 636037
+07:26:14   k_used_mean: 595791
+07:26:14   k_used_min: 541665
+07:26:14   logit_mean_avg: -6.71932
+07:26:14   mask_density: 0.109449
+07:29:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:29:14   binary cross entropy: 0.792911
+07:29:14   k_used_max: 623940
+07:29:14   k_used_mean: 589063
+07:29:14   k_used_min: 551399
+07:29:14   logit_mean_avg: -6.69312
+07:29:14   mask_density: 0.108213
+07:32:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:32:13   binary cross entropy: 0.0369033
+07:32:13   k_used_max: 625878
+07:32:13   k_used_mean: 569978
+07:32:13   k_used_min: 507263
+07:32:13   logit_mean_avg: -6.69657
+07:32:13   mask_density: 0.104707
+07:35:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:35:12   binary cross entropy: 0.0430808
+07:35:12   k_used_max: 634789
+07:35:12   k_used_mean: 594944
+07:35:12   k_used_min: 529710
+07:35:12   logit_mean_avg: -6.66629
+07:35:12   mask_density: 0.109293
+07:38:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:38:11   binary cross entropy: 0.497452
+07:38:11   k_used_max: 632435
+07:38:11   k_used_mean: 575340
+07:38:11   k_used_min: 493571
+07:38:11   logit_mean_avg: -6.71323
+07:38:11   mask_density: 0.105692
+07:41:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:41:10   binary cross entropy: 0.269172
+07:41:10   k_used_max: 596641
+07:41:10   k_used_mean: 554004
+07:41:10   k_used_min: 490812
+07:41:10   logit_mean_avg: -6.75565
+07:41:10   mask_density: 0.101772
+07:44:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:44:10   binary cross entropy: 0.243767
+07:44:10   k_used_max: 615035
+07:44:10   k_used_mean: 539250
+07:44:10   k_used_min: 460165
+07:44:10   logit_mean_avg: -6.67047
+07:44:10   mask_density: 0.0990622
+07:47:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:47:09   binary cross entropy: 0.101667
+07:47:09   k_used_max: 635880
+07:47:09   k_used_mean: 592876
+07:47:09   k_used_min: 558246
+07:47:09   logit_mean_avg: -6.59082
+07:47:09   mask_density: 0.108913
+07:50:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:50:08   binary cross entropy: 0.273644
+07:50:08   k_used_max: 628568
+07:50:08   k_used_mean: 608136
+07:50:08   k_used_min: 580634
+07:50:08   logit_mean_avg: -6.61528
+07:50:08   mask_density: 0.111717
+07:53:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:53:07   binary cross entropy: 0.0680757
+07:53:07   k_used_max: 623407
+07:53:07   k_used_mean: 596820
+07:53:07   k_used_min: 532672
+07:53:07   logit_mean_avg: -6.60391
+07:53:07   mask_density: 0.109638
+07:56:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:56:07   binary cross entropy: 0.120732
+07:56:07   k_used_max: 638612
+07:56:07   k_used_mean: 588281
+07:56:07   k_used_min: 530016
+07:56:07   logit_mean_avg: -6.61971
+07:56:07   mask_density: 0.108069
+07:59:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+07:59:06   binary cross entropy: 0.0524859
+07:59:06   k_used_max: 645729
+07:59:06   k_used_mean: 595765
+07:59:06   k_used_min: 549193
+07:59:06   logit_mean_avg: -6.61553
+07:59:06   mask_density: 0.109444
+08:02:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:02:06   binary cross entropy: 0.0379843
+08:02:06   k_used_max: 619512
+08:02:06   k_used_mean: 583376
+08:02:06   k_used_min: 521888
+08:02:06   logit_mean_avg: -6.60003
+08:02:06   mask_density: 0.107168
+08:05:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:05:05   binary cross entropy: 0.674657
+08:05:05   k_used_max: 625161
+08:05:05   k_used_mean: 588673
+08:05:05   k_used_min: 513300
+08:05:05   logit_mean_avg: -6.60632
+08:05:05   mask_density: 0.108141
+08:08:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:08:04   binary cross entropy: 0.0694027
+08:08:04   k_used_max: 603983
+08:08:04   k_used_mean: 547874
+08:08:04   k_used_min: 423223
+08:08:04   logit_mean_avg: -6.60738
+08:08:04   mask_density: 0.100646
+08:11:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:11:03   binary cross entropy: 0.302143
+08:11:03   k_used_max: 628852
+08:11:03   k_used_mean: 604828
+08:11:03   k_used_min: 581918
+08:11:03   logit_mean_avg: -6.5441
+08:11:03   mask_density: 0.111109
+08:14:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:14:03   binary cross entropy: 0.289523
+08:14:03   k_used_max: 650408
+08:14:03   k_used_mean: 587640
+08:14:03   k_used_min: 553417
+08:14:03   logit_mean_avg: -6.54182
+08:14:03   mask_density: 0.107951
+08:17:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:17:02   binary cross entropy: 0.0750101
+08:17:02   k_used_max: 628999
+08:17:02   k_used_mean: 574332
+08:17:02   k_used_min: 490725
+08:17:02   logit_mean_avg: -6.5502
+08:17:02   mask_density: 0.105507
+08:20:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:20:01   binary cross entropy: 0.311928
+08:20:01   k_used_max: 643740
+08:20:01   k_used_mean: 569386
+08:20:01   k_used_min: 495496
+08:20:01   logit_mean_avg: -6.56581
+08:20:01   mask_density: 0.104598
+08:23:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:23:00   binary cross entropy: 0.177201
+08:23:00   k_used_max: 620760
+08:23:00   k_used_mean: 566854
+08:23:00   k_used_min: 448575
+08:23:00   logit_mean_avg: -6.60815
+08:23:00   mask_density: 0.104133
+08:25:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:25:59   binary cross entropy: 0.0518367
+08:25:59   k_used_max: 638459
+08:25:59   k_used_mean: 520277
+08:25:59   k_used_min: 403118
+08:25:59   logit_mean_avg: -6.65547
+08:25:59   mask_density: 0.0955766
+08:28:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:28:58   binary cross entropy: 0.498288
+08:28:58   k_used_max: 588330
+08:28:58   k_used_mean: 557034
+08:28:58   k_used_min: 478946
+08:28:58   logit_mean_avg: -6.68854
+08:28:58   mask_density: 0.102329
+08:31:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:31:58   binary cross entropy: 0.0284645
+08:31:58   k_used_max: 643985
+08:31:58   k_used_mean: 571512
+08:31:58   k_used_min: 474517
+08:31:58   logit_mean_avg: -6.66888
+08:31:58   mask_density: 0.104989
+08:34:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:34:57   binary cross entropy: 0.0718141
+08:34:57   k_used_max: 647192
+08:34:57   k_used_mean: 638398
+08:34:57   k_used_min: 620775
+08:34:57   logit_mean_avg: -6.61667
+08:34:57   mask_density: 0.117276
+08:37:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:37:56   binary cross entropy: 0.262674
+08:37:56   k_used_max: 651587
+08:37:56   k_used_mean: 632678
+08:37:56   k_used_min: 585906
+08:37:56   logit_mean_avg: -6.60041
+08:37:56   mask_density: 0.116226
+08:40:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:40:55   binary cross entropy: 0.0983111
+08:40:55   k_used_max: 621838
+08:40:55   k_used_mean: 602005
+08:40:55   k_used_min: 551286
+08:40:55   logit_mean_avg: -6.64991
+08:40:55   mask_density: 0.11059
+08:43:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:43:55   binary cross entropy: 0.512871
+08:43:55   k_used_max: 621334
+08:43:55   k_used_mean: 593388
+08:43:55   k_used_min: 537930
+08:43:55   logit_mean_avg: -6.67644
+08:43:55   mask_density: 0.109007
+08:46:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:46:54   binary cross entropy: 0.420242
+08:46:54   k_used_max: 633654
+08:46:54   k_used_mean: 562682
+08:46:54   k_used_min: 496628
+08:46:54   logit_mean_avg: -6.69249
+08:46:54   mask_density: 0.103367
+08:49:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:49:53   binary cross entropy: 0.249116
+08:49:53   k_used_max: 653331
+08:49:53   k_used_mean: 610736
+08:49:53   k_used_min: 578574
+08:49:53   logit_mean_avg: -6.58354
+08:49:53   mask_density: 0.112194
+08:52:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:52:53   binary cross entropy: 0.0864118
+08:52:53   k_used_max: 642342
+08:52:53   k_used_mean: 597393
+08:52:53   k_used_min: 553515
+08:52:53   logit_mean_avg: -6.57635
+08:52:53   mask_density: 0.109743
+08:55:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:55:52   binary cross entropy: 0.303122
+08:55:52   k_used_max: 674680
+08:55:52   k_used_mean: 637648
+08:55:52   k_used_min: 576008
+08:55:52   logit_mean_avg: -6.41488
+08:55:52   mask_density: 0.117138
+08:58:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+08:58:51   binary cross entropy: 0.128585
+08:58:51   k_used_max: 663999
+08:58:51   k_used_mean: 634815
+08:58:51   k_used_min: 597306
+08:58:51   logit_mean_avg: -6.49264
+08:58:51   mask_density: 0.116617
+09:01:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:01:33   Epoch 4 end
+09:01:33   duration: 2.54 hours
+09:01:33   speed: 0.05 batch / sec
+09:01:33   ETA: 0.00 secs
+09:01:33   max GPU memory: 96674.9 MiB
+09:01:33   ------------------------------
+09:01:33   average binary cross entropy: 0.209776
+09:01:33   average k_used_max: 632894
+09:01:33   average k_used_mean: 597338
+09:01:33   average k_used_min: 550698
+09:01:33   average logit_mean_avg: -6.60048
+09:01:33   average mask_density: 0.109733
+09:01:33   Save checkpoint to model_epoch_5.pth
+09:01:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:01:37   Evaluate on valid
+09:04:44   ------------------------------
+09:04:44   hits@1: 0.258
+09:04:44   hits@10: 0.411
+09:04:44   hits@3: 0.3295
+09:04:44   mr: 2564.15
+09:04:44   mrr: 0.312826
+09:04:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:04:44   Epoch 5 begin
+09:05:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:05:02   binary cross entropy: 0.0589405
+09:05:02   k_used_max: 666165
+09:05:02   k_used_mean: 565612
+09:05:02   k_used_min: 439557
+09:05:02   logit_mean_avg: -6.50867
+09:05:02   mask_density: 0.103905
+09:08:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:08:02   binary cross entropy: 0.375363
+09:08:02   k_used_max: 648663
+09:08:02   k_used_mean: 608984
+09:08:02   k_used_min: 566128
+09:08:02   logit_mean_avg: -6.55046
+09:08:02   mask_density: 0.111872
+09:11:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:11:01   binary cross entropy: 0.202316
+09:11:01   k_used_max: 658152
+09:11:01   k_used_mean: 639188
+09:11:01   k_used_min: 595014
+09:11:01   logit_mean_avg: -6.5135
+09:11:01   mask_density: 0.117421
+09:14:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:14:00   binary cross entropy: 0.0637498
+09:14:00   k_used_max: 654962
+09:14:00   k_used_mean: 630679
+09:14:00   k_used_min: 584594
+09:14:00   logit_mean_avg: -6.54606
+09:14:00   mask_density: 0.115858
+09:17:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:17:00   binary cross entropy: 0.0730064
+09:17:00   k_used_max: 606877
+09:17:00   k_used_mean: 498225
+09:17:00   k_used_min: 353355
+09:17:00   logit_mean_avg: -6.66106
+09:17:00   mask_density: 0.0915255
+09:19:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:19:59   binary cross entropy: 0.318867
+09:19:59   k_used_max: 677737
+09:19:59   k_used_mean: 586970
+09:19:59   k_used_min: 431137
+09:19:59   logit_mean_avg: -6.5716
+09:19:59   mask_density: 0.107828
+09:22:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:22:58   binary cross entropy: 0.174378
+09:22:58   k_used_max: 640377
+09:22:58   k_used_mean: 583731
+09:22:58   k_used_min: 534137
+09:22:58   logit_mean_avg: -6.77397
+09:22:58   mask_density: 0.107233
+09:25:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:25:57   binary cross entropy: 0.0753753
+09:25:57   k_used_max: 662054
+09:25:57   k_used_mean: 642022
+09:25:57   k_used_min: 618216
+09:25:57   logit_mean_avg: -6.75316
+09:25:57   mask_density: 0.117941
+09:28:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:28:57   binary cross entropy: 0.059456
+09:28:57   k_used_max: 646709
+09:28:57   k_used_mean: 629439
+09:28:57   k_used_min: 597784
+09:28:57   logit_mean_avg: -6.82638
+09:28:57   mask_density: 0.11563
+09:31:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:31:56   binary cross entropy: 0.0792454
+09:31:56   k_used_max: 658592
+09:31:56   k_used_mean: 605042
+09:31:56   k_used_min: 478043
+09:31:56   logit_mean_avg: -6.85584
+09:31:56   mask_density: 0.111148
+09:34:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:34:55   binary cross entropy: 0.107263
+09:34:55   k_used_max: 650360
+09:34:55   k_used_mean: 596811
+09:34:55   k_used_min: 516126
+09:34:55   logit_mean_avg: -6.85992
+09:34:55   mask_density: 0.109636
+09:37:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:37:54   binary cross entropy: 0.27152
+09:37:54   k_used_max: 575962
+09:37:54   k_used_mean: 475576
+09:37:54   k_used_min: 374353
+09:37:54   logit_mean_avg: -7.39623
+09:37:54   mask_density: 0.0873648
+09:40:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:40:54   binary cross entropy: 0.5679
+09:40:54   k_used_max: 659852
+09:40:54   k_used_mean: 653321
+09:40:54   k_used_min: 644990
+09:40:54   logit_mean_avg: -7.63956
+09:40:54   mask_density: 0.120017
+09:43:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:43:53   binary cross entropy: 0.0585116
+09:43:53   k_used_max: 669655
+09:43:53   k_used_mean: 665404
+09:43:53   k_used_min: 660721
+09:43:53   logit_mean_avg: -7.75743
+09:43:53   mask_density: 0.122237
+09:46:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:46:52   binary cross entropy: 0.0300125
+09:46:52   k_used_max: 668649
+09:46:52   k_used_mean: 665676
+09:46:52   k_used_min: 662367
+09:46:52   logit_mean_avg: -7.83941
+09:46:52   mask_density: 0.122287
+09:49:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:49:51   binary cross entropy: 0.0523531
+09:49:51   k_used_max: 674305
+09:49:51   k_used_mean: 669519
+09:49:51   k_used_min: 666463
+09:49:51   logit_mean_avg: -7.73397
+09:49:51   mask_density: 0.122993
+09:52:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:52:50   binary cross entropy: 0.360716
+09:52:50   k_used_max: 674397
+09:52:50   k_used_mean: 668801
+09:52:50   k_used_min: 664607
+09:52:50   logit_mean_avg: -7.76
+09:52:50   mask_density: 0.122861
+09:55:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:55:50   binary cross entropy: 0.264548
+09:55:50   k_used_max: 671306
+09:55:50   k_used_mean: 670253
+09:55:50   k_used_min: 669210
+09:55:50   logit_mean_avg: -7.75017
+09:55:50   mask_density: 0.123128
+09:58:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:58:49   binary cross entropy: 0.522851
+09:58:49   k_used_max: 670811
+09:58:49   k_used_mean: 667420
+09:58:49   k_used_min: 663124
+09:58:49   logit_mean_avg: -7.80542
+09:58:49   mask_density: 0.122607
+10:01:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:01:48   binary cross entropy: 0.0879064
+10:01:48   k_used_max: 672065
+10:01:48   k_used_mean: 670180
+10:01:48   k_used_min: 667119
+10:01:48   logit_mean_avg: -7.74931
+10:01:48   mask_density: 0.123114
+10:04:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:04:47   binary cross entropy: 0.157092
+10:04:47   k_used_max: 668116
+10:04:47   k_used_mean: 666142
+10:04:47   k_used_min: 662191
+10:04:47   logit_mean_avg: -7.85582
+10:04:47   mask_density: 0.122372
+10:07:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:07:47   binary cross entropy: 0.123715
+10:07:47   k_used_max: 672219
+10:07:47   k_used_mean: 670586
+10:07:47   k_used_min: 667872
+10:07:47   logit_mean_avg: -7.75296
+10:07:47   mask_density: 0.123189
+10:10:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:10:46   binary cross entropy: 0.0521785
+10:10:46   k_used_max: 668781
+10:10:46   k_used_mean: 667151
+10:10:46   k_used_min: 665635
+10:10:46   logit_mean_avg: -7.8507
+10:10:46   mask_density: 0.122558
+10:13:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:13:46   binary cross entropy: 0.228445
+10:13:46   k_used_max: 667970
+10:13:46   k_used_mean: 667504
+10:13:46   k_used_min: 667283
+10:13:46   logit_mean_avg: -7.84406
+10:13:46   mask_density: 0.122623
+10:16:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:16:45   binary cross entropy: 0.335913
+10:16:45   k_used_max: 669635
+10:16:45   k_used_mean: 666955
+10:16:45   k_used_min: 664833
+10:16:45   logit_mean_avg: -7.84508
+10:16:45   mask_density: 0.122522
+10:19:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:19:44   binary cross entropy: 0.263987
+10:19:44   k_used_max: 674154
+10:19:44   k_used_mean: 669781
+10:19:44   k_used_min: 667311
+10:19:44   logit_mean_avg: -7.77212
+10:19:44   mask_density: 0.123041
+10:22:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:22:43   binary cross entropy: 0.0365538
+10:22:43   k_used_max: 671521
+10:22:43   k_used_mean: 668984
+10:22:43   k_used_min: 666157
+10:22:43   logit_mean_avg: -7.80768
+10:22:43   mask_density: 0.122894
+10:25:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:25:42   binary cross entropy: 0.255842
+10:25:42   k_used_max: 673589
+10:25:42   k_used_mean: 669146
+10:25:42   k_used_min: 665560
+10:25:42   logit_mean_avg: -7.78446
+10:25:42   mask_density: 0.122924
+10:28:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:28:42   binary cross entropy: 0.0531684
+10:28:42   k_used_max: 673219
+10:28:42   k_used_mean: 668019
+10:28:42   k_used_min: 664613
+10:28:42   logit_mean_avg: -7.81886
+10:28:42   mask_density: 0.122717
+10:31:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:31:41   binary cross entropy: 0.178004
+10:31:41   k_used_max: 673185
+10:31:41   k_used_mean: 669349
+10:31:41   k_used_min: 665239
+10:31:41   logit_mean_avg: -7.79274
+10:31:41   mask_density: 0.122961
+10:34:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:34:40   binary cross entropy: 0.159476
+10:34:40   k_used_max: 673462
+10:34:40   k_used_mean: 669488
+10:34:40   k_used_min: 667339
+10:34:40   logit_mean_avg: -7.77668
+10:34:40   mask_density: 0.122987
+10:37:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:37:40   binary cross entropy: 0.0564799
+10:37:40   k_used_max: 672996
+10:37:40   k_used_mean: 669127
+10:37:40   k_used_min: 664691
+10:37:40   logit_mean_avg: -7.77663
+10:37:40   mask_density: 0.122921
+10:40:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:40:39   binary cross entropy: 0.0694159
+10:40:39   k_used_max: 668246
+10:40:39   k_used_mean: 666792
+10:40:39   k_used_min: 665392
+10:40:39   logit_mean_avg: -7.85353
+10:40:39   mask_density: 0.122492
+10:43:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:43:38   binary cross entropy: 0.213029
+10:43:38   k_used_max: 670209
+10:43:38   k_used_mean: 666628
+10:43:38   k_used_min: 663423
+10:43:38   logit_mean_avg: -7.85472
+10:43:38   mask_density: 0.122462
+10:46:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:46:37   binary cross entropy: 0.0768504
+10:46:37   k_used_max: 669402
+10:46:37   k_used_mean: 667719
+10:46:37   k_used_min: 666646
+10:46:37   logit_mean_avg: -7.84051
+10:46:37   mask_density: 0.122662
+10:49:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:49:37   binary cross entropy: 0.230979
+10:49:37   k_used_max: 669801
+10:49:37   k_used_mean: 667833
+10:49:37   k_used_min: 664996
+10:49:37   logit_mean_avg: -7.83708
+10:49:37   mask_density: 0.122683
+10:52:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:52:36   binary cross entropy: 0.187356
+10:52:36   k_used_max: 674500
+10:52:36   k_used_mean: 671396
+10:52:36   k_used_min: 666502
+10:52:36   logit_mean_avg: -7.7292
+10:52:36   mask_density: 0.123338
+10:55:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:55:35   binary cross entropy: 0.0672007
+10:55:35   k_used_max: 669348
+10:55:35   k_used_mean: 666558
+10:55:35   k_used_min: 663796
+10:55:35   logit_mean_avg: -7.86379
+10:55:35   mask_density: 0.122449
+10:58:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:58:34   binary cross entropy: 0.0633512
+10:58:34   k_used_max: 670010
+10:58:34   k_used_mean: 668190
+10:58:34   k_used_min: 665920
+10:58:34   logit_mean_avg: -7.84098
+10:58:34   mask_density: 0.122749
+11:01:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:01:34   binary cross entropy: 0.0511036
+11:01:34   k_used_max: 670018
+11:01:34   k_used_mean: 667418
+11:01:34   k_used_min: 665323
+11:01:34   logit_mean_avg: -7.85089
+11:01:34   mask_density: 0.122607
+11:04:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:04:33   binary cross entropy: 0.0387064
+11:04:33   k_used_max: 670174
+11:04:33   k_used_mean: 667902
+11:04:33   k_used_min: 665512
+11:04:33   logit_mean_avg: -7.82832
+11:04:33   mask_density: 0.122696
+11:07:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:07:32   binary cross entropy: 0.166681
+11:07:32   k_used_max: 674732
+11:07:32   k_used_mean: 671348
+11:07:32   k_used_min: 666615
+11:07:32   logit_mean_avg: -7.72574
+11:07:32   mask_density: 0.123329
+11:10:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:10:32   binary cross entropy: 0.15377
+11:10:32   k_used_max: 671823
+11:10:32   k_used_mean: 667883
+11:10:32   k_used_min: 665544
+11:10:32   logit_mean_avg: -7.8182
+11:10:32   mask_density: 0.122692
+11:13:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:13:31   binary cross entropy: 0.0967165
+11:13:31   k_used_max: 674268
+11:13:31   k_used_mean: 670930
+11:13:31   k_used_min: 665947
+11:13:31   logit_mean_avg: -7.73609
+11:13:31   mask_density: 0.123252
+11:16:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:16:30   binary cross entropy: 0.117462
+11:16:30   k_used_max: 669231
+11:16:30   k_used_mean: 665258
+11:16:30   k_used_min: 663523
+11:16:30   logit_mean_avg: -7.87812
+11:16:30   mask_density: 0.12221
+11:19:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:19:29   binary cross entropy: 0.219863
+11:19:29   k_used_max: 668588
+11:19:29   k_used_mean: 666619
+11:19:29   k_used_min: 664062
+11:19:29   logit_mean_avg: -7.86333
+11:19:29   mask_density: 0.12246
+11:22:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:22:29   binary cross entropy: 0.537666
+11:22:29   k_used_max: 671694
+11:22:29   k_used_mean: 669614
+11:22:29   k_used_min: 667594
+11:22:29   logit_mean_avg: -7.80906
+11:22:29   mask_density: 0.12301
+11:25:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:25:28   binary cross entropy: 0.0825804
+11:25:28   k_used_max: 668747
+11:25:28   k_used_mean: 668109
+11:25:28   k_used_min: 667004
+11:25:28   logit_mean_avg: -7.88009
+11:25:28   mask_density: 0.122734
+11:28:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:28:27   binary cross entropy: 0.108783
+11:28:27   k_used_max: 674224
+11:28:27   k_used_mean: 668295
+11:28:27   k_used_min: 664023
+11:28:27   logit_mean_avg: -7.86965
+11:28:27   mask_density: 0.122768
+11:31:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:31:26   binary cross entropy: 0.0972819
+11:31:26   k_used_max: 671024
+11:31:26   k_used_mean: 667527
+11:31:26   k_used_min: 665512
+11:31:26   logit_mean_avg: -7.91855
+11:31:26   mask_density: 0.122627
+11:34:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:34:08   Epoch 5 end
+11:34:08   duration: 2.54 hours
+11:34:08   speed: 0.05 batch / sec
+11:34:08   ETA: 0.00 secs
+11:34:08   max GPU memory: 96674.9 MiB
+11:34:08   ------------------------------
+11:34:08   average binary cross entropy: 0.214876
+11:34:08   average k_used_max: 665090
+11:34:08   average k_used_mean: 647527
+11:34:08   average k_used_min: 621823
+11:34:08   average logit_mean_avg: -7.56418
+11:34:08   average mask_density: 0.118953
+11:34:08   Save checkpoint to model_epoch_6.pth
+11:34:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:34:12   Evaluate on valid
+11:37:19   ------------------------------
+11:37:19   hits@1: 0.215
+11:37:19   hits@10: 0.3965
+11:37:19   hits@3: 0.292
+11:37:19   mr: 2144.34
+11:37:19   mrr: 0.278478
+11:37:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:37:19   Epoch 6 begin
+11:37:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:37:37   binary cross entropy: 0.11946
+11:37:37   k_used_max: 673911
+11:37:37   k_used_mean: 661654
+11:37:37   k_used_min: 648261
+11:37:37   logit_mean_avg: -7.97673
+11:37:37   mask_density: 0.121548
+11:40:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:40:37   binary cross entropy: 0.144383
+11:40:37   k_used_max: 668684
+11:40:37   k_used_mean: 667832
+11:40:37   k_used_min: 667353
+11:40:37   logit_mean_avg: -7.94312
+11:40:37   mask_density: 0.122683
+11:43:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:43:36   binary cross entropy: 0.580435
+11:43:36   k_used_max: 668304
+11:43:36   k_used_mean: 665183
+11:43:36   k_used_min: 661877
+11:43:36   logit_mean_avg: -7.98344
+11:43:36   mask_density: 0.122196
+11:46:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:46:35   binary cross entropy: 0.121005
+11:46:35   k_used_max: 672420
+11:46:35   k_used_mean: 669744
+11:46:35   k_used_min: 666956
+11:46:35   logit_mean_avg: -7.90789
+11:46:35   mask_density: 0.123034
+11:49:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:49:34   binary cross entropy: 0.246686
+11:49:34   k_used_max: 668906
+11:49:34   k_used_mean: 663037
+11:49:34   k_used_min: 660059
+11:49:34   logit_mean_avg: -8.04923
+11:49:34   mask_density: 0.121802
+11:52:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:52:33   binary cross entropy: 0.082065
+11:52:33   k_used_max: 673168
+11:52:33   k_used_mean: 666046
+11:52:33   k_used_min: 661523
+11:52:33   logit_mean_avg: -7.99833
+11:52:33   mask_density: 0.122355
+11:55:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:55:32   binary cross entropy: 0.407746
+11:55:32   k_used_max: 666654
+11:55:32   k_used_mean: 664694
+11:55:32   k_used_min: 661167
+11:55:32   logit_mean_avg: -8.04388
+11:55:32   mask_density: 0.122106
+11:58:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:58:32   binary cross entropy: 0.0782223
+11:58:32   k_used_max: 668860
+11:58:32   k_used_mean: 665930
+11:58:32   k_used_min: 662385
+11:58:32   logit_mean_avg: -8.02585
+11:58:32   mask_density: 0.122334
+12:01:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:01:31   binary cross entropy: 0.0945403
+12:01:31   k_used_max: 674899
+12:01:31   k_used_mean: 667613
+12:01:31   k_used_min: 662372
+12:01:31   logit_mean_avg: -7.97726
+12:01:31   mask_density: 0.122643
+12:04:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:04:30   binary cross entropy: 0.151475
+12:04:30   k_used_max: 671619
+12:04:30   k_used_mean: 665574
+12:04:30   k_used_min: 660630
+12:04:30   logit_mean_avg: -8.0281
+12:04:30   mask_density: 0.122268
+12:07:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:07:30   binary cross entropy: 0.246521
+12:07:30   k_used_max: 670001
+12:07:30   k_used_mean: 667652
+12:07:30   k_used_min: 664545
+12:07:30   logit_mean_avg: -8.00489
+12:07:30   mask_density: 0.12265
+12:10:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:10:29   binary cross entropy: 0.0544291
+12:10:29   k_used_max: 671096
+12:10:29   k_used_mean: 668052
+12:10:29   k_used_min: 666250
+12:10:29   logit_mean_avg: -8.00869
+12:10:29   mask_density: 0.122723
+12:13:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:13:28   binary cross entropy: 0.415082
+12:13:28   k_used_max: 671010
+12:13:28   k_used_mean: 668146
+12:13:28   k_used_min: 665652
+12:13:28   logit_mean_avg: -7.99099
+12:13:28   mask_density: 0.12274
+12:16:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:16:27   binary cross entropy: 0.291578
+12:16:27   k_used_max: 679396
+12:16:27   k_used_mean: 670031
+12:16:27   k_used_min: 665460
+12:16:27   logit_mean_avg: -7.8609
+12:16:27   mask_density: 0.123087
+12:19:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:19:27   binary cross entropy: 0.0524591
+12:19:27   k_used_max: 669303
+12:19:27   k_used_mean: 665513
+12:19:27   k_used_min: 660554
+12:19:27   logit_mean_avg: -8.0464
+12:19:27   mask_density: 0.122257
+12:22:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:22:26   binary cross entropy: 0.196908
+12:22:26   k_used_max: 669303
+12:22:26   k_used_mean: 665975
+12:22:26   k_used_min: 659674
+12:22:26   logit_mean_avg: -8.02879
+12:22:26   mask_density: 0.122342
+12:25:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:25:25   binary cross entropy: 0.153269
+12:25:25   k_used_max: 667326
+12:25:25   k_used_mean: 664038
+12:25:25   k_used_min: 660878
+12:25:25   logit_mean_avg: -8.07123
+12:25:25   mask_density: 0.121986
+12:28:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:28:25   binary cross entropy: 0.335255
+12:28:25   k_used_max: 664920
+12:28:25   k_used_mean: 658041
+12:28:25   k_used_min: 641573
+12:28:25   logit_mean_avg: -8.11971
+12:28:25   mask_density: 0.120884
+12:31:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:31:24   binary cross entropy: 0.235844
+12:31:24   k_used_max: 672167
+12:31:24   k_used_mean: 668641
+12:31:24   k_used_min: 662575
+12:31:24   logit_mean_avg: -7.97925
+12:31:24   mask_density: 0.122832
+12:34:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:34:23   binary cross entropy: 0.0254199
+12:34:23   k_used_max: 670197
+12:34:23   k_used_mean: 666110
+12:34:23   k_used_min: 663103
+12:34:23   logit_mean_avg: -8.05088
+12:34:23   mask_density: 0.122366
+12:37:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:37:22   binary cross entropy: 0.0637803
+12:37:22   k_used_max: 671730
+12:37:22   k_used_mean: 665922
+12:37:22   k_used_min: 661739
+12:37:22   logit_mean_avg: -8.03601
+12:37:22   mask_density: 0.122332
+12:40:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:40:22   binary cross entropy: 0.210208
+12:40:22   k_used_max: 677586
+12:40:22   k_used_mean: 668007
+12:40:22   k_used_min: 662633
+12:40:22   logit_mean_avg: -7.92602
+12:40:22   mask_density: 0.122715
+12:43:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:43:21   binary cross entropy: 0.220654
+12:43:21   k_used_max: 678782
+12:43:21   k_used_mean: 670682
+12:43:21   k_used_min: 665681
+12:43:21   logit_mean_avg: -7.8384
+12:43:21   mask_density: 0.123206
+12:46:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:46:20   binary cross entropy: 0.0968632
+12:46:20   k_used_max: 667433
+12:46:20   k_used_mean: 664518
+12:46:20   k_used_min: 661898
+12:46:20   logit_mean_avg: -8.05874
+12:46:20   mask_density: 0.122074
+12:49:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:49:19   binary cross entropy: 0.124129
+12:49:19   k_used_max: 668638
+12:49:19   k_used_mean: 665436
+12:49:19   k_used_min: 658406
+12:49:19   logit_mean_avg: -8.04193
+12:49:19   mask_density: 0.122243
+12:52:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:52:19   binary cross entropy: 0.34659
+12:52:19   k_used_max: 673873
+12:52:19   k_used_mean: 666030
+12:52:19   k_used_min: 661175
+12:52:19   logit_mean_avg: -8.00656
+12:52:19   mask_density: 0.122352
+12:55:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:55:18   binary cross entropy: 0.425512
+12:55:18   k_used_max: 671255
+12:55:18   k_used_mean: 664112
+12:55:18   k_used_min: 657858
+12:55:18   logit_mean_avg: -8.06841
+12:55:18   mask_density: 0.122
+12:58:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:58:17   binary cross entropy: 0.126328
+12:58:17   k_used_max: 671862
+12:58:17   k_used_mean: 658042
+12:58:17   k_used_min: 628552
+12:58:17   logit_mean_avg: -8.05003
+12:58:17   mask_density: 0.120884
+13:01:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:01:16   binary cross entropy: 0.379286
+13:01:16   k_used_max: 678617
+13:01:16   k_used_mean: 672204
+13:01:16   k_used_min: 664933
+13:01:16   logit_mean_avg: -7.84911
+13:01:16   mask_density: 0.123486
+13:04:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:04:16   binary cross entropy: 0.0306346
+13:04:16   k_used_max: 667736
+13:04:16   k_used_mean: 664631
+13:04:16   k_used_min: 662504
+13:04:16   logit_mean_avg: -8.08743
+13:04:16   mask_density: 0.122095
+13:07:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:07:15   binary cross entropy: 0.0615542
+13:07:15   k_used_max: 671202
+13:07:15   k_used_mean: 667383
+13:07:15   k_used_min: 661093
+13:07:15   logit_mean_avg: -8.03286
+13:07:15   mask_density: 0.122601
+13:10:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:10:14   binary cross entropy: 0.0458022
+13:10:14   k_used_max: 671853
+13:10:14   k_used_mean: 666008
+13:10:14   k_used_min: 661845
+13:10:14   logit_mean_avg: -8.06933
+13:10:14   mask_density: 0.122348
+13:13:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:13:14   binary cross entropy: 0.0529095
+13:13:14   k_used_max: 669752
+13:13:14   k_used_mean: 663877
+13:13:14   k_used_min: 656817
+13:13:14   logit_mean_avg: -8.09689
+13:13:14   mask_density: 0.121956
+13:16:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:13   binary cross entropy: 0.181233
+13:16:13   k_used_max: 674698
+13:16:13   k_used_mean: 665004
+13:16:13   k_used_min: 657454
+13:16:13   logit_mean_avg: -8.0593
+13:16:13   mask_density: 0.122163
+13:19:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:12   binary cross entropy: 0.0646972
+13:19:12   k_used_max: 669511
+13:19:12   k_used_mean: 664174
+13:19:12   k_used_min: 650679
+13:19:12   logit_mean_avg: -8.08078
+13:19:12   mask_density: 0.122011
+13:22:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:22:11   binary cross entropy: 0.191003
+13:22:11   k_used_max: 674242
+13:22:11   k_used_mean: 664679
+13:22:11   k_used_min: 657177
+13:22:11   logit_mean_avg: -8.07803
+13:22:11   mask_density: 0.122104
+13:25:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:25:11   binary cross entropy: 0.771112
+13:25:11   k_used_max: 666927
+13:25:11   k_used_mean: 663886
+13:25:11   k_used_min: 660721
+13:25:11   logit_mean_avg: -8.12836
+13:25:11   mask_density: 0.121958
+13:28:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:28:10   binary cross entropy: 0.269551
+13:28:10   k_used_max: 668204
+13:28:10   k_used_mean: 663723
+13:28:10   k_used_min: 658010
+13:28:10   logit_mean_avg: -8.13075
+13:28:10   mask_density: 0.121928
+13:31:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:31:09   binary cross entropy: 0.417459
+13:31:09   k_used_max: 673000
+13:31:09   k_used_mean: 643706
+13:31:09   k_used_min: 574597
+13:31:09   logit_mean_avg: -8.09741
+13:31:09   mask_density: 0.118251
+13:34:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:34:08   binary cross entropy: 0.339643
+13:34:08   k_used_max: 669323
+13:34:08   k_used_mean: 662229
+13:34:08   k_used_min: 655723
+13:34:08   logit_mean_avg: -8.13597
+13:34:08   mask_density: 0.121654
+13:37:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:37:08   binary cross entropy: 0.055849
+13:37:08   k_used_max: 666649
+13:37:08   k_used_mean: 660658
+13:37:08   k_used_min: 653873
+13:37:08   logit_mean_avg: -8.18146
+13:37:08   mask_density: 0.121365
+13:40:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:40:07   binary cross entropy: 0.039954
+13:40:07   k_used_max: 661539
+13:40:07   k_used_mean: 656735
+13:40:07   k_used_min: 650986
+13:40:07   logit_mean_avg: -8.22432
+13:40:07   mask_density: 0.120644
+13:43:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:43:06   binary cross entropy: 0.314576
+13:43:06   k_used_max: 663787
+13:43:06   k_used_mean: 660621
+13:43:06   k_used_min: 655885
+13:43:06   logit_mean_avg: -8.1657
+13:43:06   mask_density: 0.121358
+13:46:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:46:05   binary cross entropy: 0.0221769
+13:46:05   k_used_max: 663429
+13:46:05   k_used_mean: 648608
+13:46:05   k_used_min: 631443
+13:46:05   logit_mean_avg: -8.23564
+13:46:05   mask_density: 0.119152
+13:49:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:49:05   binary cross entropy: 0.263056
+13:49:05   k_used_max: 669552
+13:49:05   k_used_mean: 651032
+13:49:05   k_used_min: 622156
+13:49:05   logit_mean_avg: -8.18267
+13:49:05   mask_density: 0.119597
+13:52:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:52:04   binary cross entropy: 0.178706
+13:52:04   k_used_max: 660065
+13:52:04   k_used_mean: 653859
+13:52:04   k_used_min: 647457
+13:52:04   logit_mean_avg: -8.23504
+13:52:04   mask_density: 0.120116
+13:55:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:55:03   binary cross entropy: 0.0675949
+13:55:03   k_used_max: 669062
+13:55:03   k_used_mean: 664221
+13:55:03   k_used_min: 657265
+13:55:03   logit_mean_avg: -8.14621
+13:55:03   mask_density: 0.12202
+13:58:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:58:02   binary cross entropy: 0.0336448
+13:58:02   k_used_max: 667343
+13:58:02   k_used_mean: 659386
+13:58:02   k_used_min: 651805
+13:58:02   logit_mean_avg: -8.18337
+13:58:02   mask_density: 0.121132
+14:01:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:01:02   binary cross entropy: 0.147785
+14:01:02   k_used_max: 671234
+14:01:02   k_used_mean: 665979
+14:01:02   k_used_min: 658907
+14:01:02   logit_mean_avg: -8.09808
+14:01:02   mask_density: 0.122342
+14:04:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:04:01   binary cross entropy: 0.0978867
+14:04:01   k_used_max: 670763
+14:04:01   k_used_mean: 665579
+14:04:01   k_used_min: 654253
+14:04:01   logit_mean_avg: -8.09413
+14:04:01   mask_density: 0.122269
+14:06:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:06:42   Epoch 6 end
+14:06:42   duration: 2.54 hours
+14:06:42   speed: 0.05 batch / sec
+14:06:42   ETA: 0.00 secs
+14:06:42   max GPU memory: 96674.9 MiB
+14:06:42   ------------------------------
+14:06:42   average binary cross entropy: 0.211373
+14:06:42   average k_used_max: 669398
+14:06:42   average k_used_mean: 662846
+14:06:42   average k_used_min: 653492
+14:06:42   average logit_mean_avg: -8.06884
+14:06:42   average mask_density: 0.121767
+14:06:42   Save checkpoint to model_epoch_7.pth
+14:06:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:06:47   Evaluate on valid
+14:09:54   ------------------------------
+14:09:54   hits@1: 0.2355
+14:09:54   hits@10: 0.4725
+14:09:54   hits@3: 0.339
+14:09:54   mr: 2111.6
+14:09:54   mrr: 0.315678
+14:09:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:09:54   Epoch 7 begin
+14:10:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:10:12   binary cross entropy: 0.0558452
+14:10:12   k_used_max: 667532
+14:10:12   k_used_mean: 652422
+14:10:12   k_used_min: 629370
+14:10:12   logit_mean_avg: -8.18688
+14:10:12   mask_density: 0.119852
+14:13:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:13:11   binary cross entropy: 0.0431653
+14:13:11   k_used_max: 667759
+14:13:11   k_used_mean: 665723
+14:13:11   k_used_min: 661962
+14:13:11   logit_mean_avg: -8.11512
+14:13:11   mask_density: 0.122296
+14:16:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:16:10   binary cross entropy: 0.444102
+14:16:10   k_used_max: 662055
+14:16:10   k_used_mean: 654945
+14:16:10   k_used_min: 648761
+14:16:10   logit_mean_avg: -8.21698
+14:16:10   mask_density: 0.120316
+14:19:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:19:10   binary cross entropy: 0.0836636
+14:19:10   k_used_max: 667262
+14:19:10   k_used_mean: 661429
+14:19:10   k_used_min: 655700
+14:19:10   logit_mean_avg: -8.17374
+14:19:10   mask_density: 0.121507
+14:22:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:22:09   binary cross entropy: 0.635089
+14:22:09   k_used_max: 663402
+14:22:09   k_used_mean: 651693
+14:22:09   k_used_min: 628183
+14:22:09   logit_mean_avg: -8.23495
+14:22:09   mask_density: 0.119718
+14:25:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:25:08   binary cross entropy: 0.104826
+14:25:08   k_used_max: 663281
+14:25:08   k_used_mean: 661014
+14:25:08   k_used_min: 656649
+14:25:08   logit_mean_avg: -8.19638
+14:25:08   mask_density: 0.12143
+14:28:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:28:08   binary cross entropy: 0.234979
+14:28:08   k_used_max: 673469
+14:28:08   k_used_mean: 658182
+14:28:08   k_used_min: 645110
+14:28:08   logit_mean_avg: -8.16007
+14:28:08   mask_density: 0.12091
+14:31:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:31:07   binary cross entropy: 0.65468
+14:31:07   k_used_max: 672105
+14:31:07   k_used_mean: 659966
+14:31:07   k_used_min: 652941
+14:31:07   logit_mean_avg: -8.18808
+14:31:07   mask_density: 0.121238
+14:34:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:34:06   binary cross entropy: 0.254159
+14:34:06   k_used_max: 673984
+14:34:06   k_used_mean: 665795
+14:34:06   k_used_min: 657778
+14:34:06   logit_mean_avg: -8.11522
+14:34:06   mask_density: 0.122309
+14:37:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:37:06   binary cross entropy: 0.0818365
+14:37:06   k_used_max: 666221
+14:37:06   k_used_mean: 662476
+14:37:06   k_used_min: 659006
+14:37:06   logit_mean_avg: -8.18221
+14:37:06   mask_density: 0.121699
+14:40:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:40:05   binary cross entropy: 0.091961
+14:40:05   k_used_max: 665757
+14:40:05   k_used_mean: 659236
+14:40:05   k_used_min: 653864
+14:40:05   logit_mean_avg: -8.21763
+14:40:05   mask_density: 0.121104
+14:43:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:43:04   binary cross entropy: 0.1807
+14:43:04   k_used_max: 666434
+14:43:04   k_used_mean: 662465
+14:43:04   k_used_min: 657360
+14:43:04   logit_mean_avg: -8.18598
+14:43:04   mask_density: 0.121697
+14:46:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:46:03   binary cross entropy: 0.447755
+14:46:03   k_used_max: 671729
+14:46:03   k_used_mean: 645002
+14:46:03   k_used_min: 595686
+14:46:03   logit_mean_avg: -8.21478
+14:46:03   mask_density: 0.118489
+14:49:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:49:02   binary cross entropy: 0.168947
+14:49:02   k_used_max: 668183
+14:49:02   k_used_mean: 653382
+14:49:02   k_used_min: 636436
+14:49:02   logit_mean_avg: -8.24275
+14:49:02   mask_density: 0.120028
+14:52:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:52:02   binary cross entropy: 0.0582829
+14:52:02   k_used_max: 666560
+14:52:02   k_used_mean: 663162
+14:52:02   k_used_min: 656101
+14:52:02   logit_mean_avg: -8.18788
+14:52:02   mask_density: 0.121825
+14:55:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:55:01   binary cross entropy: 0.0255892
+14:55:01   k_used_max: 671671
+14:55:01   k_used_mean: 668727
+14:55:01   k_used_min: 665006
+14:55:01   logit_mean_avg: -8.06985
+14:55:01   mask_density: 0.122847
+14:58:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:58:00   binary cross entropy: 0.122835
+14:58:00   k_used_max: 676011
+14:58:00   k_used_mean: 670743
+14:58:00   k_used_min: 665102
+14:58:00   logit_mean_avg: -7.97976
+14:58:00   mask_density: 0.123218
+15:01:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:01:00   binary cross entropy: 0.293171
+15:01:00   k_used_max: 672591
+15:01:00   k_used_mean: 670781
+15:01:00   k_used_min: 669238
+15:01:00   logit_mean_avg: -8.00343
+15:01:00   mask_density: 0.123225
+15:03:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:03:59   binary cross entropy: 0.0882966
+15:03:59   k_used_max: 674630
+15:03:59   k_used_mean: 672347
+15:03:59   k_used_min: 670505
+15:03:59   logit_mean_avg: -7.95891
+15:03:59   mask_density: 0.123512
+15:06:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:06:58   binary cross entropy: 0.564852
+15:06:58   k_used_max: 676510
+15:06:58   k_used_mean: 672153
+15:06:58   k_used_min: 666940
+15:06:58   logit_mean_avg: -7.91078
+15:06:58   mask_density: 0.123477
+15:09:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:09:57   binary cross entropy: 0.266064
+15:09:57   k_used_max: 678598
+15:09:57   k_used_mean: 675044
+15:09:57   k_used_min: 670055
+15:09:57   logit_mean_avg: -7.82998
+15:09:57   mask_density: 0.124008
+15:12:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:12:57   binary cross entropy: 0.173805
+15:12:57   k_used_max: 674942
+15:12:57   k_used_mean: 672410
+15:12:57   k_used_min: 670243
+15:12:57   logit_mean_avg: -7.95805
+15:12:57   mask_density: 0.123524
+15:15:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:15:56   binary cross entropy: 0.13626
+15:15:56   k_used_max: 676201
+15:15:56   k_used_mean: 672308
+15:15:56   k_used_min: 668170
+15:15:56   logit_mean_avg: -7.94296
+15:15:56   mask_density: 0.123505
+15:18:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:18:55   binary cross entropy: 0.0540112
+15:18:55   k_used_max: 672989
+15:18:55   k_used_mean: 672397
+15:18:55   k_used_min: 671784
+15:18:55   logit_mean_avg: -7.96587
+15:18:55   mask_density: 0.123521
+15:21:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:21:54   binary cross entropy: 0.176185
+15:21:54   k_used_max: 674002
+15:21:54   k_used_mean: 672092
+15:21:54   k_used_min: 668368
+15:21:54   logit_mean_avg: -7.96999
+15:21:54   mask_density: 0.123465
+15:24:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:24:54   binary cross entropy: 0.404338
+15:24:54   k_used_max: 674601
+15:24:54   k_used_mean: 671954
+15:24:54   k_used_min: 669259
+15:24:54   logit_mean_avg: -7.97007
+15:24:54   mask_density: 0.12344
+15:27:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:27:53   binary cross entropy: 0.164221
+15:27:53   k_used_max: 676596
+15:27:53   k_used_mean: 671100
+15:27:53   k_used_min: 667321
+15:27:53   logit_mean_avg: -7.98356
+15:27:53   mask_density: 0.123283
+15:30:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:30:52   binary cross entropy: 0.0319327
+15:30:52   k_used_max: 672321
+15:30:52   k_used_mean: 670226
+15:30:52   k_used_min: 668680
+15:30:52   logit_mean_avg: -8.00129
+15:30:52   mask_density: 0.123123
+15:33:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:33:51   binary cross entropy: 0.564683
+15:33:51   k_used_max: 673778
+15:33:51   k_used_mean: 671967
+15:33:51   k_used_min: 669675
+15:33:51   logit_mean_avg: -7.96619
+15:33:51   mask_density: 0.123442
+15:36:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:36:51   binary cross entropy: 0.121698
+15:36:51   k_used_max: 674447
+15:36:51   k_used_mean: 672176
+15:36:51   k_used_min: 668804
+15:36:51   logit_mean_avg: -7.97204
+15:36:51   mask_density: 0.123481
+15:39:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:39:50   binary cross entropy: 0.0452593
+15:39:50   k_used_max: 678593
+15:39:50   k_used_mean: 672410
+15:39:50   k_used_min: 667322
+15:39:50   logit_mean_avg: -7.93909
+15:39:50   mask_density: 0.123524
+15:42:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:42:50   binary cross entropy: 0.0365779
+15:42:50   k_used_max: 674278
+15:42:50   k_used_mean: 671496
+15:42:50   k_used_min: 669924
+15:42:50   logit_mean_avg: -8.00219
+15:42:50   mask_density: 0.123356
+15:45:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:45:49   binary cross entropy: 0.177937
+15:45:49   k_used_max: 673909
+15:45:49   k_used_mean: 672912
+15:45:49   k_used_min: 671985
+15:45:49   logit_mean_avg: -7.97752
+15:45:49   mask_density: 0.123616
+15:48:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:48:48   binary cross entropy: 0.554216
+15:48:48   k_used_max: 676293
+15:48:48   k_used_mean: 672952
+15:48:48   k_used_min: 668660
+15:48:48   logit_mean_avg: -7.95015
+15:48:48   mask_density: 0.123624
+15:51:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:51:47   binary cross entropy: 0.147053
+15:51:47   k_used_max: 677109
+15:51:47   k_used_mean: 672358
+15:51:47   k_used_min: 670107
+15:51:47   logit_mean_avg: -7.97075
+15:51:47   mask_density: 0.123514
+15:54:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:54:46   binary cross entropy: 0.0526408
+15:54:46   k_used_max: 677720
+15:54:46   k_used_mean: 674186
+15:54:46   k_used_min: 670298
+15:54:46   logit_mean_avg: -7.91533
+15:54:46   mask_density: 0.12385
+15:57:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:57:46   binary cross entropy: 0.0286481
+15:57:46   k_used_max: 673375
+15:57:46   k_used_mean: 671809
+15:57:46   k_used_min: 670193
+15:57:46   logit_mean_avg: -7.99895
+15:57:46   mask_density: 0.123413
+16:00:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:00:45   binary cross entropy: 0.0345252
+16:00:45   k_used_max: 675242
+16:00:45   k_used_mean: 671530
+16:00:45   k_used_min: 667640
+16:00:45   logit_mean_avg: -8.02175
+16:00:45   mask_density: 0.123362
+16:03:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:03:44   binary cross entropy: 0.340885
+16:03:44   k_used_max: 673672
+16:03:44   k_used_mean: 672282
+16:03:44   k_used_min: 671522
+16:03:44   logit_mean_avg: -8.04092
+16:03:44   mask_density: 0.1235
+16:06:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:06:43   binary cross entropy: 0.606182
+16:06:43   k_used_max: 678625
+16:06:43   k_used_mean: 675689
+16:06:43   k_used_min: 670707
+16:06:43   logit_mean_avg: -7.87442
+16:06:43   mask_density: 0.124126
+16:09:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:09:43   binary cross entropy: 0.242525
+16:09:43   k_used_max: 674134
+16:09:43   k_used_mean: 672497
+16:09:43   k_used_min: 669314
+16:09:43   logit_mean_avg: -8.04888
+16:09:43   mask_density: 0.12354
+16:12:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:12:42   binary cross entropy: 0.688227
+16:12:42   k_used_max: 680266
+16:12:42   k_used_mean: 675002
+16:12:42   k_used_min: 671550
+16:12:42   logit_mean_avg: -7.89846
+16:12:42   mask_density: 0.124
+16:15:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:15:41   binary cross entropy: 0.0267428
+16:15:41   k_used_max: 674443
+16:15:41   k_used_mean: 672287
+16:15:41   k_used_min: 668917
+16:15:41   logit_mean_avg: -8.04961
+16:15:41   mask_density: 0.123501
+16:18:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:18:40   binary cross entropy: 0.446936
+16:18:40   k_used_max: 674188
+16:18:40   k_used_mean: 669370
+16:18:40   k_used_min: 664634
+16:18:40   logit_mean_avg: -8.11792
+16:18:40   mask_density: 0.122965
+16:21:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:21:39   binary cross entropy: 0.149858
+16:21:39   k_used_max: 670815
+16:21:39   k_used_mean: 664014
+16:21:39   k_used_min: 648556
+16:21:39   logit_mean_avg: -8.12123
+16:21:39   mask_density: 0.121982
+16:24:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:24:39   binary cross entropy: 0.352539
+16:24:39   k_used_max: 672598
+16:24:39   k_used_mean: 671546
+16:24:39   k_used_min: 670620
+16:24:39   logit_mean_avg: -8.08295
+16:24:39   mask_density: 0.123365
+16:27:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:27:38   binary cross entropy: 0.404243
+16:27:38   k_used_max: 672321
+16:27:38   k_used_mean: 669302
+16:27:38   k_used_min: 667743
+16:27:38   logit_mean_avg: -8.11767
+16:27:38   mask_density: 0.122953
+16:30:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:30:37   binary cross entropy: 0.275648
+16:30:37   k_used_max: 674711
+16:30:37   k_used_mean: 671443
+16:30:37   k_used_min: 668966
+16:30:37   logit_mean_avg: -8.07675
+16:30:37   mask_density: 0.123346
+16:33:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:33:37   binary cross entropy: 0.0466439
+16:33:37   k_used_max: 673592
+16:33:37   k_used_mean: 670595
+16:33:37   k_used_min: 667275
+16:33:37   logit_mean_avg: -8.09116
+16:33:37   mask_density: 0.12319
+16:36:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:36:36   binary cross entropy: 0.118694
+16:36:36   k_used_max: 673297
+16:36:36   k_used_mean: 669869
+16:36:36   k_used_min: 664605
+16:36:36   logit_mean_avg: -8.10884
+16:36:36   mask_density: 0.123057
+16:39:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:39:17   Epoch 7 end
+16:39:17   duration: 2.54 hours
+16:39:17   speed: 0.05 batch / sec
+16:39:17   ETA: 0.00 secs
+16:39:17   max GPU memory: 96674.9 MiB
+16:39:17   ------------------------------
+16:39:17   average binary cross entropy: 0.190089
+16:39:17   average k_used_max: 672723
+16:39:17   average k_used_mean: 665540
+16:39:17   average k_used_min: 653663
+16:39:17   average logit_mean_avg: -8.05565
+16:39:17   average mask_density: 0.122262
+16:39:17   Save checkpoint to model_epoch_8.pth
+16:39:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:39:22   Evaluate on valid
+16:42:29   ------------------------------
+16:42:29   hits@1: 0.2205
+16:42:29   hits@10: 0.4345
+16:42:29   hits@3: 0.3115
+16:42:29   mr: 1674.39
+16:42:29   mrr: 0.293684
+16:42:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:42:29   Epoch 8 begin
+16:42:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:42:47   binary cross entropy: 0.0762208
+16:42:47   k_used_max: 673723
+16:42:47   k_used_mean: 671172
+16:42:47   k_used_min: 667792
+16:42:47   logit_mean_avg: -8.0837
+16:42:47   mask_density: 0.123297
+16:45:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:45:46   binary cross entropy: 0.114943
+16:45:46   k_used_max: 672677
+16:45:46   k_used_mean: 670380
+16:45:46   k_used_min: 669167
+16:45:46   logit_mean_avg: -8.09869
+16:45:46   mask_density: 0.123151
+16:48:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:48:45   binary cross entropy: 0.0187191
+16:48:45   k_used_max: 670803
+16:48:45   k_used_mean: 668568
+16:48:45   k_used_min: 666435
+16:48:45   logit_mean_avg: -8.13498
+16:48:45   mask_density: 0.122818
+16:51:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:51:45   binary cross entropy: 0.280294
+16:51:45   k_used_max: 674615
+16:51:45   k_used_mean: 669899
+16:51:45   k_used_min: 665786
+16:51:45   logit_mean_avg: -8.10171
+16:51:45   mask_density: 0.123063
+16:54:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:54:44   binary cross entropy: 0.0397869
+16:54:44   k_used_max: 672977
+16:54:44   k_used_mean: 668062
+16:54:44   k_used_min: 663301
+16:54:44   logit_mean_avg: -8.12548
+16:54:44   mask_density: 0.122725
+16:57:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:57:43   binary cross entropy: 0.179862
+16:57:43   k_used_max: 680444
+16:57:43   k_used_mean: 672911
+16:57:43   k_used_min: 666780
+16:57:43   logit_mean_avg: -7.92932
+16:57:43   mask_density: 0.123616
+17:00:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:00:43   binary cross entropy: 0.622404
+17:00:43   k_used_max: 675516
+17:00:43   k_used_mean: 670849
+17:00:43   k_used_min: 663654
+17:00:43   logit_mean_avg: -8.05486
+17:00:43   mask_density: 0.123237
+17:03:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:03:42   binary cross entropy: 0.128339
+17:03:42   k_used_max: 674153
+17:03:42   k_used_mean: 671937
+17:03:42   k_used_min: 668036
+17:03:42   logit_mean_avg: -8.06041
+17:03:42   mask_density: 0.123437
+17:06:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:06:41   binary cross entropy: 0.0623933
+17:06:41   k_used_max: 674807
+17:06:41   k_used_mean: 673088
+17:06:41   k_used_min: 670899
+17:06:41   logit_mean_avg: -8.01711
+17:06:41   mask_density: 0.123649
+17:09:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:09:40   binary cross entropy: 0.433198
+17:09:40   k_used_max: 674315
+17:09:40   k_used_mean: 670768
+17:09:40   k_used_min: 667610
+17:09:40   logit_mean_avg: -8.08706
+17:09:40   mask_density: 0.123222
+17:12:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:12:40   binary cross entropy: 0.265315
+17:12:40   k_used_max: 672298
+17:12:40   k_used_mean: 671225
+17:12:40   k_used_min: 668911
+17:12:40   logit_mean_avg: -8.07237
+17:12:40   mask_density: 0.123306
+17:15:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:15:39   binary cross entropy: 0.186417
+17:15:39   k_used_max: 675647
+17:15:39   k_used_mean: 671192
+17:15:39   k_used_min: 665674
+17:15:39   logit_mean_avg: -8.04831
+17:15:39   mask_density: 0.1233
+17:18:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:18:38   binary cross entropy: 0.0181155
+17:18:38   k_used_max: 671110
+17:18:38   k_used_mean: 668880
+17:18:38   k_used_min: 665887
+17:18:38   logit_mean_avg: -8.12221
+17:18:38   mask_density: 0.122876
+17:21:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:21:37   binary cross entropy: 0.489764
+17:21:37   k_used_max: 675275
+17:21:37   k_used_mean: 673242
+17:21:37   k_used_min: 670636
+17:21:37   logit_mean_avg: -8.01444
+17:21:37   mask_density: 0.123677
+17:24:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:24:37   binary cross entropy: 0.283188
+17:24:37   k_used_max: 673065
+17:24:37   k_used_mean: 667686
+17:24:37   k_used_min: 663167
+17:24:37   logit_mean_avg: -8.13041
+17:24:37   mask_density: 0.122656
+17:27:36   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:27:36   binary cross entropy: 0.0381794
+17:27:36   k_used_max: 674509
+17:27:36   k_used_mean: 669755
+17:27:36   k_used_min: 665399
+17:27:36   logit_mean_avg: -8.08717
+17:27:36   mask_density: 0.123036
+17:30:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:30:35   binary cross entropy: 0.168293
+17:30:35   k_used_max: 673119
+17:30:35   k_used_mean: 671743
+17:30:35   k_used_min: 669718
+17:30:35   logit_mean_avg: -8.05698
+17:30:35   mask_density: 0.123401
+17:33:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:33:35   binary cross entropy: 0.367363
+17:33:35   k_used_max: 677544
+17:33:35   k_used_mean: 671690
+17:33:35   k_used_min: 660587
+17:33:35   logit_mean_avg: -7.9996
+17:33:35   mask_density: 0.123392
+17:36:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:36:34   binary cross entropy: 0.0518878
+17:36:34   k_used_max: 676591
+17:36:34   k_used_mean: 672272
+17:36:34   k_used_min: 668027
+17:36:34   logit_mean_avg: -8.03865
+17:36:34   mask_density: 0.123499
+17:39:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:39:33   binary cross entropy: 0.437048
+17:39:33   k_used_max: 676345
+17:39:33   k_used_mean: 673729
+17:39:33   k_used_min: 668619
+17:39:33   logit_mean_avg: -7.99785
+17:39:33   mask_density: 0.123766
+17:42:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:42:32   binary cross entropy: 0.15057
+17:42:32   k_used_max: 674306
+17:42:32   k_used_mean: 670347
+17:42:32   k_used_min: 665077
+17:42:32   logit_mean_avg: -8.10278
+17:42:32   mask_density: 0.123145
+17:45:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:45:32   binary cross entropy: 0.192188
+17:45:32   k_used_max: 675806
+17:45:32   k_used_mean: 670531
+17:45:32   k_used_min: 666813
+17:45:32   logit_mean_avg: -8.07778
+17:45:32   mask_density: 0.123179
+17:48:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:48:31   binary cross entropy: 0.270032
+17:48:31   k_used_max: 675943
+17:48:31   k_used_mean: 672323
+17:48:31   k_used_min: 669640
+17:48:31   logit_mean_avg: -8.03234
+17:48:31   mask_density: 0.123508
+17:51:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:51:30   binary cross entropy: 0.328529
+17:51:30   k_used_max: 670694
+17:51:30   k_used_mean: 668924
+17:51:30   k_used_min: 666737
+17:51:30   logit_mean_avg: -8.11485
+17:51:30   mask_density: 0.122884
+17:54:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:54:30   binary cross entropy: 0.184968
+17:54:30   k_used_max: 672351
+17:54:30   k_used_mean: 669752
+17:54:30   k_used_min: 665601
+17:54:30   logit_mean_avg: -8.10319
+17:54:30   mask_density: 0.123035
+17:57:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:57:29   binary cross entropy: 0.0289061
+17:57:29   k_used_max: 672022
+17:57:29   k_used_mean: 670732
+17:57:29   k_used_min: 668770
+17:57:29   logit_mean_avg: -8.08772
+17:57:29   mask_density: 0.123216
+18:00:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:00:28   binary cross entropy: 0.431976
+18:00:28   k_used_max: 673465
+18:00:28   k_used_mean: 670558
+18:00:28   k_used_min: 666266
+18:00:28   logit_mean_avg: -8.09068
+18:00:28   mask_density: 0.123184
+18:03:27   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:03:27   binary cross entropy: 0.220293
+18:03:27   k_used_max: 672831
+18:03:27   k_used_mean: 671644
+18:03:27   k_used_min: 670272
+18:03:27   logit_mean_avg: -8.06992
+18:03:27   mask_density: 0.123383
+18:06:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:06:26   binary cross entropy: 0.265391
+18:06:26   k_used_max: 673707
+18:06:26   k_used_mean: 671513
+18:06:26   k_used_min: 669913
+18:06:26   logit_mean_avg: -8.07478
+18:06:26   mask_density: 0.123359
+18:09:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:09:26   binary cross entropy: 0.134367
+18:09:26   k_used_max: 670308
+18:09:26   k_used_mean: 669282
+18:09:26   k_used_min: 668149
+18:09:26   logit_mean_avg: -8.10501
+18:09:26   mask_density: 0.122949
+18:12:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:12:25   binary cross entropy: 0.821546
+18:12:25   k_used_max: 676267
+18:12:25   k_used_mean: 671620
+18:12:25   k_used_min: 667981
+18:12:25   logit_mean_avg: -8.05689
+18:12:25   mask_density: 0.123379
+18:15:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:15:24   binary cross entropy: 0.407281
+18:15:24   k_used_max: 672858
+18:15:24   k_used_mean: 671072
+18:15:24   k_used_min: 669550
+18:15:24   logit_mean_avg: -8.08259
+18:15:24   mask_density: 0.123278
+18:18:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:18:24   binary cross entropy: 0.0409976
+18:18:24   k_used_max: 674348
+18:18:24   k_used_mean: 670151
+18:18:24   k_used_min: 667580
+18:18:24   logit_mean_avg: -8.09083
+18:18:24   mask_density: 0.123109
+18:21:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:21:23   binary cross entropy: 0.156623
+18:21:23   k_used_max: 674950
+18:21:23   k_used_mean: 672775
+18:21:23   k_used_min: 669379
+18:21:23   logit_mean_avg: -8.04854
+18:21:23   mask_density: 0.123591
+18:24:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:24:22   binary cross entropy: 0.0272355
+18:24:22   k_used_max: 674967
+18:24:22   k_used_mean: 669400
+18:24:22   k_used_min: 666674
+18:24:22   logit_mean_avg: -8.11039
+18:24:22   mask_density: 0.122971
+18:27:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:27:21   binary cross entropy: 0.0783251
+18:27:21   k_used_max: 679918
+18:27:21   k_used_mean: 672082
+18:27:21   k_used_min: 662822
+18:27:21   logit_mean_avg: -7.97826
+18:27:21   mask_density: 0.123464
+18:30:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:30:20   binary cross entropy: 0.327246
+18:30:20   k_used_max: 670040
+18:30:20   k_used_mean: 669313
+18:30:20   k_used_min: 668898
+18:30:20   logit_mean_avg: -8.11636
+18:30:20   mask_density: 0.122955
+18:33:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:33:20   binary cross entropy: 0.182949
+18:33:20   k_used_max: 680027
+18:33:20   k_used_mean: 673961
+18:33:20   k_used_min: 670165
+18:33:20   logit_mean_avg: -7.95714
+18:33:20   mask_density: 0.123809
+18:36:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:36:19   binary cross entropy: 0.690214
+18:36:19   k_used_max: 670794
+18:36:19   k_used_mean: 667000
+18:36:19   k_used_min: 661963
+18:36:19   logit_mean_avg: -8.14319
+18:36:19   mask_density: 0.12253
+18:39:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:39:18   binary cross entropy: 0.267231
+18:39:18   k_used_max: 672523
+18:39:18   k_used_mean: 669608
+18:39:18   k_used_min: 666376
+18:39:18   logit_mean_avg: -8.09948
+18:39:18   mask_density: 0.123009
+18:42:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:42:18   binary cross entropy: 0.38976
+18:42:18   k_used_max: 673192
+18:42:18   k_used_mean: 669998
+18:42:18   k_used_min: 664653
+18:42:18   logit_mean_avg: -8.09244
+18:42:18   mask_density: 0.123081
+18:45:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:45:17   binary cross entropy: 0.216267
+18:45:17   k_used_max: 673875
+18:45:17   k_used_mean: 671230
+18:45:17   k_used_min: 668307
+18:45:17   logit_mean_avg: -8.09456
+18:45:17   mask_density: 0.123307
+18:48:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:48:16   binary cross entropy: 0.20096
+18:48:16   k_used_max: 673832
+18:48:16   k_used_mean: 670501
+18:48:16   k_used_min: 667317
+18:48:16   logit_mean_avg: -8.10429
+18:48:16   mask_density: 0.123173
+18:51:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:51:16   binary cross entropy: 0.153852
+18:51:16   k_used_max: 673108
+18:51:16   k_used_mean: 668751
+18:51:16   k_used_min: 661356
+18:51:16   logit_mean_avg: -8.10602
+18:51:16   mask_density: 0.122852
+18:54:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:54:15   binary cross entropy: 0.0696761
+18:54:15   k_used_max: 674259
+18:54:15   k_used_mean: 670720
+18:54:15   k_used_min: 669365
+18:54:15   logit_mean_avg: -8.09897
+18:54:15   mask_density: 0.123213
+18:57:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:57:14   binary cross entropy: 0.140382
+18:57:14   k_used_max: 675802
+18:57:14   k_used_mean: 671564
+18:57:14   k_used_min: 669173
+18:57:14   logit_mean_avg: -8.07629
+18:57:14   mask_density: 0.123368
+19:00:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:00:13   binary cross entropy: 0.0422401
+19:00:13   k_used_max: 674121
+19:00:13   k_used_mean: 668066
+19:00:13   k_used_min: 658248
+19:00:13   logit_mean_avg: -8.11757
+19:00:13   mask_density: 0.122726
+19:03:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:03:12   binary cross entropy: 0.0955222
+19:03:12   k_used_max: 670696
+19:03:12   k_used_mean: 668271
+19:03:12   k_used_min: 665417
+19:03:12   logit_mean_avg: -8.14785
+19:03:12   mask_density: 0.122764
+19:06:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:06:12   binary cross entropy: 0.183345
+19:06:12   k_used_max: 673776
+19:06:12   k_used_mean: 668096
+19:06:12   k_used_min: 660726
+19:06:12   logit_mean_avg: -8.13779
+19:06:12   mask_density: 0.122731
+19:09:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:09:11   binary cross entropy: 0.178615
+19:09:11   k_used_max: 670281
+19:09:11   k_used_mean: 667910
+19:09:11   k_used_min: 662583
+19:09:11   logit_mean_avg: -8.13921
+19:09:11   mask_density: 0.122697
+19:11:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:11:52   Epoch 8 end
+19:11:52   duration: 2.54 hours
+19:11:52   speed: 0.05 batch / sec
+19:11:52   ETA: 0.00 secs
+19:11:52   max GPU memory: 96674.9 MiB
+19:11:52   ------------------------------
+19:11:52   average binary cross entropy: 0.198123
+19:11:52   average k_used_max: 674281
+19:11:52   average k_used_mean: 667909
+19:11:52   average k_used_min: 655975
+19:11:52   average logit_mean_avg: -8.07684
+19:11:52   average mask_density: 0.122697
+19:11:52   Save checkpoint to model_epoch_9.pth
+19:11:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:11:57   Evaluate on valid
+19:15:04   ------------------------------
+19:15:04   hits@1: 0.2285
+19:15:04   hits@10: 0.478
+19:15:04   hits@3: 0.334
+19:15:04   mr: 1613.55
+19:15:04   mrr: 0.310866
+19:15:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:15:04   Epoch 9 begin
+19:15:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:15:22   binary cross entropy: 0.20649
+19:15:22   k_used_max: 673314
+19:15:22   k_used_mean: 668745
+19:15:22   k_used_min: 663894
+19:15:22   logit_mean_avg: -8.14165
+19:15:22   mask_density: 0.122851
+19:18:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:18:21   binary cross entropy: 0.460474
+19:18:21   k_used_max: 674958
+19:18:21   k_used_mean: 667799
+19:18:21   k_used_min: 661708
+19:18:21   logit_mean_avg: -8.14158
+19:18:21   mask_density: 0.122677
+19:21:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:21:21   binary cross entropy: 0.081682
+19:21:21   k_used_max: 674695
+19:21:21   k_used_mean: 671050
+19:21:21   k_used_min: 663917
+19:21:21   logit_mean_avg: -8.0968
+19:21:21   mask_density: 0.123274
+19:24:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:24:20   binary cross entropy: 0.125248
+19:24:20   k_used_max: 673719
+19:24:20   k_used_mean: 669992
+19:24:20   k_used_min: 662983
+19:24:20   logit_mean_avg: -8.11144
+19:24:20   mask_density: 0.12308
+19:27:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:27:19   binary cross entropy: 0.0767173
+19:27:19   k_used_max: 670812
+19:27:19   k_used_mean: 667486
+19:27:19   k_used_min: 664861
+19:27:19   logit_mean_avg: -8.17241
+19:27:19   mask_density: 0.122619
+19:30:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:30:19   binary cross entropy: 0.16491
+19:30:19   k_used_max: 680708
+19:30:19   k_used_mean: 673912
+19:30:19   k_used_min: 669998
+19:30:19   logit_mean_avg: -7.94299
+19:30:19   mask_density: 0.1238
+19:33:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:33:18   binary cross entropy: 0.0713964
+19:33:18   k_used_max: 673536
+19:33:18   k_used_mean: 668178
+19:33:18   k_used_min: 657435
+19:33:18   logit_mean_avg: -8.13325
+19:33:18   mask_density: 0.122746
+19:36:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:36:17   binary cross entropy: 0.231018
+19:36:17   k_used_max: 675259
+19:36:17   k_used_mean: 594472
+19:36:17   k_used_min: 359587
+19:36:17   logit_mean_avg: -8.12109
+19:36:17   mask_density: 0.109206
+19:39:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:39:17   binary cross entropy: 0.392152
+19:39:17   k_used_max: 675267
+19:39:17   k_used_mean: 671233
+19:39:17   k_used_min: 668185
+19:39:17   logit_mean_avg: -8.09482
+19:39:17   mask_density: 0.123308
+19:42:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:42:16   binary cross entropy: 0.0591163
+19:42:16   k_used_max: 674190
+19:42:16   k_used_mean: 671684
+19:42:16   k_used_min: 669561
+19:42:16   logit_mean_avg: -8.10191
+19:42:16   mask_density: 0.123391
+19:45:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:45:15   binary cross entropy: 0.798826
+19:45:15   k_used_max: 675821
+19:45:15   k_used_mean: 668852
+19:45:15   k_used_min: 664040
+19:45:15   logit_mean_avg: -8.12545
+19:45:15   mask_density: 0.12287
+19:48:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:48:14   binary cross entropy: 0.391869
+19:48:14   k_used_max: 677145
+19:48:14   k_used_mean: 674412
+19:48:14   k_used_min: 671637
+19:48:14   logit_mean_avg: -7.99213
+19:48:14   mask_density: 0.123892
+19:51:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:51:14   binary cross entropy: 0.0620057
+19:51:14   k_used_max: 672794
+19:51:14   k_used_mean: 670003
+19:51:14   k_used_min: 667001
+19:51:14   logit_mean_avg: -8.1174
+19:51:14   mask_density: 0.123082
+19:54:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:54:13   binary cross entropy: 0.217914
+19:54:13   k_used_max: 676704
+19:54:13   k_used_mean: 672110
+19:54:13   k_used_min: 668876
+19:54:13   logit_mean_avg: -8.07477
+19:54:13   mask_density: 0.123469
+19:57:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:57:12   binary cross entropy: 0.0330123
+19:57:12   k_used_max: 672418
+19:57:12   k_used_mean: 671262
+19:57:12   k_used_min: 669595
+19:57:12   logit_mean_avg: -8.10347
+19:57:12   mask_density: 0.123313
+20:00:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:00:11   binary cross entropy: 0.044327
+20:00:11   k_used_max: 675801
+20:00:11   k_used_mean: 671960
+20:00:11   k_used_min: 665399
+20:00:11   logit_mean_avg: -8.06854
+20:00:11   mask_density: 0.123441
+20:03:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:03:11   binary cross entropy: 0.0710596
+20:03:11   k_used_max: 677081
+20:03:11   k_used_mean: 672634
+20:03:11   k_used_min: 668156
+20:03:11   logit_mean_avg: -8.06048
+20:03:11   mask_density: 0.123565
+20:06:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:06:10   binary cross entropy: 0.057715
+20:06:10   k_used_max: 672072
+20:06:10   k_used_mean: 670522
+20:06:10   k_used_min: 667976
+20:06:10   logit_mean_avg: -8.12048
+20:06:10   mask_density: 0.123177
+20:09:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:09:09   binary cross entropy: 0.114904
+20:09:09   k_used_max: 674441
+20:09:09   k_used_mean: 668123
+20:09:09   k_used_min: 662397
+20:09:09   logit_mean_avg: -8.13597
+20:09:09   mask_density: 0.122736
+20:12:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:12:08   binary cross entropy: 0.301979
+20:12:08   k_used_max: 673889
+20:12:08   k_used_mean: 668696
+20:12:08   k_used_min: 663819
+20:12:08   logit_mean_avg: -8.13272
+20:12:08   mask_density: 0.122841
+20:15:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:15:08   binary cross entropy: 0.1693
+20:15:08   k_used_max: 674801
+20:15:08   k_used_mean: 667240
+20:15:08   k_used_min: 660362
+20:15:08   logit_mean_avg: -8.14593
+20:15:08   mask_density: 0.122574
+20:18:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:18:07   binary cross entropy: 0.0411801
+20:18:07   k_used_max: 674514
+20:18:07   k_used_mean: 671909
+20:18:07   k_used_min: 667058
+20:18:07   logit_mean_avg: -8.06788
+20:18:07   mask_density: 0.123432
+20:21:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:21:06   binary cross entropy: 0.280643
+20:21:06   k_used_max: 672352
+20:21:06   k_used_mean: 670258
+20:21:06   k_used_min: 668722
+20:21:06   logit_mean_avg: -8.13845
+20:21:06   mask_density: 0.123129
+20:24:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:24:06   binary cross entropy: 0.057126
+20:24:06   k_used_max: 674404
+20:24:06   k_used_mean: 669512
+20:24:06   k_used_min: 657635
+20:24:06   logit_mean_avg: -8.09308
+20:24:06   mask_density: 0.122991
+20:27:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:27:05   binary cross entropy: 0.127834
+20:27:05   k_used_max: 670913
+20:27:05   k_used_mean: 657628
+20:27:05   k_used_min: 622818
+20:27:05   logit_mean_avg: -8.17948
+20:27:05   mask_density: 0.120808
+20:30:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:30:04   binary cross entropy: 0.117943
+20:30:04   k_used_max: 677471
+20:30:04   k_used_mean: 665802
+20:30:04   k_used_min: 645295
+20:30:04   logit_mean_avg: -8.09431
+20:30:04   mask_density: 0.12231
+20:33:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:33:04   binary cross entropy: 0.0869402
+20:33:04   k_used_max: 678183
+20:33:04   k_used_mean: 672339
+20:33:04   k_used_min: 667520
+20:33:04   logit_mean_avg: -8.05564
+20:33:04   mask_density: 0.123511
+20:36:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:36:03   binary cross entropy: 0.385257
+20:36:03   k_used_max: 681477
+20:36:03   k_used_mean: 670699
+20:36:03   k_used_min: 663999
+20:36:03   logit_mean_avg: -7.93362
+20:36:03   mask_density: 0.12321
+20:39:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:39:02   binary cross entropy: 0.154064
+20:39:02   k_used_max: 677123
+20:39:02   k_used_mean: 668658
+20:39:02   k_used_min: 661980
+20:39:02   logit_mean_avg: -8.10892
+20:39:02   mask_density: 0.122835
+20:42:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:42:01   binary cross entropy: 0.0479751
+20:42:01   k_used_max: 667508
+20:42:01   k_used_mean: 666227
+20:42:01   k_used_min: 665030
+20:42:01   logit_mean_avg: -8.19901
+20:42:01   mask_density: 0.122388
+20:45:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:45:00   binary cross entropy: 0.0620469
+20:45:00   k_used_max: 673341
+20:45:00   k_used_mean: 670912
+20:45:00   k_used_min: 668216
+20:45:00   logit_mean_avg: -8.10923
+20:45:00   mask_density: 0.123249
+20:48:00   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:48:00   binary cross entropy: 0.140262
+20:48:00   k_used_max: 672009
+20:48:00   k_used_mean: 671274
+20:48:00   k_used_min: 670917
+20:48:00   logit_mean_avg: -8.1107
+20:48:00   mask_density: 0.123315
+20:50:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:50:59   binary cross entropy: 0.544152
+20:50:59   k_used_max: 675036
+20:50:59   k_used_mean: 665080
+20:50:59   k_used_min: 643391
+20:50:59   logit_mean_avg: -8.11202
+20:50:59   mask_density: 0.122177
+20:53:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:53:58   binary cross entropy: 0.0827387
+20:53:58   k_used_max: 671724
+20:53:58   k_used_mean: 668519
+20:53:58   k_used_min: 665762
+20:53:58   logit_mean_avg: -8.15577
+20:53:58   mask_density: 0.122809
+20:56:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:56:58   binary cross entropy: 0.147093
+20:56:58   k_used_max: 674082
+20:56:58   k_used_mean: 672550
+20:56:58   k_used_min: 669874
+20:56:58   logit_mean_avg: -8.0858
+20:56:58   mask_density: 0.12355
+20:59:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:59:57   binary cross entropy: 0.119997
+20:59:57   k_used_max: 678233
+20:59:57   k_used_mean: 673060
+20:59:57   k_used_min: 666989
+20:59:57   logit_mean_avg: -8.03632
+20:59:57   mask_density: 0.123643
+21:02:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:02:57   binary cross entropy: 0.0324113
+21:02:57   k_used_max: 671850
+21:02:57   k_used_mean: 669338
+21:02:57   k_used_min: 668037
+21:02:57   logit_mean_avg: -8.13893
+21:02:57   mask_density: 0.12296
+21:05:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:05:56   binary cross entropy: 0.248266
+21:05:56   k_used_max: 672708
+21:05:56   k_used_mean: 669810
+21:05:56   k_used_min: 665181
+21:05:56   logit_mean_avg: -8.1215
+21:05:56   mask_density: 0.123046
+21:08:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:08:55   binary cross entropy: 0.110729
+21:08:55   k_used_max: 676030
+21:08:55   k_used_mean: 670494
+21:08:55   k_used_min: 662617
+21:08:55   logit_mean_avg: -8.00511
+21:08:55   mask_density: 0.123172
+21:11:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:11:55   binary cross entropy: 0.06672
+21:11:55   k_used_max: 672780
+21:11:55   k_used_mean: 668397
+21:11:55   k_used_min: 661796
+21:11:55   logit_mean_avg: -8.13972
+21:11:55   mask_density: 0.122787
+21:14:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:14:54   binary cross entropy: 0.0716107
+21:14:54   k_used_max: 673485
+21:14:54   k_used_mean: 671555
+21:14:54   k_used_min: 669025
+21:14:54   logit_mean_avg: -8.10952
+21:14:54   mask_density: 0.123367
+21:17:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:17:53   binary cross entropy: 0.186275
+21:17:53   k_used_max: 670836
+21:17:53   k_used_mean: 666761
+21:17:53   k_used_min: 659839
+21:17:53   logit_mean_avg: -8.17203
+21:17:53   mask_density: 0.122486
+21:20:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:20:53   binary cross entropy: 0.217719
+21:20:53   k_used_max: 678580
+21:20:53   k_used_mean: 674769
+21:20:53   k_used_min: 671224
+21:20:53   logit_mean_avg: -7.98579
+21:20:53   mask_density: 0.123957
+21:23:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:23:52   binary cross entropy: 0.049734
+21:23:52   k_used_max: 675639
+21:23:52   k_used_mean: 673733
+21:23:52   k_used_min: 671939
+21:23:52   logit_mean_avg: -8.04713
+21:23:52   mask_density: 0.123767
+21:26:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:26:51   binary cross entropy: 0.341149
+21:26:51   k_used_max: 676688
+21:26:51   k_used_mean: 673348
+21:26:51   k_used_min: 669328
+21:26:51   logit_mean_avg: -8.05891
+21:26:51   mask_density: 0.123696
+21:29:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:29:51   binary cross entropy: 0.0397871
+21:29:51   k_used_max: 671648
+21:29:51   k_used_mean: 666368
+21:29:51   k_used_min: 663511
+21:29:51   logit_mean_avg: -8.17745
+21:29:51   mask_density: 0.122414
+21:32:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:32:50   binary cross entropy: 0.0674954
+21:32:50   k_used_max: 672287
+21:32:50   k_used_mean: 667274
+21:32:50   k_used_min: 662023
+21:32:50   logit_mean_avg: -8.1688
+21:32:50   mask_density: 0.12258
+21:35:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:35:49   binary cross entropy: 0.0772992
+21:35:49   k_used_max: 674305
+21:35:49   k_used_mean: 672126
+21:35:49   k_used_min: 670394
+21:35:49   logit_mean_avg: -8.09939
+21:35:49   mask_density: 0.123472
+21:38:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:38:49   binary cross entropy: 0.120501
+21:38:49   k_used_max: 678680
+21:38:49   k_used_mean: 671213
+21:38:49   k_used_min: 668271
+21:38:49   logit_mean_avg: -8.06647
+21:38:49   mask_density: 0.123304
+21:41:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:41:48   binary cross entropy: 0.0301028
+21:41:48   k_used_max: 669918
+21:41:48   k_used_mean: 667141
+21:41:48   k_used_min: 664239
+21:41:48   logit_mean_avg: -8.16331
+21:41:48   mask_density: 0.122556
+21:44:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:44:29   Epoch 9 end
+21:44:29   duration: 2.54 hours
+21:44:29   speed: 0.05 batch / sec
+21:44:29   ETA: 0.00 secs
+21:44:29   max GPU memory: 96674.9 MiB
+21:44:29   ------------------------------
+21:44:29   average binary cross entropy: 0.188154
+21:44:29   average k_used_max: 674307
+21:44:29   average k_used_mean: 665720
+21:44:29   average k_used_min: 648376
+21:44:29   average logit_mean_avg: -8.10601
+21:44:29   average mask_density: 0.122295
+21:44:29   Save checkpoint to model_epoch_10.pth
+21:44:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:44:34   Evaluate on valid
+21:47:40   ------------------------------
+21:47:40   hits@1: 0.228
+21:47:40   hits@10: 0.46
+21:47:40   hits@3: 0.3225
+21:47:40   mr: 1618.3
+21:47:40   mrr: 0.306046
+21:47:40   Load checkpoint from model_epoch_7.pth
+21:47:47   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:47:47   Evaluate on valid
+21:50:53   ------------------------------
+21:50:53   hits@1: 0.2355
+21:50:53   hits@10: 0.4725
+21:50:53   hits@3: 0.339
+21:50:53   mr: 2111.6
+21:50:53   mrr: 0.315678
+21:50:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:50:53   Evaluate on test
+21:54:00   ------------------------------
+21:54:00   hits@1: 0.255
+21:54:00   hits@10: 0.4675
+21:54:00   hits@3: 0.3575
+21:54:00   mr: 3038.17
+21:54:00   mrr: 0.329848

@@ -1,0 +1,170 @@
+10:27:48   Config file: NBFNet/config/knowledge_graph/rdkg_masked_sgdr.yaml
+10:27:48   {'dataset': {'class': 'RDKG',
+             'path': '/nfs/stak/users/hodgesf/data/splits_human'},
+ 'engine': {'batch_size': 4, 'gpus': [0], 'log_interval': 10},
+ 'fast_test': 1000,
+ 'metric': 'mrr',
+ 'optimizer': {'class': 'Adam', 'lr': 0.0005},
+ 'output_dir': '~/experiments/',
+ 'scheduler': {'T_0': 5,
+               'T_mult': 1,
+               'class': 'CosineAnnealingWarmRestarts',
+               'eta_min': 1e-06},
+ 'task': {'adversarial_temperature': 1,
+          'class': 'KnowledgeGraphCompletion',
+          'criterion': 'bce',
+          'full_batch_eval': True,
+          'model': {'aggregate_func': 'sum',
+                    'audit': True,
+                    'class': 'MaskedNBFNet',
+                    'dependent': False,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'lambda_l1': 1e-08,
+                    'layer_norm': True,
+                    'message_func': 'distmult',
+                    'selector_dim': 32,
+                    'short_cut': True},
+          'num_negative': 32,
+          'sample_weight': False,
+          'strict_negative': True},
+ 'train': {'batch_per_epoch': 500, 'num_epoch': 10}}
+10:27:57   RDKG(
+  #entity: 855997
+  #relation: 25
+  #triplet: 2723762
+)
+10:27:57   #train: 275217, #valid: 33862, #test: 33880
+10:27:57   Quick test mode on. Only evaluate on 1000 samples for valid / test.
+10:27:58   Preprocess training set
+10:27:59   {'batch_size': 4,
+ 'class': 'core.Engine',
+ 'gpus': [0],
+ 'gradient_interval': 1,
+ 'log_interval': 10,
+ 'logger': 'logging',
+ 'num_worker': 0,
+ 'optimizer': {'amsgrad': False,
+               'betas': (0.9, 0.999),
+               'capturable': False,
+               'class': 'optim.Adam',
+               'differentiable': False,
+               'eps': 1e-08,
+               'foreach': None,
+               'fused': None,
+               'lr': 0.0005,
+               'maximize': False,
+               'weight_decay': 0},
+ 'scheduler': <torch.optim.lr_scheduler.CosineAnnealingWarmRestarts object at 0x14e5b54fe0b0>,
+ 'task': {'adversarial_temperature': 1,
+          'class': 'tasks.KnowledgeGraphCompletion',
+          'criterion': 'bce',
+          'fact_ratio': None,
+          'filtered_ranking': True,
+          'full_batch_eval': True,
+          'margin': 6,
+          'metric': ('mr', 'mrr', 'hits@1', 'hits@3', 'hits@10'),
+          'model': {'activation': 'relu',
+                    'aggregate_func': 'sum',
+                    'class': 'model.MaskedNBFNet',
+                    'concat_hidden': False,
+                    'dependent': False,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'layer_norm': True,
+                    'message_func': 'distmult',
+                    'num_beam': 10,
+                    'num_mlp_layer': 2,
+                    'num_relation': tensor(25),
+                    'path_topk': 10,
+                    'remove_one_hop': False,
+                    'short_cut': True,
+                    'symmetric': False},
+          'num_negative': 32,
+          'sample_weight': False,
+          'strict_negative': True},
+ 'test_set': {'class': 'dataset.Subset',
+              'dataset': {'class': 'dataset.Subset',
+                          'dataset': {'class': 'datasets.RDKG',
+                                      'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                                      'verbose': 1},
+                          'indices': range(2689882, 2723762)},
+              'indices': [2161, 19356, 20768, ..., 1911, 5265, 10364]},
+ 'train_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'datasets.RDKG',
+                           'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                           'verbose': 1},
+               'indices': [1522608, 1329446, 1384467, ..., 2474824, 2474825,
+                           2474826]},
+ 'valid_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'dataset.Subset',
+                           'dataset': {'class': 'datasets.RDKG',
+                                       'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                                       'verbose': 1},
+                           'indices': range(2656020, 2689882)},
+               'indices': [15505, 8898, 12623, ..., 21654, 29890, 24828]}}
+10:27:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:27:59   Epoch 0 begin
+10:28:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:28:18   binary cross entropy: 0.721343
+10:28:18   k_used_max: 5.44357e+06
+10:28:18   k_used_mean: 5.44357e+06
+10:28:18   k_used_min: 5.44357e+06
+10:28:18   logit_mean_avg: 0.0505042
+10:28:18   mask_density: 1
+10:31:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:31:18   binary cross entropy: 0.482939
+10:31:18   k_used_max: 4.39717e+06
+10:31:18   k_used_mean: 3.90288e+06
+10:31:18   k_used_min: 3.11527e+06
+10:31:18   logit_mean_avg: 0.00192029
+10:31:18   mask_density: 0.716971
+10:34:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:34:17   binary cross entropy: 0.298126
+10:34:17   k_used_max: 2.24965e+06
+10:34:17   k_used_mean: 1.89055e+06
+10:34:17   k_used_min: 1.40533e+06
+10:34:17   logit_mean_avg: -0.00207585
+10:34:17   mask_density: 0.3473
+10:37:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:37:17   binary cross entropy: 0.227013
+10:37:17   k_used_max: 2.52986e+06
+10:37:17   k_used_mean: 2.33648e+06
+10:37:17   k_used_min: 2.14439e+06
+10:37:17   logit_mean_avg: -0.00121782
+10:37:17   mask_density: 0.429218
+10:40:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:40:17   binary cross entropy: 0.317246
+10:40:17   k_used_max: 3.10617e+06
+10:40:17   k_used_mean: 2.67549e+06
+10:40:17   k_used_min: 2.40655e+06
+10:40:17   logit_mean_avg: 0.000274457
+10:40:17   mask_density: 0.491496
+10:43:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:43:16   binary cross entropy: 0.236674
+10:43:16   k_used_max: 779309
+10:43:16   k_used_mean: 472190
+10:43:16   k_used_min: 200341
+10:43:16   logit_mean_avg: -0.0140876
+10:43:16   mask_density: 0.0867428
+10:46:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:46:16   binary cross entropy: 0.547841
+10:46:16   k_used_max: 1.68173e+06
+10:46:16   k_used_mean: 1.40257e+06
+10:46:16   k_used_min: 884293
+10:46:16   logit_mean_avg: -0.00626781
+10:46:16   mask_density: 0.257656
+10:49:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:49:15   binary cross entropy: 0.470216
+10:49:15   k_used_max: 974023
+10:49:15   k_used_mean: 828963
+10:49:15   k_used_min: 679202
+10:49:15   logit_mean_avg: -0.0130528
+10:49:15   mask_density: 0.152283
+10:52:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+10:52:15   binary cross entropy: 0.314549
+10:52:15   k_used_max: 736477
+10:52:15   k_used_mean: 673715
+10:52:15   k_used_min: 574100
+10:52:15   logit_mean_avg: -0.0198966
+10:52:15   mask_density: 0.123764

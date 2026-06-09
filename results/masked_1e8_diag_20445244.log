@@ -1,0 +1,282 @@
+20:59:11   Config file: NBFNet/config/knowledge_graph/rdkg_masked_1e8.yaml
+20:59:11   {'dataset': {'class': 'RDKG',
+             'path': '/nfs/stak/users/hodgesf/data/splits_human'},
+ 'engine': {'batch_size': 2, 'gpus': [0], 'log_interval': 10},
+ 'fast_test': 1000,
+ 'metric': 'mrr',
+ 'optimizer': {'class': 'Adam', 'lr': 0.0005},
+ 'output_dir': '~/experiments/',
+ 'task': {'adversarial_temperature': 1,
+          'class': 'KnowledgeGraphCompletion',
+          'criterion': 'bce',
+          'full_batch_eval': True,
+          'model': {'aggregate_func': 'sum',
+                    'audit': True,
+                    'class': 'MaskedNBFNet',
+                    'dependent': False,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'lambda_l1': 1e-08,
+                    'layer_norm': True,
+                    'message_func': 'distmult',
+                    'selector_dim': 32,
+                    'short_cut': True},
+          'num_negative': 32,
+          'sample_weight': False,
+          'strict_negative': True},
+ 'train': {'batch_per_epoch': 200, 'num_epoch': 1}}
+20:59:19   RDKG(
+  #entity: 855997
+  #relation: 25
+  #triplet: 2723762
+)
+20:59:19   #train: 275217, #valid: 33862, #test: 33880
+20:59:19   Quick test mode on. Only evaluate on 1000 samples for valid / test.
+20:59:20   Preprocess training set
+20:59:21   {'batch_size': 2,
+ 'class': 'core.Engine',
+ 'gpus': [0],
+ 'gradient_interval': 1,
+ 'log_interval': 10,
+ 'logger': 'logging',
+ 'num_worker': 0,
+ 'optimizer': {'amsgrad': False,
+               'betas': (0.9, 0.999),
+               'capturable': False,
+               'class': 'optim.Adam',
+               'differentiable': False,
+               'eps': 1e-08,
+               'foreach': None,
+               'fused': None,
+               'lr': 0.0005,
+               'maximize': False,
+               'weight_decay': 0},
+ 'scheduler': None,
+ 'task': {'adversarial_temperature': 1,
+          'class': 'tasks.KnowledgeGraphCompletion',
+          'criterion': 'bce',
+          'fact_ratio': None,
+          'filtered_ranking': True,
+          'full_batch_eval': True,
+          'margin': 6,
+          'metric': ('mr', 'mrr', 'hits@1', 'hits@3', 'hits@10'),
+          'model': {'activation': 'relu',
+                    'aggregate_func': 'sum',
+                    'class': 'model.MaskedNBFNet',
+                    'concat_hidden': False,
+                    'dependent': False,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'layer_norm': True,
+                    'message_func': 'distmult',
+                    'num_beam': 10,
+                    'num_mlp_layer': 2,
+                    'num_relation': tensor(25),
+                    'path_topk': 10,
+                    'remove_one_hop': False,
+                    'short_cut': True,
+                    'symmetric': False},
+          'num_negative': 32,
+          'sample_weight': False,
+          'strict_negative': True},
+ 'test_set': {'class': 'dataset.Subset',
+              'dataset': {'class': 'dataset.Subset',
+                          'dataset': {'class': 'datasets.RDKG',
+                                      'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                                      'verbose': 1},
+                          'indices': range(2689882, 2723762)},
+              'indices': [2161, 19356, 20768, ..., 1911, 5265, 10364]},
+ 'train_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'datasets.RDKG',
+                           'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                           'verbose': 1},
+               'indices': [1522608, 1329446, 1384467, ..., 2474824, 2474825,
+                           2474826]},
+ 'valid_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'dataset.Subset',
+                           'dataset': {'class': 'datasets.RDKG',
+                                       'path': '/nfs/stak/users/hodgesf/data/splits_human',
+                                       'verbose': 1},
+                           'indices': range(2656020, 2689882)},
+               'indices': [15505, 8898, 12623, ..., 21654, 29890, 24828]}}
+20:59:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:59:21   Epoch 0 begin
+20:59:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:59:32   binary cross entropy: 0.708131
+20:59:32   k_used_max: 5.44357e+06
+20:59:32   k_used_mean: 5.44357e+06
+20:59:32   k_used_min: 5.44357e+06
+20:59:32   logit_mean_avg: 0.0505784
+20:59:32   mask_density: 1
+21:01:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:01:05   binary cross entropy: 0.448473
+21:01:05   k_used_max: 3.41561e+06
+21:01:05   k_used_mean: 2.81993e+06
+21:01:05   k_used_min: 2.22425e+06
+21:01:05   logit_mean_avg: 0.000465161
+21:01:05   mask_density: 0.51803
+21:02:37   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:02:37   binary cross entropy: 0.251589
+21:02:37   k_used_max: 4.00861e+06
+21:02:37   k_used_mean: 3.22444e+06
+21:02:37   k_used_min: 2.44028e+06
+21:02:37   logit_mean_avg: 0.0014943
+21:02:37   mask_density: 0.59234
+21:04:09   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:04:09   binary cross entropy: 0.142406
+21:04:09   k_used_max: 3.62027e+06
+21:04:09   k_used_mean: 2.83057e+06
+21:04:09   k_used_min: 2.04086e+06
+21:04:09   logit_mean_avg: 0.000706115
+21:04:09   mask_density: 0.519984
+21:05:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:05:41   binary cross entropy: 0.242886
+21:05:41   k_used_max: 4.06958e+06
+21:05:41   k_used_mean: 3.93576e+06
+21:05:41   k_used_min: 3.80194e+06
+21:05:41   logit_mean_avg: 0.00615029
+21:05:41   mask_density: 0.723011
+21:07:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:07:13   binary cross entropy: 0.242227
+21:07:13   k_used_max: 4.29552e+06
+21:07:13   k_used_mean: 3.99606e+06
+21:07:13   k_used_min: 3.69659e+06
+21:07:13   logit_mean_avg: 0.00744954
+21:07:13   mask_density: 0.734087
+21:08:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:08:45   binary cross entropy: 0.340972
+21:08:45   k_used_max: 3.27659e+06
+21:08:45   k_used_mean: 2.96476e+06
+21:08:45   k_used_min: 2.65294e+06
+21:08:45   logit_mean_avg: 0.00338689
+21:08:45   mask_density: 0.544636
+21:10:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:10:18   binary cross entropy: 0.48625
+21:10:18   k_used_max: 2.01711e+06
+21:10:18   k_used_mean: 1.96605e+06
+21:10:18   k_used_min: 1.91498e+06
+21:10:18   logit_mean_avg: -0.0047246
+21:10:18   mask_density: 0.361169
+21:11:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:11:50   binary cross entropy: 0.497647
+21:11:50   k_used_max: 1.37769e+06
+21:11:50   k_used_mean: 1.05239e+06
+21:11:50   k_used_min: 727094
+21:11:50   logit_mean_avg: -0.0149652
+21:11:50   mask_density: 0.193328
+21:13:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:13:22   binary cross entropy: 0.703938
+21:13:22   k_used_max: 962662
+21:13:22   k_used_mean: 787100
+21:13:22   k_used_min: 611538
+21:13:22   logit_mean_avg: -0.0183997
+21:13:22   mask_density: 0.144593
+21:14:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:14:54   binary cross entropy: 0.218941
+21:14:54   k_used_max: 628039
+21:14:54   k_used_mean: 483088
+21:14:54   k_used_min: 338137
+21:14:54   logit_mean_avg: -0.0246572
+21:14:54   mask_density: 0.0887447
+21:16:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:16:26   binary cross entropy: 0.190694
+21:16:26   k_used_max: 1.44543e+06
+21:16:26   k_used_mean: 1.30432e+06
+21:16:26   k_used_min: 1.1632e+06
+21:16:26   logit_mean_avg: -0.0100845
+21:16:26   mask_density: 0.239607
+21:17:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:17:58   binary cross entropy: 0.132856
+21:17:58   k_used_max: 1.2894e+06
+21:17:58   k_used_mean: 1.28262e+06
+21:17:58   k_used_min: 1.27585e+06
+21:17:58   logit_mean_avg: -0.0104795
+21:17:58   mask_density: 0.235622
+21:19:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:19:30   binary cross entropy: 0.390193
+21:19:30   k_used_max: 1.48011e+06
+21:19:30   k_used_mean: 1.46289e+06
+21:19:30   k_used_min: 1.44567e+06
+21:19:30   logit_mean_avg: -0.0090334
+21:19:30   mask_density: 0.268737
+21:21:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:21:02   binary cross entropy: 0.528539
+21:21:02   k_used_max: 1.34721e+06
+21:21:02   k_used_mean: 1.32552e+06
+21:21:02   k_used_min: 1.30383e+06
+21:21:02   logit_mean_avg: -0.0110879
+21:21:02   mask_density: 0.243501
+21:22:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:22:35   binary cross entropy: 0.447545
+21:22:35   k_used_max: 1.27925e+06
+21:22:35   k_used_mean: 1.21512e+06
+21:22:35   k_used_min: 1.15099e+06
+21:22:35   logit_mean_avg: -0.0132717
+21:22:35   mask_density: 0.223221
+21:24:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:24:07   binary cross entropy: 0.176198
+21:24:07   k_used_max: 1.46054e+06
+21:24:07   k_used_mean: 1.40018e+06
+21:24:07   k_used_min: 1.33982e+06
+21:24:07   logit_mean_avg: -0.0120052
+21:24:07   mask_density: 0.257217
+21:25:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:25:39   binary cross entropy: 0.163896
+21:25:39   k_used_max: 1.58597e+06
+21:25:39   k_used_mean: 1.53725e+06
+21:25:39   k_used_min: 1.48852e+06
+21:25:39   logit_mean_avg: -0.0123999
+21:25:39   mask_density: 0.282397
+21:27:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:27:11   binary cross entropy: 0.126181
+21:27:11   k_used_max: 1.69576e+06
+21:27:11   k_used_mean: 1.47209e+06
+21:27:11   k_used_min: 1.24843e+06
+21:27:11   logit_mean_avg: -0.0147593
+21:27:11   mask_density: 0.270428
+21:28:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:28:43   binary cross entropy: 0.769131
+21:28:43   k_used_max: 1.33737e+06
+21:28:43   k_used_mean: 1.20023e+06
+21:28:43   k_used_min: 1.06308e+06
+21:28:43   logit_mean_avg: -0.0188972
+21:28:43   mask_density: 0.220485
+21:30:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:30:06   Epoch 0 end
+21:30:06   duration: 30.76 mins
+21:30:06   speed: 0.11 batch / sec
+21:30:06   ETA: 0.00 secs
+21:30:06   max GPU memory: 49888.1 MiB
+21:30:06   ------------------------------
+21:30:06   average binary cross entropy: 0.361771
+21:30:06   average k_used_max: 2.30646e+06
+21:30:06   average k_used_mean: 2.09178e+06
+21:30:06   average k_used_min: 1.87711e+06
+21:30:06   average logit_mean_avg: -0.00632486
+21:30:06   average mask_density: 0.384267
+21:30:06   Save checkpoint to model_epoch_1.pth
+21:30:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:30:10   Evaluate on valid
+21:33:35   ------------------------------
+21:33:35   hits@1: 0.077
+21:33:35   hits@10: 0.191
+21:33:35   hits@3: 0.118
+21:33:35   mr: 3055.13
+21:33:35   mrr: 0.114615
+21:33:35   Load checkpoint from model_epoch_1.pth
+21:33:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:33:40   Evaluate on valid
+21:37:02   ------------------------------
+21:37:02   hits@1: 0.077
+21:37:02   hits@10: 0.191
+21:37:02   hits@3: 0.118
+21:37:02   mr: 3055.13
+21:37:02   mrr: 0.114615
+21:37:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:37:03   Evaluate on test
+21:40:25   ------------------------------
+21:40:25   hits@1: 0.078
+21:40:25   hits@10: 0.1835
+21:40:25   hits@3: 0.127
+21:40:25   mr: 3109.93
+21:40:25   mrr: 0.116912
